@@ -1,0 +1,443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CapitaplusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BillOfMaterial">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BOMCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="CellType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BillOfMats">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RmCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MatName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="MasterProCode" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Capacity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Capacity" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CheckMatToDisplay">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BomNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MatName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Color">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerMasters">
+    <Key>
+      <PropertyRef Name="S.No" />
+    </Key>
+    <Property Name="S.No" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactPerson" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="int" Nullable="false" />
+    <Property Name="MaterialCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="12" />
+  </EntityType>
+  <EntityType Name="DeliverySchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactNo" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ContactPerson" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CellType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Model" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="DeliveryDate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AddressDelivery" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DeliveryQty" Type="int" Nullable="false" />
+    <Property Name="Cid" Type="int" />
+    <Property Name="OrderType" Type="nvarchar" MaxLength="50" />
+    <Property Name="PaymentType" Type="nchar" MaxLength="10" />
+    <Property Name="CreditPeriod" Type="int" />
+  </EntityType>
+  <EntityType Name="FGstocks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PaymentTerm" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CreditPeriod" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Celltype" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="FgInStock" Type="int" Nullable="false" />
+    <Property Name="isFreez" Type="bit" Nullable="false" />
+    <Property Name="QtyToFreez" Type="int" Nullable="false" />
+    <Property Name="QtyToProduce" Type="int" Nullable="false" />
+    <Property Name="Cid" Type="int" Nullable="false" />
+    <Property Name="Rate" Type="nvarchar" MaxLength="50" />
+    <Property Name="TQtyProduce" Type="int" />
+  </EntityType>
+  <EntityType Name="FinishedGood">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductCode" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductName" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="ShortProductName" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ModelNo" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="CellType" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="Capacity" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="ShortColorCode" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Brand" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="ShortBrandCode" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="SAC" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="GST" Type="int" Nullable="false" />
+    <Property Name="UOM" Type="nchar" MaxLength="10" />
+    <Property Name="MIN" Type="int" />
+    <Property Name="Max" Type="int" />
+    <Property Name="Stock" Type="int" />
+    <Property Name="StockFreez" Type="int" />
+    <Property Name="SelfStock" Type="int" />
+    <Property Name="TRfSelf" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsMinMax" Type="nchar" MaxLength="10" />
+    <Property Name="Rate" Type="int" />
+  </EntityType>
+  <EntityType Name="Grn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="40" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="30" />
+    <Property Name="Color" Type="nvarchar" MaxLength="20" />
+    <Property Name="Model" Type="nvarchar" MaxLength="20" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="Uom" Type="nvarchar" MaxLength="50" />
+    <Property Name="Receive" Type="int" />
+    <Property Name="Amount" Type="int" />
+    <Property Name="VendorName" Type="nvarchar" MaxLength="50" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="purId" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="JobSheets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SalesOrderNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CellType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="QtyToPro" Type="int" Nullable="false" />
+    <Property Name="BomNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="QtyInPieace" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MaterialRequsitionSlip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BomNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MatName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="QtyToIssue" Type="int" Nullable="false" />
+    <Property Name="mrsNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="MatPlanning">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BomNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MatName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="QtyReq" Type="int" Nullable="false" />
+    <Property Name="QtyInStock" Type="int" />
+    <Property Name="QtyToPro" Type="int" />
+    <Property Name="MrsNo" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="PurchaseOrderSummary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MaterialGroup" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UOM-1" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="Type" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Model" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+    <Property Name="GrossAmount" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="GrossTotal" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Fright" Type="nvarchar" MaxLength="50" />
+    <Property Name="NetAmount" Type="nvarchar" MaxLength="50" />
+    <Property Name="PurchaseId" Type="nchar" MaxLength="10" />
+    <Property Name="VendorName" Type="nchar" MaxLength="30" />
+    <Property Name="VendorId" Type="int" />
+    <Property Name="Sac" Type="nchar" MaxLength="20" />
+    <Property Name="Rate" Type="int" />
+    <Property Name="GstAmount" Type="nchar" MaxLength="20" />
+    <Property Name="GstTotal" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RoleMaterialCreation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MaterialGroup" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UOM-1" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="QUOM" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="UOM-2" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Type" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Model" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="SAC CODE" Type="nvarchar" MaxLength="50" />
+    <Property Name="Rate" Type="int" />
+  </EntityType>
+  <EntityType Name="SalesOrders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustomerAddr" Type="nvarchar" MaxLength="500" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CellType" Type="nchar" MaxLength="10" />
+    <Property Name="Model" Type="nchar" MaxLength="10" />
+    <Property Name="Color" Type="nchar" MaxLength="10" />
+    <Property Name="Capacity" Type="nvarchar" MaxLength="10" />
+    <Property Name="Address" Type="nvarchar" MaxLength="300" />
+    <Property Name="IndivisualPacking" Type="nvarchar" MaxLength="50" />
+    <Property Name="QtyIndivisual" Type="int" />
+    <Property Name="BoxPacking" Type="nvarchar" MaxLength="10" />
+    <Property Name="QtyBox" Type="int" />
+    <Property Name="ReqBox" Type="int" />
+    <Property Name="OrderType" Type="nchar" MaxLength="10" />
+    <Property Name="PaymentType" Type="nchar" MaxLength="10" />
+    <Property Name="CreditPeriod" Type="int" />
+    <Property Name="ContactPer" Type="nvarchar" MaxLength="50" />
+    <Property Name="QtyToProduce" Type="int" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="SuplierTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SuplierType" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Types" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UOM">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UOM1" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VendorMaster">
+    <Key>
+      <PropertyRef Name="S.No" />
+    </Key>
+    <Property Name="S.No" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorCode" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="VendorName" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="ContactPerson" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="VendorAddress" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="int" Nullable="false" />
+    <Property Name="MaterialCode" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="ContactNo" Type="nvarchar" MaxLength="12" />
+  </EntityType>
+  <Association Name="FK_CustomerMasters_SuplierTypes">
+    <End Role="SuplierTypes" Type="Self.SuplierTypes" Multiplicity="1" />
+    <End Role="CustomerMasters" Type="Self.CustomerMasters" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerMasters">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VendorMaster_VendorMasterSuplierTypes">
+    <End Role="SuplierTypes" Type="Self.SuplierTypes" Multiplicity="1" />
+    <End Role="VendorMaster" Type="Self.VendorMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VendorMaster">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="GetAllFromFg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="getjobsheet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_AddGrnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="Code" Type="nvarchar" Mode="In" />
+    <Parameter Name="MaterialName" Type="nvarchar" Mode="In" />
+    <Parameter Name="UOM1" Type="nvarchar" Mode="In" />
+    <Parameter Name="Type" Type="nvarchar" Mode="In" />
+    <Parameter Name="Capacity_AMH" Type="nvarchar" Mode="In" />
+    <Parameter Name="Color" Type="nvarchar" Mode="In" />
+    <Parameter Name="Model" Type="nvarchar" Mode="In" />
+    <Parameter Name="Qty" Type="int" Mode="In" />
+    <Parameter Name="recive" Type="int" Mode="In" />
+    <Parameter Name="Amount" Type="int" Mode="In" />
+    <Parameter Name="vendorN" Type="nvarchar" Mode="In" />
+    <Parameter Name="vendorId" Type="int" Mode="In" />
+    <Parameter Name="PurchaseId" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_AddPurchaseOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="Code" Type="nvarchar" Mode="In" />
+    <Parameter Name="MaterialName" Type="nvarchar" Mode="In" />
+    <Parameter Name="MaterialGroup" Type="nvarchar" Mode="In" />
+    <Parameter Name="UOM1" Type="nvarchar" Mode="In" />
+    <Parameter Name="Type" Type="nvarchar" Mode="In" />
+    <Parameter Name="Capacity_AMH" Type="nvarchar" Mode="In" />
+    <Parameter Name="Color" Type="nvarchar" Mode="In" />
+    <Parameter Name="Model" Type="nvarchar" Mode="In" />
+    <Parameter Name="Qty" Type="int" Mode="In" />
+    <Parameter Name="sac" Type="nvarchar" Mode="In" />
+    <Parameter Name="Amount" Type="int" Mode="In" />
+    <Parameter Name="fridge" Type="int" Mode="In" />
+    <Parameter Name="GrossAmount" Type="nvarchar" Mode="In" />
+    <Parameter Name="GrossTotal" Type="nvarchar" Mode="In" />
+    <Parameter Name="NetAmount" Type="nvarchar" Mode="In" />
+    <Parameter Name="gstAmt" Type="int" Mode="In" />
+    <Parameter Name="gstTotal" Type="int" Mode="In" />
+    <Parameter Name="vendorN" Type="nvarchar" Mode="In" />
+    <Parameter Name="vendorId" Type="int" Mode="In" />
+    <Parameter Name="PurchaseId" Type="nvarchar" Mode="In" />
+    <Parameter Name="rate" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_getAppCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_truncateFg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_TruncateZeroQty" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_UniquePurId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="venId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="UpdateQtyInPo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="vendorId" Type="int" Mode="In" />
+    <Parameter Name="code" Type="nvarchar" Mode="In" />
+    <Parameter Name="RemQty" Type="int" Mode="In" />
+    <Parameter Name="purId" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="CapitaplusModelStoreContainer">
+    <EntitySet Name="BillOfMaterial" EntityType="Self.BillOfMaterial" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BillOfMats" EntityType="Self.BillOfMats" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Capacity" EntityType="Self.Capacity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CheckMatToDisplay" EntityType="Self.CheckMatToDisplay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomerMasters" EntityType="Self.CustomerMasters" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DeliverySchedule" EntityType="Self.DeliverySchedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FGstocks" EntityType="Self.FGstocks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinishedGood" EntityType="Self.FinishedGood" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Grn" EntityType="Self.Grn" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="JobSheets" EntityType="Self.JobSheets" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaterialRequsitionSlip" EntityType="Self.MaterialRequsitionSlip" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MatPlanning" EntityType="Self.MatPlanning" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PurchaseOrderSummary" EntityType="Self.PurchaseOrderSummary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoleMaterialCreation" EntityType="Self.RoleMaterialCreation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SalesOrders" EntityType="Self.SalesOrders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SuplierTypes" EntityType="Self.SuplierTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UOM" EntityType="Self.UOM" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorMaster" EntityType="Self.VendorMaster" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CustomerMasters_SuplierTypes" Association="Self.FK_CustomerMasters_SuplierTypes">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="CustomerMasters" EntitySet="CustomerMasters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VendorMaster_VendorMasterSuplierTypes" Association="Self.FK_VendorMaster_VendorMasterSuplierTypes">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="VendorMaster" EntitySet="VendorMaster" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

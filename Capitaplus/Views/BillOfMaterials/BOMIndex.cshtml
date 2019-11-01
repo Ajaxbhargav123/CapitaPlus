@@ -1,0 +1,413 @@
+﻿@model Capitaplus.ViewModel.GgAndRmVm
+@{
+    ViewBag.Title = "BOMIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #rmcodelist{
+    width:258px;
+    }
+     #codelist{
+    width:258px;
+    }
+</style>
+<h2>BOM Materials</h2>
+<hr />
+@*FG CODE*@
+<div class="row">
+
+    <div class="form-group">
+       <label style="font-weight:bold;">Select Finishining Goods</label>
+        @Html.DropDownListFor(x => x.fg.ProductCode, new SelectList(Model.fgs, "Id", "ProductCode"), "Select FG Code", new { id = "codelist", @class = "form-control" })
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.fg.ProductName, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.fg.ProductName, new { id = "txtmaterialName", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.fg.CellType, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.fg.CellType, new { id = "txttype", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.fg.Capacity, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.fg.Capacity, new { id = "txtcapacity", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.fg.Color, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.fg.Color, new { id = "txtcolor", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+
+    <div style="margin-left:263px" class="form-group">
+        @Html.LabelFor(x => x.fg.ModelNo, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.fg.ModelNo, new { id = "txtmodel", @class = "form-control", disabled = "true" })
+
+    </div>
+
+    &nbsp;&nbsp; 
+  
+    <div class="form-group">
+        <label class="lbl">Brand</label>
+        @Html.TextBoxFor(x => x.fg.Brand, new { id = "txtbrand", @class = "form-control", disabled = "true" })
+
+    </div>
+    
+</div>
+<hr />
+@*RM CODE*@
+<div class="row">
+
+    <div class="form-group">
+        <label style="font-weight:bold;">Select RM Code</label>
+        @Html.DropDownListFor(x => x.rm.Code, new SelectList(Model.rms, "Id", "Code"), "Select RM Code", new { id = "rmcodelist", @class = "form-control" })
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.rm.MaterialName, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.rm.MaterialName, new { id = "rmtxtmaterialName", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.rm.Type, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.rm.Type, new { id = "rmtxttype", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.rm.Capacity_AMH, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.rm.Capacity_AMH, new { id = "rmtxtcapacity", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.rm.Color, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.rm.Color, new { id = "rmtxtcolor", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+
+    <div style="margin-left:263px" class="form-group">
+        @Html.LabelFor(x => x.rm.Model, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.rm.Model, new { id = "rmtxtmodel", @class = "form-control", disabled = "true" })
+
+    </div>
+
+    &nbsp;&nbsp;
+    <div class="form-group">
+      <label class="lbl">Quantity</label>
+        @*@Html.TextBoxFor(x => x.rm.Model, new { id = "rmtxtmodel", @class = "form-control", disabled = "true" })*@
+        <input type="text" id="qty" style="width:50px;" class="form-control" />
+
+    </div>
+    <input type="button" style="margin-left:16px; margin-top:26px; height:33px;" class="btn btn-primary" id="btnadd" value="Add" />
+
+</div>
+
+
+@*//Added To List*@
+<div class="row">
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>MaterialName</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th> 
+                <th>Qty</th> 
+                
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button class="btn btn-primary btn-lg save"><i class="glyphicon-import"></i>Save</button>
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        var qty;
+        $(document).ready(function () {
+          
+            $('.tablelist').hide();
+            $('.save').hide();
+            //Dropdown Change Event
+            $('#codelist').on('change', function () {
+                let val = $('#codelist :selected').text(); 
+                $.ajax({
+                    type: 'GET',
+                    url: '/BillOfMaterials/GetFg',
+                    data:{code:val},
+                    success: function (result) {
+                        console.log(result.Data);
+                        $('#txtmaterialName').val('');
+                        $('#txttype').val('');
+                        $('#txtcapacity').val('');
+                        $('#txtcolor').val('');
+                        $('#txtmodel').val('');
+                        $('#txtbrand').val('');
+                        
+                        let materialName = result.Data[0].ProductName;
+                        let type = result.Data[0].CellType;
+                        let capacity = result.Data[0].Capacity;
+                        let color = result.Data[0].Color;
+                        let model = result.Data[0].ModelNo;
+                        let brand = result.Data[0].Brand; 
+
+                        $('#txtmaterialName').val(materialName);
+                        $('#txttype').val(type);
+                        $('#txtcapacity').val(capacity);
+                        $('#txtcolor').val(color);
+                        $('#txtmodel').val(model); 
+                        $('#txtbrand').val(brand);
+                        
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+
+            }) 
+
+            //Dropdown Change Event
+            $('#rmcodelist').on('change', function () {
+                let val = $('#rmcodelist :selected').text();
+                $('#qty').focus();
+                $.ajax({
+                    type: 'GET',
+                    url: '/BillOfMaterials/GetRm',
+                    data: { code: val },
+                    success: function (result) {
+                        
+                        $('#rmtxtmaterialName').val('');
+                        $('#rmtxttype').val('');
+                        $('#rmtxtcapacity').val('');
+                        $('#rmtxtcolor').val('');
+                        $('#rmtxtmodel').val('');
+                       
+
+                        let materialName = result.Data[0].MaterialName;
+                        let type = result.Data[0].Type;
+                        let capacity = result.Data[0].Capacity_AMH;
+                        let color = result.Data[0].Color;
+                        let model = result.Data[0].Model;
+                       
+
+                        $('#rmtxtmaterialName').val(materialName);
+                        $('#rmtxttype').val(type);
+                        $('#rmtxtcapacity').val(capacity);
+                        $('#rmtxtcolor').val(color);
+                        $('#rmtxtmodel').val(model);
+                        
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+
+            })
+        });
+        
+        //addbtn
+        $('#btnadd').on('click', function () { 
+            
+            let code = $('#rmcodelist :selected').text();
+            let codes = $('#codelist :selected').text();
+            let materialName = $('#rmtxtmaterialName').val();
+            let type = $('#rmtxttype').val();
+            let capacity = $('#rmtxtcapacity').val().trim();
+            let color = $('#rmtxtcolor').val();
+            let model = $('#rmtxtmodel').val();
+            let fgcapacity = $('#txtcapacity').val().trim();
+            let matname = $('#rmtxtmaterialName').val();
+            qty = $('#qty').val();
+
+            if (codes == "Select FG Code") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Select Code From Dropdown List',
+                    type: 'error'
+                });
+                return;
+            }
+
+            if (matname == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Select Code From Dropdown List',
+                    type: 'error'
+                });
+                return;
+            }
+             
+            //Get Master Code
+            let mastercode = $('#codelist :selected').text().trim();
+            
+            $(".tablelist").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="code">' + code + '</td>';
+                    tds += '<td class="materialName">' + materialName + '</td>';
+                    tds += '<td class="type">' + type + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + model + '</td>';
+                    if (capacity == "NA" && fgcapacity == "NA") {
+                        tds += '<td class="remainQty">' + '<input id="qty" type="text" value=' + `${qty}` + ' disabled class="form-control" style="width:55px;" />' + '</td> ';
+                    } else {
+                        tds += '<td class="remainQty">' + '<input id="qty" type="text" value=' + `${qty}` + ' disabled class="form-control" style="width:55px;" />' + '</td> ';
+                    }
+
+
+                    tds += '<td>' + '<input type="button" value="Remove" onclick="Remove(this)" class="btn btn-danger"/>' + '</td>';
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+                    $('tbody', this).append(tds);
+                    $('.table').show();
+                    $('.save').show();
+                    $('#fri').show();
+                    $('#qty').val('');
+                    $('#rmtxtmaterialName').val('');
+
+                    $('#rmtxtcapacity').val('');
+                    $('#rmtxtcolor').val('');
+                    $('#rmtxttype').val('');
+                    $('#rmtxtmodel').val('');
+                    $('#tablelist').show();
+                    $('.save').show();
+                } else {
+                    $(this).append(tds);
+                }
+            });
+         
+        })
+
+        //Save
+         
+        $('.save').on('click', function () {
+            $(this).attr("disabled", true);
+            let val = $('#codelist :selected').text().trim(); 
+            $.ajax({
+                url: "/BillOfMaterials/GetLastId",
+                data: { code: val },
+                timeout: 20000,
+                type: 'post',
+                ContentType: "application/json; charset=UTF-8",
+                success: function (result) { 
+                    var Id = parseInt(result) + 1;
+                    var mcode = val + '000' + Id;
+
+                    $("table tbody tr").each(function (index) {
+                        var item = {};
+                        item.RmCode = $(this).find('.code', this).text();
+                        item.MatName = $(this).find('.materialName').text().trim();
+                        item.Type = $(this).find('.type').text().trim();
+                        item.Capacity = $(this).find('.capacity').text().trim();
+                        item.Color = $(this).find('.color').text().trim();
+                        item.Model = $(this).find('.model').text().trim();
+                        item.Qty = $(this).find('#qty').val();
+
+                        let masterCode = $(this).find('td:eq(0)').text().trim();
+
+                        $.ajax({
+                            url: "/BillOfMaterials/Insert",
+                            timeout: 20000,
+                            data: { Code: item.RmCode, MaterialName: item.MatName, Type: item.Type, Capacity_AMH: item.Capacity, Model: item.Model, Color: item.Color, Qty: item.Qty, MasterCode: mcode },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                                
+                                if (hashes == "isbom=true") { 
+                                    window.close();
+                                } else {
+                                    location.reload();
+                                }
+                                
+
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+                        $(".table tbody tr").remove();
+
+                    })
+                }
+            });
+
+
+
+        });
+
+        //OnEnter Pressed
+        jQuery('#qty').on("keypress", function (e) { 
+            if (e.keyCode == 13) {
+                $('#btnadd').click();
+               
+            }
+        });
+
+        //Remove
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $(".tablelist")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+            var amt = $("TD", row).eq(9).text();
+            var total = parseInt($('#amt').text());
+
+            // add only if the value is number
+            if (!isNaN(amt) && amt.length != 0) {
+                total -= parseFloat(amt);
+            }
+            $('#amt').text(total);
+        };
+    </script>
+}

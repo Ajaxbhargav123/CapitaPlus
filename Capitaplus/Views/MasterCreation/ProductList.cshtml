@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Capitaplus.Models.ProductMaster>
+
+@{
+    ViewBag.Title = "ProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btn {
+        font-weight: normal;
+        font-size: inherit;
+    }
+
+    td {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    th {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: medium;
+        text-align: center;
+    }
+</style>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
+<h2>Product List</h2>
+ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortCode)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+   
+
+    @foreach (var item in Model)
+    {
+<tbody>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ShortCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "ProductEdit", "MasterCreation", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" })
+        </td>
+    </tr>
+</tbody>
+      
+    }
+
+</table>
+@section scripts{
+    <script src="~/Scripts/jquery-2.2.4.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 5
+            });
+        })
+    </script>
+
+}

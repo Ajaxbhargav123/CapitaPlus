@@ -1,0 +1,90 @@
+﻿@model Capitaplus.ViewModel.CustomerMasterVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .lbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+<h2>Create Customer</h2>
+
+@using (@Html.BeginForm("Edit", "CreateCustomer"))
+{
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.CustomerName, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.customerMaster.CustomerName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.CustomerName)
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.SuplierGstNo, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.customerMaster.SuplierGstNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.SuplierGstNo)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.SuplierTypeId, new { @class = "lbl" })
+                        @Html.DropDownListFor(x => x.customerMaster.SuplierTypeId, new SelectList(Model.supplierTypes, "Id", "SuplierType1"), "Select Suplier Types", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.SuplierTypeId)
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.CustomerAddress, new { @class = "lbl" })
+                        @Html.TextAreaFor(x => x.customerMaster.CustomerAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.CustomerAddress)
+                    </div>
+
+
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.ContactPerson, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.customerMaster.ContactPerson, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.ContactPerson)
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.DeliveryFrom, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.customerMaster.DeliveryFrom, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.DeliveryFrom)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.customerMaster.ContactNo, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.customerMaster.ContactNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.customerMaster.ContactNo)
+                    </div>
+
+                    <br />
+                    @Html.HiddenFor(c => c.customerMaster.S_No)
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-lg btn-primary">Save</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+}
+@section scripts{
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $('.btn').on('click', function () {
+        //        $(this).attr('disabled', true);
+        //    })
+        //})
+    </script>
+}

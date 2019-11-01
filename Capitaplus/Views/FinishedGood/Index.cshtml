@@ -1,0 +1,855 @@
+﻿@model Capitaplus.ViewModel.CustomerListWithFgVM
+@{
+    ViewBag.Title = "Finishing Good";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link href="~/Content/typeahead.css" rel="stylesheet" />
+    <style>
+        #bom {
+            display: none;
+        }
+         .lbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+         #stockt{
+               width:200px;
+         }
+          #cust{
+               width:200px;
+         }
+          #ismin{
+              width:200px;
+          }
+         #stockt{
+             margin-top:7px;
+         }
+         #cust{
+             margin-top:7px;
+             
+         }
+         input[type=text]{
+             width:200px;
+         }
+          input[type=number]{
+             width:200px;
+         }
+    </style>
+</head>
+<h2>Create Finishing Good</h2> 
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <lable class="lbl">Stock For</lable>
+                @{
+                    List<SelectListItem> listItems = new List<SelectListItem>();
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Self",
+                        Value = "0"
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Customer",
+                        Value = "1",
+                        Selected = true
+                    });
+
+                }
+
+                @Html.DropDownListFor(model => model.fg, listItems, "-- Select Status --", new { id = "stockt", @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <lable class="lbl">Customers</lable>
+                @Html.DropDownListFor(x => x.customerMaster.S_No, new SelectList(Model.customerMasters, "S_No", "CustomerName"), "Select Customer", new { id = "cust", @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.customerMaster.S_No)
+
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.ProductName, new { @class = "lbl" })
+                <div class="tt-container">
+                    @Html.TextBoxFor(x => x.fg.ProductName, new { id = "proname",   @class = "form-control typeahead" })
+                </div>
+
+                @Html.ValidationMessageFor(x => x.fg.ProductName)
+
+            </div>
+        </div> 
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.ShortProductName, new { @class = "lbl" }) 
+                <input type="text" readonly="readonly" id="ShortProductName" name="ShortProductName" class="form-control" />
+                @Html.ValidationMessageFor(x => x.fg.ShortProductName)
+            </div>
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Color, new { @class = "lbl" })
+                <div class="tt-container">
+                    @Html.TextBoxFor(x => x.fg.Color, new { id = "color",   @class = "form-control typeahead" })
+                </div>
+
+                @Html.ValidationMessageFor(x => x.fg.Color)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.ShortColorCode, new { @class = "lbl" })
+
+                <input type="text" name="ShortColorCode" id="ShortColorCode" class="form-control" readonly="readonly" />
+                @Html.ValidationMessageFor(x => x.fg.ShortColorCode)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Brand, new { @class = "lbl" })
+                <div class="tt-container">
+                    @Html.TextBoxFor(x => x.fg.Brand, new { id = "brand",  @class = "form-control typeahead" })
+                </div>
+                @Html.ValidationMessageFor(x => x.fg.Brand)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.ShortBrandCode, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.ShortBrandCode, new { id = "sbn", @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(x => x.fg.ShortBrandCode)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.CellType, new { @class = "lbl" })
+                <div class="tt-container">
+                    @Html.TextBoxFor(x => x.fg.CellType, new { id = "type",  @class = "form-control typeahead" })
+                    @Html.ValidationMessageFor(x => x.fg.CellType)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.ModelNo, new { @class = "lbl" })
+                <div class="tt-container">
+                    @Html.TextBoxFor(x => x.fg.ModelNo, new { id = "model",  @class = "form-control typeahead" })
+                    @Html.ValidationMessageFor(x => x.fg.ModelNo)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Capacity, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.Capacity, new { id = "capacity", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.Capacity)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Stock, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.Stock, new { id = "stock", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.Stock)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.UOM, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.UOM, new { id = "uom", @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.fg.UOM)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+              <lable class="lbl">HSN/SAC</lable>
+                @Html.TextBoxFor(x => x.fg.SAC, new { id = "sac", @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.fg.SAC)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <lable class="lbl">Is MinMax</lable>
+                <select id="ismin" class="form-control">
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.MIN, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.MIN, new { id = "min", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.MIN)
+            </div>
+        </div>
+
+    </div> 
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Max, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.Max, new { id = "max", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.Max)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <lable>Gst%</lable>
+                @Html.TextBoxFor(x => x.fg.GST, new { id = "gst", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.GST)
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.fg.Rate, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.fg.Rate, new { id = "rate", @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(x => x.fg.Rate)
+            </div>
+        </div>
+        <div class="col-lg-2 col-lg-offset-1"> 
+            <input type="button" class="btn btn-primary btn-block btn-sm save" value="Save" />
+            &nbsp;&nbsp;
+            <button style="" type="button" class="btn  btn-warning btn-sm btn-block savetoFG"><b>Create Bom</b></button>
+        </div>
+
+    </div>
+</div> 
+<br />
+<span id="bom"></span>
+
+@Html.HiddenFor(c => c.fg.Id)
+@Html.HiddenFor(c => c.customerMaster.S_No)
+@Html.AntiForgeryToken() 
+@section scripts{
+
+    <script src="~/Scripts/typeahead.js"></script>
+    <script>
+        $(document).ready(function () {
+            var count = 0;
+            $('.save').attr('style', 'display:none'); 
+            $('#ismin').attr('disabled', true);
+            $('#min').attr('disabled', true);
+            $('#max').attr('disabled', true);
+            $('#min').val(0);
+            $('#max').val(0);
+            $('#ismin :selected').val("No");
+            $('#stockt').change(function () {
+                var value = $(this).val();
+                if (value == 0) {
+                    $('#cust').attr('disabled', true);
+                    $('#ismin').attr('disabled', false);
+                    $('#min').attr('disabled', false);
+                    $('#max').attr('disabled', false);
+                } else {
+                    $('#cust').attr('disabled', false);
+                    $('#ismin').attr('disabled', true);
+                    $('#min').attr('disabled', true);
+                    $('#max').attr('disabled', true);
+                    $('#min').val(0);
+                    $('#max').val(0);
+                    $('#ismin :selected').val("No");
+                } 
+            }) 
+
+            //Append bom 
+            setInterval(function () {
+                $.ajax({
+                    url: "/FinishedGood/UniqueBOM",
+                    timeout: 20000,
+                    type: 'get',
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        if (result.Data.length > 0) { 
+                            $('#bom').html(result.Data[0].MasterProCode);
+                        } 
+                    }
+                })
+
+            }, 1000)
+
+            $('.save').on('click', function () { 
+                var procode = $('#ShortProductName').val(); 
+                var colorcode = $('#ShortColorCode').val();
+                var stock = $('#stock').val();
+                if (stock == "") {
+                    stock = 0;
+                }
+                var stocktype = $('#stockt :selected').val();
+                var custmane = $('#cust :selected').val();  
+               
+                var model = $('#model').val();
+                var type = $('#type').val();
+                var capacity = $('#capacity').val();
+                var brand = $('#brand').val(); 
+                var bom = $('#bom').text();
+                $('.save').attr('disabled', true);
+                $('.save').attr('value', "Saving.."); 
+              //  var ProductCode = "NA" + stocktype + procode;
+                var matName = [];
+                if (bom == "") {
+                    alert("Create Bom First");
+                }
+                
+                $.ajax({
+                    url: '/FinishedGood/GetBomDetails',
+                    data: { code: bom },
+                    type: 'json',
+                    success: function (results) {
+                        for (var i = 0; i < results.Data.length; i++) {
+                            matName.push(results.Data[i].MatName);
+                        }
+
+                        if (matName.length == 1) {
+                            if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) { 
+                                if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                $.ajax({
+                                    url: "/FinishedGood/InsertIntoStockTable",
+                                    data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 0, mat3: 0, mat4: 0, mat5: 0, mat6: 0, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                    type: "POST",
+                                    ContentType: "application/json; charset=UTF-8",
+                                    success: function () {  
+                                        count++;
+                                        if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                             
+                                          
+                                    },
+                                    error: function () {
+                                        new PNotify({
+                                            title: 'Error!',
+                                            text: 'Something Went Wrong',
+                                            type: 'error'
+                                        });
+                                    }
+
+                                });
+                            } 
+                        } 
+                        if (matName.length == 2) {
+                              if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) { 
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                 $.ajax({
+                                     url: "/FinishedGood/InsertIntoStockTable",
+                                     data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 0, mat4: 0, mat5: 0, mat6: 0, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                     success: function () {
+                                            count++;
+                                       if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+
+                        } 
+                        if (matName.length == 3) {
+                             if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                $.ajax({
+                                    url: "/FinishedGood/InsertIntoStockTable",
+                                    data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 0, mat5: 0, mat6: 0, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                    type: "POST",
+                                    ContentType: "application/json; charset=UTF-8",
+                                    success: function () {
+                                       count++;
+                                        if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                    },
+                                    error: function () {
+                                        new PNotify({
+                                            title: 'Error!',
+                                            text: 'Something Went Wrong',
+                                            type: 'error'
+                                        });
+                                    }
+
+                                });
+                            }
+                        }
+                        if (matName.length == 4) {
+                             if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                 
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                 $.ajax({
+                                     url: "/FinishedGood/InsertIntoStockTable",
+                                     data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 1, mat5: 0, mat6: 0, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function () {
+                                           count++;
+                                       if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+
+                        } 
+                        if (matName.length == 5) {
+                              if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                 
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                 $.ajax({
+                                     url: "/FinishedGood/InsertIntoStockTable",
+                                     data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 1, mat5: 1, mat6: 0, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function () {
+                                            count++;
+                                           if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+
+                        }
+                        if (matName.length == 6) {
+                             if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                  $.ajax({
+                                      url: "/FinishedGood/InsertIntoStockTable",
+                                      data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 1, mat5: 1, mat6: 1, mat7: 0, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function () {
+                                         count++;
+                                       if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+                        }
+                        if (matName.length == 7) {
+                             if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                $.ajax({
+                                    url: "/FinishedGood/InsertIntoStockTable",
+                                    data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 1, mat5: 1, mat6: 1, mat7: 1, mat8: 0, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function () {
+                                           count++;
+                                       if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+
+                        }
+                        if (matName.length == 8) {
+                             if (stock == 0) {
+                                location.reload();
+                            }
+                            for (var i = 0; i < stock; i++) {
+                                
+                                 if (stocktype == 1) {
+                                    stocktype = custmane;
+                                }
+                                if (stocktype == 0) {
+                                    stocktype = 0;
+                                }
+                                $.ajax({
+                                    url: "/FinishedGood/InsertIntoStockTable",
+                                    data: { BomNo: bom, ProductCode: procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim(), location: 005, mat1: 1, mat2: 1, mat3: 1, mat4: 1, mat5: 1, mat6: 1, mat7: 1, mat8: 1, mat9: 0, mat10: 0, productSerialNo: "0", custNo: stocktype },
+                                        type: "POST",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function () {
+                                            count++;
+                                       if (count < stock) { 
+                                            $('.save').attr('disabled', true);
+                                             $('.save').attr('value', "Saving.."); 
+                                        }
+                                        if (count == stock) {
+                                            alert(procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim());
+                                            location.reload();
+                                        }
+                                        },
+                                        error: function () {
+                                            new PNotify({
+                                                title: 'Error!',
+                                                text: 'Something Went Wrong',
+                                                type: 'error'
+                                            });
+                                        }
+
+                                    });
+                            }
+
+                        }
+
+
+                    }
+                })
+            })
+
+            //max key up
+            $(document).on('focusout', '#max', function () {
+                let maxVal = parseInt($(this).val());
+                let minVal = parseInt($('#min').val());
+                if (minVal > maxVal) { 
+                    alert("Value Should not be less than Min Value");
+                    $(this).val('');
+                    $('#max').focus();
+                    return;
+                }
+            })
+
+            
+            //Save To FG
+            $('.savetoFG').on('click', function () {
+                $(this).attr('disabled', true);
+                var procode = $('#ShortProductName').val();
+                var productname = $('#proname').val();
+                var color = $('#color').val();
+                var colorcode = $('#ShortColorCode').val();
+                var stock = $('#stock').val();
+                var stocktype = $('#stockt :selected').text();
+                var stockFor = $('#stockt :selected').text();
+                var custmane = $('#cust :selected').text();
+                var cid = $('#cust :selected').val();
+                if (stockFor == "Self") {
+                    cid = 0;
+                }
+                 
+                var model = $('#model').val();
+                var type = $('#type').val();
+                var capacity = $('#capacity').val();
+                var brand = $('#brand').val();
+                var bsn = $('#sbn').val();
+                var uom = $('#uom').val();
+                var sac = $('#sac').val();
+                var min = $('#min').val();
+                var max = $('#max').val(); ismin
+                var isminmax = $('#ismin :selected').text(); 
+                var rate = $('#rate').val();
+                var selfstock = $('#stock').val();
+                var stockfrezz = $('#stock').val();
+                var gst = $('#gst').val();
+                var ProductCode = procode.trim() + colorcode.trim() + brand.trim() + capacity.trim() + type.trim() + model.trim();
+                //Check If Data Already Avalable or not 
+                 
+                $.ajax({
+                    url: "/FinishedGood/IsDuplicateData",
+                    timeout: 20000,
+                    data: { proName: productname, brand: brand, Type: type, Capacity_AMH: capacity, Color: color, Model: model,stocktype: stockFor,cid:cid},
+                    type: "POST",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        if (result == 0) {
+                            alert("Opps! Data Aready Avalable");
+                            $('.savetoFG').attr('disabled', false);
+                        }
+                        else {
+                            if (result == 1) { 
+                                $.ajax({
+                                    url: "/FinishedGood/Insert",
+                                    timeout: 20000,
+                                    data: { cid:cid, ismin: isminmax, Code: ProductCode, proName: productname, proshortname: procode, colorshortname: colorcode, brand: brand, brandshortname: bsn, custname: custmane, Type: type, Capacity_AMH: capacity, Color: color, Model: model, stock: stock, stockfrezz: stockfrezz, selfstock: selfstock, stocktype: stocktype, tlfstock: stocktype, max: max, min: min, gst: gst, rate: rate, sac: sac, uom: uom },
+                                    type: "POST",
+                                    ContentType: "application/json; charset=UTF-8",
+                                    success: function () { 
+                                      $('.savetoFG').attr('style', 'display:none');
+                                        window.open("/BillOfMaterials/BOMIndexByFg?isbom=true");
+                                        $('.save').attr('disabled', false);
+                                        $('input[type=text]').attr('disabled', true);
+                                        $('input[type=number]').attr('disabled', true);
+                                        $('#stockt').attr('disabled', true); 
+                                        $('#cust').attr('disabled', true);
+                                        $('.save').attr('style', 'display:initial');
+                                    },
+                                    error: function () {
+                                        new PNotify({
+                                            title: 'Error!',
+                                            text: 'Something Went Wrong',
+                                            type: 'error'
+                                        });
+                                    }
+
+                                });
+                            }
+                        }
+                    },
+                    error: function () {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Something Went Wrong',
+                            type: 'error'
+                        });
+                    }
+
+                }); 
+            }) 
+            $('input[type="text"]').on('keyup', function () {
+                this.value = this.value.toUpperCase();
+            }) 
+          
+            //PRODUCT From master
+            var product = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('ProductName'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/ProductMasters?query=%QUERY',
+                    wildcard: '%QUERY'
+                }  
+            })
+
+            $('#proname').typeahead({ 
+                length: 0,
+                highlight: true
+            }, {
+                    name: 'product',
+                    display: 'ProductName',
+                    source: product
+                }).on("typeahead:select", function (e, obj) {
+                    $('#ShortProductName').val('');
+                    $('#ShortProductName').val(obj.ShortCode);
+                    $('#ShortProductName').attr('value', obj.ShortCode);
+                });
+            
+           
+            //color
+            var color = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Color'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/ColorMasters?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#color').typeahead({
+
+                highlight: true
+            }, {
+                    name: 'color',
+                    display: 'Color',
+                    source: color
+                }).on("typeahead:select", function (e, obj) {
+                    $('#ShortColorCode').val('');
+                    $('#ShortColorCode').val(obj.code.trim());
+                    $('#ShortColorCode').attr('value', obj.code);
+                });
+
+              //CellType  
+            var cell = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CellType'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/CellTypeMasters?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#type').typeahead({
+               
+                highlight: true
+            }, {
+                    name: 'CellType',
+                    display: 'CellType',
+                    source: cell
+                }).on("typeahead:select", function (e, obj) {
+                    
+                });
+
+             //Model 
+            var model = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Model'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/ModelMasters?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#model').typeahead({
+               
+                highlight: true
+            }, {
+                    name: 'Model',
+                    display: 'Model',
+                    source: model
+                }).on("typeahead:select", function (e, obj) {
+                    
+                });
+
+              //brand 
+            var brand = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('BrandName'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/BrandMasters?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#brand').typeahead({ 
+                highlight: true
+            }, {
+                    name: 'BrandName',
+                    display: 'BrandName',
+                    source: brand
+                }).on("typeahead:select", function (e, obj) {
+                     $('#sbn').val('');
+                    $('#sbn').val(obj.ShortBrandName.trim());
+                    $('#sbn').attr('value', obj.code);
+                });
+        })
+    </script>
+
+}

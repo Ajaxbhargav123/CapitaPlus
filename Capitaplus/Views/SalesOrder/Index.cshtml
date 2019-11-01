@@ -1,0 +1,2708 @@
+﻿@model Capitaplus.ViewModel.SalesOrderVM
+@{
+    ViewBag.Title = "Sales Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <style>
+        .DS-check {
+            margin-left: -60px;
+        }
+        input[type=text] {
+            width: 96px;
+            height: 30px;
+        }
+        
+        #txtcp {
+            width: 210px;
+        }
+
+        #Order {
+            width: 210px;
+        }
+
+        #Type {
+            width: 210px;
+        }
+
+        #txtaddr {
+            width: 210px;
+        }
+
+        #ds-table {
+            margin-left: -60px;
+        }
+        #pc-tablefinal{
+             margin-left: -60px;
+        }
+        .pcheadingfinal{
+             margin-left: -60px;
+        }
+        #fg-table {
+            margin-left: -60px;
+        }
+
+        .fgheading {
+            margin-left: -60px;
+        }
+
+        .dsheading {
+            margin-left: -60px;
+        }
+
+        #txtcustN {
+            width: 210px;
+        }
+        #pc-table{
+              margin-left: -60px;
+        }
+        #tablelist {
+            margin-left: -60px;
+        }
+
+        .itheading {
+            margin-left: -60px;
+        }
+        .conheading{
+            margin-left: -60px;
+        }
+        #confirm-table{
+              margin-left: -90px;
+        }
+       
+        #pc-tablebyself{
+  margin-left: -60px;
+        }
+        .pcheadingbyself{
+             margin-left: -60px;
+        }
+        .pcheadingfinalself {
+            margin-left: -60px;
+        }
+
+        #pc-tablefinalbySelf {
+            margin-left: -60px;
+        }
+        .pcheading {
+            margin-left: -60px;
+        }
+        #txtnum {
+            width: 210px;
+        }
+        .PI-check{
+ margin-left: -60px;
+        }
+          .save-check{
+              width:65px;
+ margin-left: -48px;
+        }
+          
+        #txtqty {
+            width: 60px;
+        }
+
+        .jumbotron {
+            height: 10px;
+        }
+
+        label {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+        }
+
+        .jlbl {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+        }
+    </style>
+<link href="~/DatePicker/bootstrap-datepicker.css" rel="stylesheet" />
+
+<div id="HTMLtoPDF">
+    <div class="container">
+        <div class="row">
+            <h2 class="salesNo1">Sales Order</h2>
+            <h2 class="salesNo">Sales Order No:- <span id="son"></span> </h2>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Order Types: </label>&nbsp;
+                    @if (Model.customers.CustTypeId == 1)
+                    {
+                        <select id="Order" class="form-control">
+                            <option>Self</option>
+                        </select>
+                    }
+                    @if (Model.customers.CustTypeId == 2)
+                    {
+                        <select id="Order" class="form-control">
+                            <option>Customer</option>
+                        </select>
+                    }
+                </div>
+
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Payment Term: </label>&nbsp;
+                    @{var listItems1 = new List<SelectListItem>
+                                                                                                                                                            {
+                                                  new SelectListItem { Text = "Credit", Value="Credit" },
+                                                  new SelectListItem { Text = "Advance", Value="Advance" }
+
+                                            };
+                    }
+                    @Html.DropDownList("Type", new SelectList(listItems1, "Value", "Text"), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email"> Credit Period: </label>&nbsp;
+                    <input type="text" id="txtper" value="0" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Customer Name </label>&nbsp;
+
+                    @Html.TextBoxFor(x => x.customers.CustomerName, new { id = "txtcustN", @class = "form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <label for="email">Address: </label>&nbsp;
+                    @Html.TextBoxFor(x => x.customers.CustomerAddress, new { id = "txtaddr", @class = "form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email"> Contact Number: </label>&nbsp;
+                    @Html.TextBoxFor(x => x.customers.ContactNo, new { id = "txtnum", @class = "form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email"> Contact Person: </label>&nbsp;
+
+                    @Html.TextBoxFor(x => x.customers.ContactPerson, new { id = "txtcp", @class = "form-control", disabled = "disabled" })
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.customers.S_No, new { id = "Cid" })
+        </div>
+    </div>
+
+    <hr />
+    @*Body Part*@
+    <div class="row AddingMatterials">
+        <div class="form-group body-content">
+            @Html.LabelFor(x => x.fgGood.ProductCode, new { @class = "lbl" })
+            @Html.DropDownListFor(x => x.fgGood.ProductCode, new SelectList(Model.fgGoods, "Id", "ProductCode"), "Select Product Code", new { id = "codelist", @class = "form-control" })
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.ProductName, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.ProductName, new { id = "txtmaterialName", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.ModelNo, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.ModelNo, new { id = "txttype", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.Capacity, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.Capacity, new { id = "txtcapacity", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.CellType, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.CellType, new { id = "txtcell", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.Color, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.Color, new { id = "txtcolor", @class = "form-control", disabled = "true" })
+
+        </div>
+
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.Brand, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.Brand, new { id = "txtbrand", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.UOM, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.UOM, new { id = "txtuom", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.Stock, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.Stock, new { id = "txtstock", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+
+        <div style="margin-left:295px;" class="form-group">
+            <label class="lbl">Qty</label>
+            <input type="text" id="txtqty" class="form-control" />
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.fgGood.Rate, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.fgGood.Rate, new { id = "txtrate", @class = "form-control" })
+
+        </div>
+        &nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label class="lbl">Amount</label>
+            <input type="text" id="txtamt" disabled="disabled" class="form-control" />
+        </div>
+        &nbsp;&nbsp;
+        @*<div class="form-group">
+                <label class="lbl">GST %</label>
+                <input type="text" id="txtgstper" class="form-control" />
+            </div>
+            &nbsp;&nbsp;*@
+
+        <div class="form-group">
+            <label class="lbl">GST Amount</label>
+            <input type="text" id="txtgstamt" disabled="disabled" class="form-control" />
+        </div>
+
+
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label class="lbl">Gross Amount</label>
+            <input type="text" id="txtgrossamt" disabled="disabled" class="form-control" />
+
+        </div>
+
+        <input type="button" style="margin-left:16px; margin-top:26px; height:33px;" class="btn btn-primary" id="btnadd" value="Add" />
+
+    </div>
+
+    <div class="row">
+        <h4 class="itheading">Items</h4>
+        <table id="tablelist" class="table tablelist table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>Brand</th>
+                    <th>Rate</th>
+                    <th>Stock</th>
+                    <th>So Quantity</th>
+                    <th>Amount</th>
+                    <th>Gross Amount</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <button class="btn btn-primary fg-check"><i class="glyphicon-import"></i>FG Stock freeze</button>
+        <button class="btn btn-primary pac-check">Packing</button>
+    </div>
+
+    @*//Summary*@
+    <div id="sum" class="row">
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp;  &nbsp;
+        <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="amt"></label>
+
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="grossamt"></label>
+
+
+    </div>
+
+    @*FG CHecking Table*@
+    <div class="row">
+        <h4 class="fgheading">FG Stock Freez</h4>
+        <table id="fg-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>Brand</th>
+                    <th>Rate</th>
+                    <th>So Quantity</th>
+                    <th>FG in stock</th>
+                    <th>Is Freze</th>
+                    <th>Qty Freez</th>
+                    <th>Qty To Produce</th>
+                    <th class="hd">Amount</th>
+                    <th class="hd">Gross Amt</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn btn-primary DS-check">
+            <i class="glyphicon-import"></i>Delivery Schedule
+        </button>
+
+    </div>
+    <hr />
+    @*Delivery Schedule*@
+
+    <div class="row">
+        <h4 class="dsheading">Delivery Schedule</h4>
+        <table id="ds-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>Rate</th>
+                    <th>So Quantity</th>
+                    <th>Delivery Date</th>
+                    <th>Address</th>
+                    <th>Quantity To Deliver</th>
+                    <th>Total Quantity</th>
+                    <th>Add</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    @*Confirm Table*@
+    <div class="row">
+
+        <h4 class="conheading">Confirmed</h4>
+        <table id="confirm-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>Rate</th>
+                    <th>So Quantity</th>
+                    <th>Delivery Date</th>
+                    <th>Address</th>
+                    <th>Delivery Quantity</th>
+                    <th>Balance Quantity</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br />
+        <button class="btn btn-primary PI-check">
+            <i class="glyphicon-import"></i>Packing
+            Instrection
+
+        </button>
+    </div>
+    @*Packing Instruction*@
+    <hr class="pcheading" />
+    <div class="row">
+        <h4 class="pcheading">Packing Instruction</h4>
+        <table id="pc-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>So Quantity</th>
+                    <th>Delivery Date</th>
+                    <th>Packing Type</th>
+                    <th>Qty Indivisual</th>
+                    <th>
+                        Box Packing
+                    </th>
+                    <th>
+                        Qty/Box
+                    </th>
+                    <th>
+                        Box Requird
+                    </th>
+                    <th>Remark</th>
+
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    @*Final Packing To Save*@
+    <div class="row">
+        <h4 class="pcheadingfinal">Packing Instruction</h4>
+        <table id="pc-tablefinal" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>So Quantity</th>
+                    <th>Delivery Date</th>
+                    <th>Packing Type</th>
+                    <th>Qty Indivisual</th>
+                    <th>
+                        Box Packing
+                    </th>
+                    <th>
+                        Qty/Box
+                    </th>
+                    <th>
+                        Box Requird
+                    </th>
+                    <th>Remark</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+  
+    <div class="row">
+        <div class="col-lg-5">
+
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-primary save-check">
+                <i class="glyphicon-import"></i>Save 
+            </button>
+        </div>
+        <div class="col-lg-5">
+
+        </div>
+    </div>
+
+    @*Packing Instruction By Self*@
+    <div class="row">
+        <h4 class="pcheadingbyself">Packing Instruction</h4>
+        <table id="pc-tablebyself" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>So Quantity</th>
+                    <th>Packing Type</th>
+                    <th>Qty Indivisual</th>
+                    <th>
+                        Box Packing
+                    </th>
+                    <th>
+                        Qty/Box
+                    </th>
+                    <th>
+                        Box Requird
+                    </th>
+                    <th>Remark</th>
+
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    @*Final Packing To Save By Self*@
+    <div class="row">
+        <h4 class="pcheadingfinalself">Packed</h4>
+        <table id="pc-tablefinalbySelf" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Cell Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>So Quantity</th>
+                    <th>Packing Type</th>
+                    <th>Qty Indivisual</th>
+                    <th>
+                        Box Packing
+                    </th>
+                    <th>
+                        Qty/Box
+                    </th>
+                    <th>
+                        Box Requird
+                    </th>
+                    <th>Remark</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5">
+
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-primary save-checkbyself">
+                <i class="glyphicon-import"></i>Save
+            </button>
+        </div>
+
+        <div class="col-lg-5">
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/DatePicker/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        let MrsId;
+        var count = 0;
+        $(document).ready(function () { 
+            $('.salesNo').hide();
+            function print() {
+                window.print();
+            } 
+            //Delete All Record From FGStocks On Page Refresh Or Load
+            $.ajax({
+                url: "/SalesOrder/DelFgStock",
+                type: "POST",
+                ContentType: "application/json; charset=UTF-8",
+                success: function () {
+                },
+                error: function () {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+            });
+          $(function () {
+             var ddlValue = $("#Order :selected").text();
+            if (ddlValue == "Self") {
+                $("#Type").attr('disabled', true);
+                $("#txtper").attr('disabled', true);
+            }
+            if (ddlValue == "Customer") {
+                $("#Type").attr('disabled', false);
+                $("#txtper").attr('disabled', false);
+            } 
+            
+        })
+            $('#codelist').chosen();
+            $('#sum').hide();
+            $('#sums').hide();
+            $('#fg-table').hide();
+            $('.fg-check').hide(); 
+            $('.pac-check').hide(); 
+            $('.save-checkbyself').hide(); 
+            $('#pc-tablebyself').hide(); 
+            $('.pcheadingbyself').hide();
+            $('#ds-table').hide();
+            $('.tablelist').hide();
+            $('.PI-check').hide();
+            $('.save-check').hide();
+            $('#pc-table').hide();
+            $('#pc-tablefinal').hide();
+            $('.pcheadingfinal').hide();
+            $('.conheading').hide();
+            $('#confirm-table').hide();
+            $('.pcheading').hide();
+            $('.itheading').hide();
+            $('.dsheading').hide();
+            $('.DS-check').hide();
+            $('.fgheading').hide();
+            $('#pc-tablefinalbySelf').hide();
+            $('.pcheadingfinalself').hide();
+            //qty Change Event
+            $('#txtqty').keyup(function () {
+                 let vals = parseInt($('#txtqty').val());
+            let isInterer = Number.isInteger(vals);
+           
+            if (isInterer == false) {
+                alert("Invalid Entry");
+                $(this).val("");
+                return
+            }
+
+
+                let qty = $('#txtqty').val();
+                let rate = $('#txtrate').val();
+                let totalAmt = qty * rate;
+                $('#txtamt').val(totalAmt);
+
+                var totalAmts = $('#txtamt').val();
+
+                var gst = 18;
+                var gstAmt = totalAmt / 100;
+                var final = gstAmt * gst;
+
+                $('#txtgstamt').val(final);
+                var grossAmt = parseInt(totalAmt) + parseInt(final);
+
+                $('#txtgrossamt').val(grossAmt);
+            })
+
+            //Rate Change Event
+            $('#txtrate').keyup(function () {
+                 let vals = parseInt($('#txtrate').val());
+            let isInterer = Number.isInteger(vals);
+           
+            if (isInterer == false) {
+                alert("Invalid Entry");
+                $(this).val("");
+                return
+            }
+
+
+                let qty = $('#txtqty').val();
+                let rate = $('#txtrate').val();
+                let totalAmt = qty * rate;
+                $('#txtamt').val(totalAmt);
+
+                var totalAmts = $('#txtamt').val();
+
+                var gst = 18;
+                var gstAmt = totalAmt / 100;
+                var final = gstAmt * gst;
+
+                $('#txtgstamt').val(final);
+                var grossAmt = parseInt(totalAmt) + parseInt(final);
+
+                $('#txtgrossamt').val(grossAmt);
+            })
+
+            //Dropdown Change Event
+            $('#codelist').on('change', function () {
+                let val = $('#codelist').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/FinishedGoods/' + val,
+                    success: function (result) {
+                        $('#txtmaterialName').val('');
+                        $('#txtcapacity').val('');
+                        $('#txtcolor').val('');
+                        $('#txttype').val('');
+                        $('#txtcell').val('');
+                        $('#txtbrand').val('');
+                        $('#txtuom').val('');
+                        $('#txtstock').val('');
+                        $('#txtrate').val('');
+                        let materialName = result.ProductName;
+                        let type = result.CellType;
+                        let capacity = result.Capacity;
+                        let color = result.Color;
+                        let model = result.ModelNo;
+                        let brand = result.Brand;
+                        let uom = result.UOM;
+                        let stock = result.Stock;
+                        let rate = result.Rate;
+                        $('#txtcapacity').val(capacity);
+                        $('#txtmaterialName').val(materialName);
+                        $('#txtcolor').val(color);
+                        $('#txttype').val(model);
+                        $('#txtcell').val(type);
+                        $('#txtbrand').val(brand);
+                        $('#txtuom').val(uom);
+                        $('#txtstock').val(stock);
+                        $('#txtrate').val(rate);
+                        $('#txtqty').focus();
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+
+            })
+
+        });
+        //addbtn
+        $('#btnadd').on('click', function () {
+            let code = $('#codelist :selected').text();
+             let order = $('#Order :selected').text();
+            let materialName = $('#txtmaterialName').val();
+            let type = $('#txtcell').val();
+            let capacity = $('#txtcapacity').val();
+            let color = $('#txtcolor').val();
+            let model = $('#txttype').val();
+            let quantity = $('#txtqty').val();
+            let Rate = $('#txtrate').val();
+            let amount = $('#txtamt').val();
+            let grossamount = $('#txtgrossamt').val();
+            let brand = $('#txtbrand').val();
+            let stock = $('#txtstock').val();
+
+            if (code == "Select Product Code") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Select Appropriate Code',
+                    type: 'error'
+                });
+                return
+            }
+            if (quantity == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Enter Quantity',
+                    type: 'error'
+                });
+                return
+            }
+            if (Rate == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Enter Rate',
+                    type: 'error'
+                });
+                return
+            }
+               if (materialName == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Invalid Selection In Product Code',
+                    type: 'error'
+                });
+                return
+            }
+
+            $(".tablelist").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="code">' + code + '</td>';
+                    tds += '<td class="materialName">' + materialName + '</td>';
+                    tds += '<td class="type">' + type + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + model + '</td>';
+                    tds += '<td class="brand">' + brand + '</td>';
+                    tds += '<td class="rate">' + Rate + '</td>';
+                    tds += '<td class="brand">' + stock + '</td>';
+                    tds += '<td class="quantity">' + quantity + '</td>';
+                    tds += '<td class="amount">' + amount + '</td>';
+                    tds += '<td class="grossamount">' + grossamount + '</td> ';
+                    tds += '<td>' + '<input type="button" value="Remove" onclick="Remove(this)" class="btn btn-danger" />' + '</td>';
+                    tds += '<td>' + '<input type="checkbox" checked="checked" name="check-tab1">' + '</td>';
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+                    $('tbody', this).append(tds);
+                    if (order == "Self") {
+                        $('.pac-check').show(); 
+                    }
+                     if (order == "Customer") {
+                        $('.fg-check').show();
+                    }
+                    $('#Order').attr('disabled', true);
+                    $('.tablelist').show();
+                    $('.itheading').show(); 
+                    $('#txtmaterialName').val('');
+                    $('#txtcell').val('');
+                    $('#txtcapacity').val('');
+                    $('#txtcolor').val('');
+                    $('#txttype').val('');
+                    $('#txtqty').val('');
+                    $('#txtrate').val('');
+                    $('#txtamt').val('');
+                    $('#txtgrossamt').val('');
+                    $('#txtbrand').val('');
+                    $('#txtgstamt').val('');
+                    $('#txtuom').val('');
+                    $('#txtstock').val('');
+                } else {
+                    $(this).append(tds);
+                }
+            });
+
+            var sum = 0;
+            // iterate through each td based on class and add the values
+            $(".amount").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+                $('#amt').text(sum);
+                $('#sum').show();
+            });
+
+            var grosssum = 0;
+            // iterate through each td based on class and add the values
+            $(".grossamount").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    grosssum += parseFloat(value);
+                }
+                $('#grossamt').text(grosssum);
+                $('#sums').show();
+            });
+        })
+
+        //Packing By Self
+        $('.pac-check').on('click', function () {
+            PIBySelf();
+            $('.pcheadingbyself').show();
+            $('#pc-tablebyself').show();
+            $(this).attr('disabled', true);
+        })
+
+        $('.PI-check').attr('disabled', true);
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $(".tablelist")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+
+            }
+
+            // iterate through each td based on class and add the values
+            var amt = $("TD", row).eq(8).text();
+            var total = parseInt($('#amt').text());
+
+            // add only if the value is number
+            if (!isNaN(amt) && amt.length != 0) {
+                total -= parseFloat(amt);
+            }
+            $('#amt').text(total);
+
+            var grossamt = $("TD", row).eq(9).text();
+            var grosstotal = parseInt($('#grossamt').text());
+
+            // add only if the value is number
+            if (!isNaN(grossamt) && grossamt.length != 0) {
+                grosstotal -= parseFloat(grossamt);
+            }
+            $('#grossamt').text(grosstotal);
+
+        };
+
+        //FG CREATION TABLE--
+        function tab1_To_tab2() {
+            var k = 0;
+            var table1 = document.getElementById("tablelist"),
+                table2 = document.getElementById("fg-table");
+            var totalRowCount = $("#tablelist tbody tr").length;
+
+            // add values to the cells
+            $('#tablelist tbody').find("tr").each(function () {
+                var $tds = $(this).find('td');
+
+                for (var i = 0; i < totalRowCount; i++)
+
+                    var t2 = document.createElement("input");
+                t2.id = "txtfrezQty";
+                t2.required = true;
+                name = "house-name"
+                t2.className = "form-control";
+                t2.style.width = "95px";
+                t2.disabled = true;
+                t2.value = 0;
+                t2.type = "number";
+
+                var t3 = document.createElement("input");
+                t3.id = "txtProduceQty" + k++;
+                t3.className = "form-control proqty";
+                t3.style.width = "95px";
+                t3.disabled = true;
+
+                let stockQtys = parseInt($tds.eq(8).text());
+
+                if (stockQtys == 0) {
+
+                    var data = {
+                        'No': 'No', 'Yes': 'Yes'
+                    };
+                    var s = document.createElement("select");
+                    s.className = "form-control";
+                    s.style.width = "85px";
+                    s.id = "ddlFrez";
+                    s.disabled = true;
+                    for (var val in data) {
+                        $('<option />', { value: val, text: data[val] }).appendTo(s);
+                    }
+                } else {
+                    //Add DropDown
+                    var data = {
+                        'No': 'No', 'Yes': 'Yes'
+                    };
+                    var s = document.createElement("select");
+                    s.className = "form-control";
+                    s.style.width = "85px";
+                    s.id = "ddlFrez";
+
+                    for (var val in data) {
+                        $('<option />', { value: val, text: data[val] }).appendTo(s);
+                    }
+                }
+
+
+                // create new row and cells
+                var newRow = table2.insertRow(table2.length);
+                cell1 = newRow.insertCell(0),
+                    cell2 = newRow.insertCell(1),
+                    cell3 = newRow.insertCell(2),
+                    cell4 = newRow.insertCell(3),
+                    cell5 = newRow.insertCell(4),
+                    cell6 = newRow.insertCell(5),
+                    cell7 = newRow.insertCell(6),
+                    cell8 = newRow.insertCell(7),
+                    cell9 = newRow.insertCell(8),
+                    cell10 = newRow.insertCell(9),
+                    cell11 = newRow.insertCell(10),
+                    cell12 = newRow.insertCell(11),
+                    cell13 = newRow.insertCell(12),
+                    cell14 = newRow.insertCell(13),
+                    cell15 = newRow.insertCell(14)
+
+                cell1.innerHTML = $tds.eq(0).text();
+                cell2.innerHTML = $tds.eq(1).text();
+                cell3.innerHTML = $tds.eq(2).text();
+                cell4.innerHTML = $tds.eq(3).text();
+                cell5.innerHTML = $tds.eq(4).text();
+                cell6.innerHTML = $tds.eq(5).text();
+                cell7.innerHTML = $tds.eq(6).text();
+                cell9.innerHTML = $tds.eq(9).text();
+                cell8.innerHTML = $tds.eq(7).text();
+                cell10.innerHTML = $tds.eq(8).text();
+                cell11.append(s);
+                cell12.append(t2);
+                cell13.append(t3);
+
+                cell14.innerHTML = $tds.eq(10).text();
+                cell15.innerHTML = $tds.eq(11).text();
+
+            })
+            k = 0;
+            $("#tablelist tbody tr").each(function (i, el) {
+                var $tds = $(this).find('td');
+                let stockQty = parseInt($tds.eq(9).text().trim());
+                $('#txtProduceQty' + k++).val(stockQty);
+
+            })
+
+        }
+        $('.fg-check').on('click', function () {
+            tab1_To_tab2();
+            $('.DS-check').show();
+            $('#fg-table').show();
+            $('.fgheading').show();
+            $('.fg-check').attr('disabled', true);
+            $('#btnadd').attr('disabled', true);
+            $('.AddingMatterials').hide();
+        });
+
+        //Order Type Charnge
+      
+        $(document).on('change', '#Order', function () {
+            var ddlValue = $("#Order :selected").text();
+            if (ddlValue == "Self") {
+                $("#Type").attr('disabled', true);
+                $("#txtper").attr('disabled', true);
+            }
+            if (ddlValue == "Customer") {
+                $("#Type").attr('disabled', false);
+                $("#txtper").attr('disabled', false);
+            }  
+        })
+
+       
+        $(document).on('change', '#pacBox', function () { 
+            var ddlValue = $(this).closest('tr').find("#pacBox :selected").val();
+
+            if (ddlValue == "No") {
+                $(this).closest('tr').find("#txtqtybox").attr('disabled', true);
+                $(this).closest('tr').find("#txtqtybox").val(0);
+                $(this).closest('tr').find("#txtboxreq").val(0);
+            } else {
+                $(this).closest('tr').find("#txtqtybox").attr('disabled', false);
+
+            }
+        })
+
+        $(document).on('change', '#ddlFrez', function () {
+
+            var ddlValue = $(this).closest('tr').find("select :selected").val();
+            var stock = parseInt($(this).closest('tr').find("td:eq(9)").text().trim());
+            if (stock == 0) {
+
+                $(this).closest('tr').find("#ddlFrez").attr('disabled', true);
+                $(this).closest('tr').find("#txtfrezQty").attr('disabled', true);
+            }
+            if (ddlValue == "No") {
+                $(this).closest('tr').find("#txtfrezQty").val(0);
+                $(this).closest('tr').find("#txtfrezQty").attr('disabled', true);
+                var ss = $(this).closest('tr').find('td:eq(8)').text();
+                $(this).closest('tr').find(".proqty").val(ss);
+            } else if (stock != 0) {
+                $(this).closest('tr').find("#txtfrezQty").attr('disabled', false);
+                $(this).closest('tr').find(".proqty").val('');
+            }
+        })
+
+        //PI Individisual Packing
+        $(document).on('change', '#pacIndividual', function () {
+
+            var ddlValue = $(this).closest('tr').find("select :selected").val();
+            $(this).closest('tr').find("#ddlFrez").attr('disabled', true);
+            $(this).closest('tr').find("#txtindipac").attr('disabled', true);
+            var ss = $(this).closest('tr').find('td:eq(6)').text();
+            $(this).closest('tr').find(".txtpacind").val(ss);
+            if (ddlValue == "No") {
+                $(this).closest('tr').find(".txtpacind").attr('disabled', true);
+
+                $(this).closest('tr').find(".txtpacind").val(0);
+            }
+        })
+
+        $(document).on('keyup', '#txtfrezQty', function () {
+
+            var ss = $(this).closest('tr').find('td:eq(8)').text();
+            var stockQty = parseInt($(this).closest('tr').find('td:eq(9)').text());
+            var qtyToFrze = parseInt($(this).val());
+
+            if (qtyToFrze > stockQty || qtyToFrze > ss) {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'This Number Of Quantity Is Not Avalable in stock',
+                    type: 'error'
+                }); 
+                parseInt($(this).val(''));
+                $(this).closest('tr').find('#txtfrezQty').val(''); 
+                (this).closest('tr').find('.proqty').val(0);
+            }
+
+            var QtyToProduce = parseInt(ss - qtyToFrze);
+
+            $(this).closest('tr').find('.proqty').val(QtyToProduce);
+
+
+        })
+
+        //PI Check
+        $(document).on('keyup', '#txtindipac', function () {
+            let vals = parseInt($("#txtindipac").val());
+            let isInterer = Number.isInteger(vals);
+           
+            if (isInterer == false) {
+                alert("Invalid Entry");
+                $(this).val("");
+                return
+            }
+            var stockQty = parseInt($(this).closest('tr').find('td:eq(6)').text());
+            var qtyToFrze = parseInt($(this).val());
+
+            if (qtyToFrze > stockQty) {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'This Number Of Quantity Is Not Avalable in stock',
+                    type: 'error'
+                });
+                parseInt($(this).val(''));
+                $(this).closest('tr').find('#txtindipac').val('');
+            }
+
+        })
+        // End FG CREATION 
+        //Delivery Schedule
+        function Dstab1_To_tab2() {
+            //Get Current Date
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var output = d.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day;
+
+            var table1 = document.getElementById("fg-table"),
+                table2 = document.getElementById("ds-table"),
+                checkboxes = document.getElementsByName("check-tab1");
+            var checklength = checkboxes.length - 1;
+            for (var i = 0; i < checkboxes.length - checklength; i++)
+                if (checkboxes[i].checked) {
+
+                    var t1 = document.createElement("input");
+                    t1.id = "txtaddr";
+                    t1.type = "text";
+                    t1.value = output;
+                    t1.className = "form-control";
+                    t1.style.width = "165px";
+
+                    
+                    var t2 = document.createElement("input");
+                    t2.id = "txtdate";
+                    t2.className = "form-control";
+                    t2.style.width = "95px";
+
+                    var t3 = document.createElement("input");
+                    t3.id = "txtqtyDelivery";
+                    t3.type = "number";
+                    t3.className = "form-control";
+                    t3.style.width = "95px";
+
+                    var t4 = document.createElement("input");
+                    t4.id = "btnAdd";
+                    t4.type = "button";
+
+                    t4.value = "Add";
+                    t4.className = "form-control btn btn-warning";
+                    t4.style.width = "95px";
+                    // create new row and cells
+                    var newRow = table2.insertRow(table2.length),
+                        cell1 = newRow.insertCell(0),
+                        cell2 = newRow.insertCell(1),
+                        cell3 = newRow.insertCell(2),
+                        cell4 = newRow.insertCell(3),
+                        cell5 = newRow.insertCell(4),
+                        cell6 = newRow.insertCell(5),
+                        cell7 = newRow.insertCell(6),
+                        cell8 = newRow.insertCell(7),
+                        cell9 = newRow.insertCell(8),
+                        cell10 = newRow.insertCell(9),
+                        cell11 = newRow.insertCell(10),
+                        cell12 = newRow.insertCell(11),
+                        cell13 = newRow.insertCell(11)
+
+                    //Add DropDown
+                    var rowCount = $('#fg-table tr').length;
+                    rowCount--;
+                    var s = document.createElement("select");
+                    s.className = "form-control";
+                    s.style.width = "220px";
+
+                    for (var v = 0; v < rowCount; v++) {
+                        s.id = "ddlcode";
+                        $('<option />', { value: table1.rows[v + 1].cells[0].innerHTML, text: table1.rows[v + 1].cells[0].innerHTML }).appendTo(s);
+
+                    }
+                    // add values to the cells
+                    cell1.append(s);
+                    cell2.innerHTML = table1.rows[i + 1].cells[1].innerHTML;
+                    cell3.innerHTML = table1.rows[i + 1].cells[2].innerHTML;
+                    cell4.innerHTML = table1.rows[i + 1].cells[3].innerHTML;
+                    cell5.innerHTML = table1.rows[i + 1].cells[4].innerHTML;
+                    cell6.innerHTML = table1.rows[i + 1].cells[5].innerHTML;
+                    cell7.innerHTML = table1.rows[i + 1].cells[7].innerHTML;
+                    cell8.innerHTML = table1.rows[i + 1].cells[8].innerHTML;
+                    cell9.append(t1);
+                    cell10.append(t2);
+
+                    cell11.append(t3);
+                    cell12.append(t4);
+                    cell13.innerHTML = table1.rows[i + 1].cells[8].innerHTML;
+                    var date = new Date();
+                    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    var end = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+                    $(document).on('focus', '#txtaddr', function () {
+                        $(this).datepicker({
+                            format: "yyyy/mm/dd",
+                            todayHighlight: true, 
+                            autoclose: true
+                        });
+                    })
+
+                    
+                }
+
+
+            $("#fg-table").find('tr').each(function (i, el) {
+                var item = {};
+                var $tds = $(this).find('td');
+                item.Code = $tds.eq(0).text();
+                item.ProductName = $tds.eq(1).text();
+                item.Celltype = $tds.eq(2).text();
+                item.Capacity = $tds.eq(3).text();
+                item.Color = $tds.eq(4).text();
+                item.Model = $tds.eq(5).text();
+                item.Brand = $tds.eq(6).text();
+                item.Quantity = $tds.eq(8).text();
+                item.Rate = $tds.eq(7).text();
+                item.TQtyProduce = $tds.eq(8).text();
+                item.FgInStock = $tds.eq(9).text();
+                item.isFreez = false;
+
+                item.QtyToFreez = $tds.find('#txtfrezQty').val();
+                item.QtyToProduce = $tds.find('.proqty').val();
+
+                item.Rate = $tds.eq(7).text();
+                item.OrderType = $('#Order :selected').val();
+                item.PaymentTerm = $('#Type :selected').val();
+                item.CreditPeriod = $('#txtper').val();
+                item.CustomerName = $('#txtcustN').val();
+                item.Address = $('#txtaddr').val();
+                item.ContactNo = $('#txtnum').val();
+                item.Cid = $('#Cid').val();
+                if (item.Code == "")
+                    return;
+
+                if (item.Capacity == "")
+                    return;
+
+
+
+                $.ajax({
+                    url: "/SalesOrder/Insert",
+                    data: { Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, Brand: item.Brand, qty: item.Quantity, FGInStock: item.FgInStock, QtyToFreez: item.QtyToFreez, qtyProduce: item.QtyToProduce, OrderType: item.OrderType, PaymentType: item.PaymentTerm, credidP: item.CreditPeriod, customerName: item.CustomerName, addr: item.Address, ConNo: item.ContactNo, Cid: item.Cid, Rate: item.Rate, TQtyToProduce: item.TQtyProduce },
+                    type: "POST",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function () {
+
+                    },
+                    error: function () {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Something Went Wrong',
+                            type: 'error'
+                        });
+                    }
+
+                });
+
+            });
+
+            $('#ddlcode').change(function () {
+                let code = $('#ddlcode :selected').val();
+                let Cid = $('#Cid').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/FGstocks/',
+                    data: { id: code, Cid: Cid },
+                    success: function (result) {
+                        cell2.innerHTML = "";
+                        cell3.innerHTML = "";
+                        cell4.innerHTML = "";
+                        cell5.innerHTML = "";
+                        cell6.innerHTML = "";
+                        cell7.innerHTML = "";
+                        cell8.innerHTML = "";
+                        cell13.innerHTML = "";
+                        let proName = result.ProductName;
+                        let cellTYpe = result.Celltype;
+                        let capacity = result.Capacity;
+                        let color = result.Color;
+                        let model = result.Model;
+                        let qty = result.Quantity;
+                        let rate = result.Rate;
+                        let TqtyPro = result.TQtyProduce;
+
+                        cell2.append(proName);
+                        cell3.append(cellTYpe);
+                        cell4.append(capacity);
+                        cell5.append(color);
+                        cell6.append(model);
+                        cell7.append(rate);
+                        cell8.append(TqtyPro);
+                        cell13.append(qty);
+
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+            })
+           
+        }
+        //Add To Delivery Schedule
+        $(document).on('click', '#btnAdd', function () {
+
+            let QtyVal = $('#txtqtyDelivery').val();
+            if (QtyVal == "")
+                return;
+
+            if (QtyVal == 0)
+                return;
+
+            var code = $(this).closest('tr').find('#ddlcode :selected').text();
+            var proName = $(this).closest('tr').find('td:eq(1)').text();
+            var cellType = $(this).closest('tr').find('td:eq(2)').text();
+            var capacity = $(this).closest('tr').find('td:eq(3)').text();
+            var rate = $(this).closest('tr').find('td:eq(6)').text();
+            var TQty = $(this).closest('tr').find('td:eq(7)').text();
+            var color = $(this).closest('tr').find('td:eq(4)').text();
+            var model = $(this).closest('tr').find('td:eq(5)').text();
+            var deliveryDate = $(this).closest('tr').find('#txtaddr').val();
+            var address = $(this).closest('tr').find('#txtdate').val();
+            var addDelivery = $(this).closest('tr').find('#txtqtyDelivery').val();
+
+            var id = $('#Cid').val();
+            $.ajax({
+                url: "/SalesOrder/GetQty",
+                data: { code: code, id: id },
+                type: "POST",
+                ContentType: "application/json; charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    let remaining = parseInt(result) - addDelivery;
+                    $('.conheading').show();
+                    $('#confirm-table').show();
+                    $("#confirm-table").each(function () {
+                        var tds = '<tr>';
+                        jQuery.each($('tr:last', this), function () {
+                            tds += '<td class="code">' + code + '</td>';
+                            tds += '<td class="proName">' + proName + '</td>';
+                            tds += '<td class="type">' + cellType + '</td>';
+                            tds += '<td class="capacity">' + capacity + '</td>';
+                            tds += '<td class="color">' + color + '</td>';
+                            tds += '<td class="model">' + model + '</td>';
+                            tds += '<td class="rate">' + rate + '</td>';
+                            tds += '<td class="tqty">' + TQty + '</td>';
+                            tds += '<td class="dd">' + deliveryDate + '</td>';
+                            tds += '<td class="addr">' + address + '</td>';
+                            tds += '<td class="adddelivery">' + addDelivery + '</td> ';
+                            tds += '<td class="totalQuantity">' + remaining + '</td>';
+
+                        });
+                        tds += '</tr>';
+                        if ($('tbody', this).length > 0) {
+                            $('tbody', this).append(tds);
+                            $('#confirm-table').show();
+                            let id = $('#Cid').val();
+
+                            $.ajax({
+                                url: "/SalesOrder/UpdateQty/",
+                                data: { Code: code, qty: remaining },
+                                type: "POST",
+
+                                success: function () {
+                                    $('#txtqtyDelivery').val('');
+                                    let code = $('#ddlcode :selected').val();
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '/api/FGstocks/' + code,
+                                        success: function (result) {
+                                            $.ajax({
+                                                url: "/SalesOrder/GetQtyFromStock",
+                                                type: "GET",
+                                                success: function (result) {
+                                                    if (result == 0) {
+                                                        $('.PI-check').attr('disabled', false);
+                                                        $('#ds-table').hide();
+                                                        $('.dsheading').hide();
+
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        error: function (xhr) {
+                                            alert(xhr);
+                                        }
+                                    })
+
+
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+
+                        } else {
+                            $(this).append(tds);
+
+
+                        }
+                    });
+                    if (remaining < 0) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Delivery Quantity Must be Equal Or Less Than Total Quantity',
+                            type: 'error'
+                        });
+                        $('#txtqtyDelivery').val('');
+                    }
+                },
+                error: function () {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+
+            });
+
+        })
+
+        $(document).on('keyup', '#txtqtyDelivery', function () {
+            let qtyToDeliver = $(this).val();
+ 
+            if (qtyToDeliver == "") {
+                $('#btnAdd').attr('disabled', true);
+            } else {
+                $('#btnAdd').attr('disabled', false);
+            }
+            let code = $('#ddlcode :selected').val().trim();
+            let id = $('#Cid').val();
+            $.ajax({
+                url: "/SalesOrder/GetQty",
+                data: { code: code, id: id },
+                type: "POST",
+                ContentType: "application/json; charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+
+                    let remaining = parseInt(result) - qtyToDeliver;
+
+                    if (remaining < 0) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Delivery Quantity Must be Equal Or Less Than Total Quantity',
+                            type: 'error'
+                        });
+                        $('#txtqtyDelivery').val('');
+                    }
+                },
+                error: function (xhr) {
+
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+
+            });
+        })
+
+        $('.DS-check').on('click', function () {
+            var isConfirm = false;
+            $("input[id^='txtProduceQty']").each(function (i) {
+
+                if ($(this).val() != "") {
+                    isConfirm = true;
+                    return true;
+                }
+            })
+            if (isConfirm == true) {
+                Dstab1_To_tab2();
+                $('.PI-check').show();
+                $('#ds-table').show();
+                $('.dsheading').show();
+                $('.DS-check').attr('disabled', true);
+               
+
+            }
+
+        })
+        //End Delivery Schedule
+        $(document).on('load', '#txtaddr', function () {
+            $(this).datepicker();
+        })
+        //Packing Instruction --
+        function PItab1_To_tab2() {
+            var k = 0;
+            var table1 = document.getElementById("confirm-table"),
+                table2 = document.getElementById("pc-table");
+            var fgtables = $("#pc-table table tbody");
+            var totalRowCount = $("#confirm-table tbody tr").length;
+
+            $("#confirm-table tbody").find('tr').each(function () {
+                var item = {};
+                var $tds = $(this).find('td');
+                for (var i = 0; i < totalRowCount; i++)
+                    var t1 = document.createElement("input");
+                t1.id = "txtindipac" + k++;
+               // t1.readOnly = true;
+                t1.className = "form-control txtpacind";
+                t1.style.width = "60px";
+
+                //Add DropDown
+                var data = {
+                    'No': 'No', 'Yes': 'Yes'
+                };
+                var t2 = document.createElement("select");
+                t2.className = "form-control";
+                t2.id = "pacIndividual";
+                t2.style.width = "85px";
+
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t2);
+                }
+
+                //Add DropDown
+                var data = {
+                    'No': 'No', 'Yes': 'Yes',
+                };
+                var t7 = document.createElement("select");
+                t7.id = "pacBox";
+                t7.className = "form-control";
+                t7.style.width = "85px";
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t7);
+                }
+
+                var t3 = document.createElement("input");
+                t3.id = "txtqtybox";
+                t3.className = "form-control";
+                t3.style.width = "60px";
+                t3.value = "0";
+                t3.disabled = true;
+
+                var t4 = document.createElement("input");
+                t4.id = "txtboxreq";
+              //  t4.disabled = true;
+                t4.className = "form-control";
+                t4.style.width = "60px";
+                t4.value = "0";
+                t4.readOnly = true;
+                var t5 = document.createElement("input");
+                t5.id = "txtremark";
+
+                t5.className = "form-control";
+                t5.style.width = "60px";
+
+                //Add DropDown
+                var data = {
+                    '1': 'Gift', '2': 'Normal','3': 'Special', '4': 'NA'
+                };
+                var t6 = document.createElement("select");
+                t6.id = "pactype";
+                t6.className = "form-control";
+                t6.style.width = "85px";
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t6);
+                }
+
+                var t9 = document.createElement("input");
+                t9.id = "txtpacqtytype";
+                t9.className = "form-control";
+                t9.style.width = "80px";
+
+                var t8 = document.createElement("input");
+                t8.type = "button";
+                t8.id = "addpactype";
+                t8.className = "form-control btn btn-warning";
+                t8.style.width = "60px";
+                t8.value = "Add";
+
+
+                // create new row and cells
+                var newRow = table2.insertRow(table2.length),
+                    cell1 = newRow.insertCell(0),
+                    cell2 = newRow.insertCell(1),
+                    cell3 = newRow.insertCell(2),
+                    cell4 = newRow.insertCell(3),
+                    cell5 = newRow.insertCell(4),
+                    cell6 = newRow.insertCell(5),
+                    cell7 = newRow.insertCell(6),
+                    cell8 = newRow.insertCell(7),
+                    cell9 = newRow.insertCell(8),
+                    cell10 = newRow.insertCell(9),
+                    cell11 = newRow.insertCell(10),
+                    cell12 = newRow.insertCell(11),
+                    cell13 = newRow.insertCell(12),
+                    cell14 = newRow.insertCell(13),
+                    cell15 = newRow.insertCell(14),
+                    cell16 = newRow.insertCell(15),
+                    cell17 = newRow.insertCell(16)
+                // add values to the cells
+                cell1.innerHTML = $tds.eq(0).text();
+                cell2.innerHTML = $tds.eq(1).text();
+                cell3.innerHTML = $tds.eq(2).text();
+                cell4.innerHTML = $tds.eq(3).text();
+                cell5.innerHTML = $tds.eq(4).text();
+                cell6.innerHTML = $tds.eq(5).text();
+                cell7.innerHTML = $tds.eq(10).text();
+                cell8.innerHTML = $tds.eq(8).text();
+                cell9.append(t6);
+
+                cell10.append(t1);
+                cell11.append(t7);
+                cell12.append(t3);
+                cell13.append(t4);
+                cell14.append(t5);
+                cell15.append(t8);
+                //cell15.append(t8);
+                //cell16.append(t9);  
+
+                item.Code = $tds.eq(0).text();
+                item.ProductName = $tds.eq(1).text();
+                item.Celltype = $tds.eq(2).text();
+                item.Capacity = $tds.eq(3).text();
+                item.Color = $tds.eq(4).text();
+                item.Model = $tds.eq(5).text();
+                item.Rate = $tds.eq(6).text();
+                item.DeliveryDate = $tds.eq(8).text();
+                item.AddressDelivery = $tds.eq(7).text(); 
+                item.DeliveryQty = $tds.eq(10).text(); 
+                item.OrderType = $('#Order :selected').val();
+                item.PaymentTerm = $('#Type :selected').val();
+                item.CreditPeriod = $('#txtper').val();
+                item.CustomerName = $('#txtcustN').val();
+                item.CustomerAddress = $('#txtaddr').val();
+                item.ContactNo = $('#txtnum').val();
+                item.ContactPerson = $('#txtcp').val();
+                item.Cid = $('#Cid').val();
+
+                if (item.Code == "")
+                    return;
+
+                if (item.QtyToFreez == "")
+                    return;
+
+                if (item.Capacity == "")
+                    return;
+
+                $.ajax({
+                    url: "/SalesOrder/GetLastMrsId",
+                    timeout: 20000,
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        MrsId = parseInt(result) + 1;
+                        $("#pc-table").find('tr').each(function (i, el) {
+                            var item = {};
+                            var $tds = $(this).find('td');
+                            item.Code = $tds.eq(0).text();
+                            item.ProductName = $tds.eq(1).text();
+                            item.Celltype = $tds.eq(2).text();
+                            item.Capacity = $tds.eq(3).text();
+                            item.Color = $tds.eq(4).text();
+                            item.Model = $tds.eq(5).text();
+                            item.DeliveryDate = $tds.eq(7).text();
+                            item.QtyToProduce = $tds.eq(6).text();
+                            item.IndivisualPacking = $('#pacIndividual :selected').val();
+
+                            item.QtyIndivisual = $tds.find("#txtindipac").val();
+                            item.BoxPacking = $tds.find("#pacBox").val();
+                            item.QtyBox = $tds.find("#txtqtybox").val();
+                            item.ReqBox = $tds.find("#txtboxreq").val();
+                            item.Remark = $tds.find("#txtremark").val();
+
+                            item.OrderType = $('#Order :selected').val();
+                            item.PaymentTerm = $('#Type :selected').val();
+                            item.CreditPeriod = $('#txtper').val();
+                            item.CustomerName = $('#txtcustN').val();
+                            item.CustomerAddress = $('#txtaddr').val();
+                            item.ContactNo = $('#txtnum').val();
+                            item.ContactPer = $('#txtcp').val();
+                            item.CustomerId = $('#Cid').val();
+
+
+                            if (item.Code == "")
+                                return;
+
+                            if (item.QtyToFreez == "")
+                                return;
+
+                            if (item.Capacity == "")
+                                return;
+
+                            $.ajax({
+                                url: "/SalesOrder/DelFgStock",
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        });
+                    }
+                })
+
+            });
+
+            k = 0;
+            $("#confirm-table tbody tr").each(function (i, el) {
+                var $tds = $(this).find('td');
+                let stockQty = parseInt($tds.eq(7).text().trim());
+                $('#txtindipac' + k++).val(0);
+            })
+        }
+
+        $(document).on('keyup', '.txtpacind', function () { 
+            var ss = $(this).closest('tr').find('td:eq(6)').text();
+            var qtyToFrze = parseInt($(this).val());
+            if (Number.isNaN(qtyToFrze)) {
+                alert("Invalid Entry");
+                $(this).val("");
+                return;
+            }
+
+
+            if (ss < qtyToFrze) {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'This Number Of Quantity Is Not Avalable in stock',
+                    type: 'error'
+                });
+                parseInt($(this).val('')); 
+            }
+        }) 
+
+        $('.PI-check').on('click', function () {
+            PItab1_To_tab2();
+            $('.save-check').show();
+            $('#pc-table').show();
+            $('.pcheading').show();
+            $('.PI-check').attr('disabled', true);
+        })
+        //End Packing Instruction
+        $(document).on('keyup', '#txtqtybox', function () {
+            let qtybox = $(this).val();
+            let individual = $(this).closest('tr').find('.txtpacind').val();
+            let res = parseInt(individual / qtybox);
+            $(this).closest('tr').find('#txtboxreq').val(res);
+        })
+        //Final Save
+        $('.save-check').on('click', function () {
+            $.ajax({
+                url: "/SalesOrder/GetLastMrsId",
+                timeout: 20000,
+                type: "GET",
+                ContentType: "application/json; charset=UTF-8",
+                success: function (result) {
+                    MrsId = parseInt(result) + 1;
+                    $("#pc-tablefinal").find('tr').each(function (i, el) {
+                        var item = {};
+                        var $tds = $(this).find('td');
+                        item.Code = $tds.eq(0).text().trim();
+                        item.ProductName = $tds.eq(1).text().trim();
+                        item.Celltype = $tds.eq(2).text();
+                        item.Capacity = $tds.eq(3).text();
+                        item.Color = $tds.eq(4).text();
+                        item.Model = $tds.eq(5).text();
+                        item.DeliveryDate = $tds.eq(7).text();
+                        item.QtyToProduce = $tds.eq(6).text();
+                        item.IndivisualPacking = $tds.eq(8).text();
+                        item.QtyIndivisual = $tds.eq(9).text();
+                        item.BoxPacking = $tds.eq(10).text();
+                        item.QtyBox = $tds.eq(11).text();
+                        item.ReqBox = $tds.eq(12).text();
+                        item.Remark = $tds.eq(13).text();
+                        item.OrderType = $('#Order :selected').val();
+                        item.PaymentTerm = $('#Type :selected').val();
+                        item.CreditPeriod = $('#txtper').val();
+                        item.CustomerName = $('#txtcustN').val();
+                        item.CustomerAddress = $('#txtaddr').val();
+                        item.ContactNo = $('#txtnum').val();
+                        item.ContactPer = $('#txtcp').val();
+                        item.CustomerId = $('#Cid').val();
+                        item.PackingTypeId = $tds.eq(8).text().trim();
+                        item.PackingTypeQty = 0;
+                        if (item.PackingTypeId == "Gift") {
+                            item.PackingTypeId = 2;
+                        }
+                        if (item.PackingTypeId == "Normal") {
+                            item.PackingTypeId = 1;
+                        }
+                         if (item.PackingTypeId == "Special") {
+                            item.PackingTypeId = 3;
+                        }
+                         if (item.PackingTypeId == "NA") {
+                            item.PackingTypeId = 0;
+                        }
+                        if (item.Code == "")
+                            return;
+
+                        if (item.QtyToFreez == "")
+                            return;
+
+                        if (item.Capacity == "")
+                            return;
+                        if (MrsId <= 9) {
+                            let zero = "SO000";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: item.QtyToProduce, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    
+                                    alert("SO000" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList"; 
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 9 && MrsId <= 99) {
+                            let zero = "SO00";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: item.QtyToProduce, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO00" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 99 && MrsId <= 1000) {
+                            let zero = "SO0";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: item.QtyToProduce, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO0" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 1000 && MrsId <= 10000) {
+                            let zero = "SO";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: item.QtyToProduce, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table 
+                                    alert("SO" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+
+                    });
+                    //Delivery Schedule
+                    $("#confirm-table tbody").find('tr').each(function (i, el) {
+                        var item = {};
+                        var $tds = $(this).find('td');
+                        item.Code = $tds.eq(0).text();
+                        item.ProductName = $tds.eq(1).text();
+                        item.Celltype = $tds.eq(2).text();
+                        item.Capacity = $tds.eq(3).text();
+                        item.Color = $tds.eq(4).text();
+                        item.Model = $tds.eq(5).text();
+                        item.DeliveryDate = $tds.eq(8).text();
+                        item.AddressDelivery = $tds.eq(9).text();
+                        item.DeliveryQty = $tds.eq(10).text().trim();
+
+                        item.OrderType = $('#Order :selected').val();
+                        item.PaymentTerm = $('#Type :selected').val();
+                        item.CreditPeriod = $('#txtper').val();
+                        item.CustomerName = $('#txtcustN').val();
+                        item.CustomerAddress = $('#txtaddr').val();
+                        item.ContactNo = $('#txtnum').val();
+                        item.ContactPerson = $('#txtcp').val();
+                        item.Cid = $('#Cid').val(); 
+
+                        //Insert Into Delivery
+                        $.ajax({
+                            url: "/SalesOrder/InsertIntoDeliverySchedule",
+                            data: { salesOrderNo: MrsId, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, deliveryDate: item.DeliveryDate, DeliveryAddress: item.AddressDelivery, qtyDeliver: item.DeliveryQty, Cid: item.Cid },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    });
+
+                    $("#fg-table tr").not(':first').each(function (i, el) {
+                        var $tds = $(this).find('td');
+                        var frezQty = parseInt($tds.find('#txtfrezQty').val());
+
+                        var stockQty = parseInt($tds.eq(9).text().trim());
+                        var soQty = parseInt($tds.eq(8).text().trim());
+
+                        var code = $(this).find('td:eq(0)').text().trim();
+                        let rem = stockQty - frezQty;
+
+                        //Update Qty and InStockTable
+                        $.ajax({
+                            url: "/SalesOrder/UpdateQtyInFinishedGoods/",
+                            data: { Code: code, qty: rem },
+                            type: "POST",
+                            success: function () {
+
+                            }
+                        });
+                        // Insert
+
+                    })
+
+                    //Insert Into CustomerSalesOrder
+                    $("#fg-table tr").not(':first').each(function (i, el) {
+                        var $tds = $(this).find('td');
+                        var frezQty = parseInt($tds.find('#txtfrezQty').val());
+                        var soQty = parseInt($tds.eq(8).text().trim());
+                        var final = soQty - frezQty;
+                        var item = {};
+                        item.ProductCode = $tds.eq(0).text();
+                        item.ProductName = $tds.eq(1).text();
+                        item.Type = $tds.eq(2).text();
+                        item.Capacity = $tds.eq(3).text();
+                        item.Color = $tds.eq(4).text();
+                        item.Model = $tds.eq(5).text();
+                        item.Brand = $tds.eq(6).text();
+                        item.Rate = $tds.eq(7).text();
+                        item.Stock = $tds.eq(9).text().trim();
+                        item.SoQty = $tds.eq(8).text().trim();
+                        item.Amount = $tds.eq(13).text().trim();
+                        item.GrossAmt = $tds.eq(14).text().trim();
+                        item.OrderType = $('#Order :selected').val();
+                        item.PaymentTerm = $('#Type :selected').val();
+                        item.CreditP = $('#txtper').val();
+                        item.CustomerName = $('#txtcustN').val();
+                        item.Address = $('#txtaddr').val();
+                        item.CNumber = $('#txtnum').val();
+                        item.CPerson = $('#txtcp').val();
+                        item.Cid = $('#Cid').val();
+
+                        item.TotalAmt = parseInt($('#amt').html().trim());
+                        item.TotalGrossAmt = parseInt($('#grossamt').html().trim());
+                        item.UpdatedQtyToProduce = final;
+                        $.ajax({
+                            url: "/SalesOrder/InsertIntoCustomerSalesOrder",
+                            data: { updatedQtyoProduce: item.UpdatedQtyToProduce, rate: item.Rate, qtytofreez: frezQty, qtytopro: final, stock: item.Stock, brand: item.Brand, amt: item.Amount, totalamt: item.TotalAmt, grossAmt: item.GrossAmt, totalgrossAmt: item.TotalGrossAmt, soQty: item.SoQty, OrderType: item.OrderType, paymentTerm: item.PaymentTerm, creditPeriod: item.CreditP, cName: item.CustomerName, cAddress: item.Address, contactNo: item.CNumber, cPerson: item.CPerson, salesOrderNo: MrsId, Code: item.ProductCode, ProductlName: item.ProductName, Type: item.Type, Capacity: item.Capacity, Model: item.Model, Color: item.Color, Cid: item.Cid },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $.ajax({
+                                    url: "/SalesOrder/UpdateProductInStockTable/",
+                                    data: { ProductCode: item.ProductCode, salesOrderNo: "SO000" + MrsId, proserialCode: "SO000" + MrsId + item.Cid + item.ProductCode.trim() + "0000" + MrsId + 1, qtyToFreez: frezQty, cid: item.Cid },
+                                    type: "POST",
+                                    success: function () {
+                                    }
+                                });
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    });
+                }
+            })
+
+        }) 
+
+        $(document).on('click', '#addpactype', function () {  
+            let IndivisualQty = $(this).closest('tr').find('.txtpacind').val();
+            let typeQty = $(this).closest('tr').find('td:eq(6)').text();
+            var remainingQty = parseInt(typeQty) - parseInt(IndivisualQty);
+            
+          
+            var proCode = $(this).closest('tr').find('td:eq(0)').text();
+            var proName = $(this).closest('tr').find('td:eq(1)').text();
+            var cellType = $(this).closest('tr').find('td:eq(2)').text();
+            var capacity = $(this).closest('tr').find('td:eq(3)').text();
+            var color = $(this).closest('tr').find('td:eq(4)').text();
+            var Model = $(this).closest('tr').find('td:eq(5)').text();
+            var soQty = $(this).closest('tr').find('td:eq(6)').text();
+            var DeliveryDate = $(this).closest('tr').find('td:eq(7)').text(); 
+            var qtyIndivi = $(this).closest('tr').find('.txtpacind').val();
+            var isboxPac = $(this).closest('tr').find('#pacBox :selected').text();
+            var boxqty = $(this).closest('tr').find('#txtqtybox').val();
+            var boxqtyReq = $(this).closest('tr').find('#txtboxreq').val();
+            var remark = $(this).closest('tr').find('#txtremark').val();
+            var PacType = $(this).closest('tr').find('#pactype :selected').text();
+
+            if (qtyIndivi == "") {
+                alert("Please Fill Individual Quantity");
+                return;
+            }
+              if (boxqty == "") {
+                alert("Please specify Box Quantity");
+                return;
+            }
+            
+            $(this).closest('tr').find('.txtpacind').val('');
+            $(this).closest('tr').find('#txtpacqtytype').val('');
+            $(this).closest('tr').find('#txtboxreq').val('');
+            $(this).closest('tr').find('#txtremark').val(''); 
+            $(this).closest('tr').find('#txtqtybox').val('');
+              $(this).closest('tr').find('td:eq(6)').text(remainingQty.toString());
+            $("#pc-tablefinal").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="code">' + proCode + '</td>';
+                    tds += '<td class="proName">' + proName + '</td>';
+                    tds += '<td class="type">' + cellType + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + Model + '</td>';
+                    tds += '<td class="soqty">' + soQty + '</td>';
+                    tds += '<td class="dd">' + DeliveryDate + '</td>';
+                    tds += '<td class="pactype">' + PacType + '</td>';
+                    tds += '<td class="qtyindi">' + qtyIndivi + '</td>';
+                    tds += '<td class="isboxpac">' + isboxPac + '</td> '; 
+                    tds += '<td class="boxqty">' + boxqty + '</td>';
+                    tds += '<td class="boxqtyreq">' + boxqtyReq + '</td>';
+                    tds += '<td class="remark">' + remark + '</td>';  
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+                    $('tbody', this).append(tds);
+                    $('#pc-tablefinal').show();
+                    $('.pcheadingfinal').show();
+                    
+                  
+                } else {
+                    $(this).append(tds);
+                }
+            });
+        }) 
+        //On Change
+        $(document).on('change', '#pactype', function () {
+            let values =  $(this).closest('tr').find('#pactype :selected').text();
+            if (values == "NA") {
+                $(this).closest('tr').find('.txtpacind').val(0);
+                $(this).closest('tr').find('.txtpacind').attr('disabled', true);
+            } else {
+                $(this).closest('tr').find('.txtpacind').attr('disabled', false);
+            }
+        })
+
+        //Packing By Self
+         function PIBySelf() { 
+            var table1 = document.getElementById("tablelist"),
+                table2 = document.getElementById("pc-tablebyself");
+            var fgtables = $("#pc-tablebyself table tbody");
+            var totalRowCount = $("#tablelist tbody tr").length;
+
+            $("#tablelist tbody").find('tr').each(function () {
+                var item = {};
+                var $tds = $(this).find('td');
+                for (var i = 0; i < totalRowCount; i++)
+                    var t1 = document.createElement("input");
+                t1.id = "txtindipac";
+               // t1.readOnly = true;
+                t1.className = "form-control txtpacind";
+                t1.style.width = "60px";
+
+                //Add DropDown
+                var data = {
+                    'No': 'No', 'Yes': 'Yes'
+                };
+                var t2 = document.createElement("select");
+                t2.className = "form-control";
+                t2.id = "pacIndividual";
+                t2.style.width = "85px";
+
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t2);
+                }
+
+                //Add DropDown
+                var data = {
+                    'No': 'No', 'Yes': 'Yes',
+                };
+                var t7 = document.createElement("select");
+                t7.id = "pacBox";
+                t7.className = "form-control";
+                t7.style.width = "85px";
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t7);
+                }
+
+                var t3 = document.createElement("input");
+                t3.id = "txtqtybox";
+                t3.className = "form-control";
+                t3.style.width = "60px";
+                t3.value = "0";
+                t3.disabled = true;
+
+                var t4 = document.createElement("input");
+                t4.id = "txtboxreq";
+              //  t4.disabled = true;
+                t4.className = "form-control";
+                t4.style.width = "60px";
+                t4.value = "0";
+
+                var t5 = document.createElement("input");
+                t5.id = "txtremark";
+
+                t5.className = "form-control";
+                t5.style.width = "60px";
+
+                //Add DropDown
+                var data = {
+                    '1': 'Gift', '2': 'Normal','3': 'Special', '4': 'NA'
+                };
+                var t6 = document.createElement("select");
+                t6.id = "pactype";
+                t6.className = "form-control";
+                t6.style.width = "85px";
+                for (var val in data) {
+                    $('<option />', { value: val, text: data[val] }).appendTo(t6);
+                }
+
+                var t9 = document.createElement("input");
+                t9.id = "txtpacqtytype";
+                t9.className = "form-control";
+                t9.style.width = "80px";
+
+                var t8 = document.createElement("input");
+                t8.type = "button";
+                t8.id = "addpactypebyself";
+                t8.className = "form-control btn btn-warning";
+                t8.style.width = "60px";
+                t8.value = "Add"; 
+
+                // create new row and cells
+                var newRow = table2.insertRow(table2.length),
+                    cell1 = newRow.insertCell(0),
+                    cell2 = newRow.insertCell(1),
+                    cell3 = newRow.insertCell(2),
+                    cell4 = newRow.insertCell(3),
+                    cell5 = newRow.insertCell(4),
+                    cell6 = newRow.insertCell(5),
+                    cell7 = newRow.insertCell(6),
+                    cell8 = newRow.insertCell(7),
+                    cell9 = newRow.insertCell(8),
+                    cell10 = newRow.insertCell(9),
+                    cell11 = newRow.insertCell(10),
+                    cell12 = newRow.insertCell(11),
+                    cell13 = newRow.insertCell(12),
+                    cell14 = newRow.insertCell(13) 
+                    
+                // add values to the cells
+                cell1.innerHTML = $tds.eq(0).text();
+                cell2.innerHTML = $tds.eq(1).text();
+                cell3.innerHTML = $tds.eq(2).text();
+                cell4.innerHTML = $tds.eq(3).text();
+                cell5.innerHTML = $tds.eq(4).text();
+                cell6.innerHTML = $tds.eq(5).text();
+                cell7.innerHTML = $tds.eq(9).text();
+                
+                cell8.append(t6);
+
+                cell9.append(t1);
+                cell10.append(t7);
+                cell11.append(t3);
+                cell12.append(t4);
+                cell13.append(t5);
+                cell14.append(t8);
+                 
+                item.Code = $tds.eq(0).text();
+                item.ProductName = $tds.eq(1).text();
+                item.Celltype = $tds.eq(2).text();
+                item.Capacity = $tds.eq(3).text();
+                item.Color = $tds.eq(4).text();
+                item.Model = $tds.eq(5).text();
+                item.Rate = $tds.eq(6).text();
+                item.DeliveryDate = $tds.eq(8).text();
+                item.AddressDelivery = $tds.eq(7).text(); 
+                item.DeliveryQty = $tds.eq(10).text(); 
+                item.OrderType = $('#Order :selected').val();
+                item.PaymentTerm = $('#Type :selected').val();
+                item.CreditPeriod = $('#txtper').val();
+                item.CustomerName = $('#txtcustN').val();
+                item.CustomerAddress = $('#txtaddr').val();
+                item.ContactNo = $('#txtnum').val();
+                item.ContactPerson = $('#txtcp').val();
+                item.Cid = $('#Cid').val();
+
+                if (item.Code == "")
+                    return;
+
+                if (item.QtyToFreez == "")
+                    return;
+
+                if (item.Capacity == "")
+                    return; 
+
+            });
+ 
+        }
+
+        //In PackingFinal In Self
+         $(document).on('click', '#addpactypebyself', function () {  
+            let IndivisualQty = $(this).closest('tr').find('.txtpacind').val();
+            let typeQty = $(this).closest('tr').find('td:eq(6)').text();
+            var remainingQty = parseInt(typeQty) - parseInt(IndivisualQty); 
+          
+            var proCode = $(this).closest('tr').find('td:eq(0)').text();
+            var proName = $(this).closest('tr').find('td:eq(1)').text();
+            var cellType = $(this).closest('tr').find('td:eq(2)').text();
+            var capacity = $(this).closest('tr').find('td:eq(3)').text();
+            var color = $(this).closest('tr').find('td:eq(4)').text();
+            var Model = $(this).closest('tr').find('td:eq(5)').text();
+            var soQty = $(this).closest('tr').find('td:eq(6)').text();
+            var DeliveryDate = $(this).closest('tr').find('td:eq(7)').text(); 
+            var qtyIndivi = $(this).closest('tr').find('.txtpacind').val();
+            var isboxPac = $(this).closest('tr').find('#pacBox :selected').text();
+            var boxqty = $(this).closest('tr').find('#txtqtybox').val();
+            var boxqtyReq = $(this).closest('tr').find('#txtboxreq').val();
+            var remark = $(this).closest('tr').find('#txtremark').val();
+            var PacType = $(this).closest('tr').find('#pactype :selected').text();
+
+            if (qtyIndivi == "") {
+                alert("Please Fill Individual Quantity");
+                return;
+            }
+              if (boxqty == "") {
+                alert("Please specify Box Quantity");
+                return;
+            }
+            
+            $(this).closest('tr').find('.txtpacind').val('');
+            $(this).closest('tr').find('#txtpacqtytype').val('');
+            $(this).closest('tr').find('#txtboxreq').val('');
+            $(this).closest('tr').find('#txtremark').val(''); 
+            $(this).closest('tr').find('#txtqtybox').val('');
+              $(this).closest('tr').find('td:eq(6)').text(remainingQty.toString());
+            $("#pc-tablefinalbySelf").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="code">' + proCode + '</td>';
+                    tds += '<td class="proName">' + proName + '</td>';
+                    tds += '<td class="type">' + cellType + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + Model + '</td>';
+                    tds += '<td class="soqty">' + soQty + '</td>'; 
+                    tds += '<td class="pactype">' + PacType + '</td>';
+                    tds += '<td class="qtyindi">' + qtyIndivi + '</td>';
+                    tds += '<td class="isboxpac">' + isboxPac + '</td> '; 
+                    tds += '<td class="boxqty">' + boxqty + '</td>';
+                    tds += '<td class="boxqtyreq">' + boxqtyReq + '</td>';
+                    tds += '<td class="remark">' + remark + '</td>';  
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+                    $('tbody', this).append(tds);
+                    $('#pc-tablefinalbySelf').show();
+                    $('.pcheadingfinalself').show();
+                    $('.save-checkbyself').show();
+                    $('.pac-check').attr('disabled', true);
+                  
+                } else {
+                    $(this).append(tds);
+                }
+            });
+         }) 
+
+        //Final Save On Self 
+        $('.save-checkbyself').on('click', function () {
+            $.ajax({
+                url: "/SalesOrder/GetLastMrsId",
+                timeout: 20000,
+                type: "GET",
+                ContentType: "application/json; charset=UTF-8",
+                success: function (result) {
+                    MrsId = parseInt(result) + 1;
+                    $("#pc-tablefinalbySelf").find('tr').each(function (i, el) {
+                        var item = {};
+                        var $tds = $(this).find('td');
+                        item.Code = $tds.eq(0).text().trim();
+                        item.ProductName = $tds.eq(1).text().trim();
+                        item.Celltype = $tds.eq(2).text();
+                        item.Capacity = $tds.eq(3).text();
+                        item.Color = $tds.eq(4).text();
+                        item.Model = $tds.eq(5).text();  
+                        item.IndivisualPacking = $tds.eq(7).text();
+                        item.QtyIndivisual = $tds.eq(8).text();
+                        item.BoxPacking = $tds.eq(9).text();
+                        item.QtyBox = $tds.eq(10).text();
+                        item.ReqBox = $tds.eq(11).text();
+                        item.Remark = $tds.eq(13).text();
+                        item.OrderType = $('#Order :selected').val();
+                        item.PaymentTerm = $('#Type :selected').val();
+                        item.CreditPeriod = $('#txtper').val();
+                        item.CustomerName = $('#txtcustN').val();
+                        item.CustomerAddress = $('#txtaddr').val();
+                        item.ContactNo = $('#txtnum').val();
+                        item.ContactPer = $('#txtcp').val();
+                        item.CustomerId = $('#Cid').val();
+                        item.PackingTypeId = $tds.eq(7).text().trim();
+                        item.PackingTypeQty = 0;
+                        if (item.PackingTypeId == "Gift") {
+                            item.PackingTypeId = 2;
+                        }
+                        if (item.PackingTypeId == "Normal") {
+                            item.PackingTypeId = 1;
+                        }
+                         if (item.PackingTypeId == "Special") {
+                            item.PackingTypeId = 3;
+                        }
+                         if (item.PackingTypeId == "NA") {
+                            item.PackingTypeId = 0;
+                        }
+                        if (item.Code == "")
+                            return;
+
+                        if (item.QtyToFreez == "")
+                            return;
+
+                        if (item.Capacity == "")
+                            return;
+                        if (MrsId <= 9) {
+                            let zero = "SO000";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: 0, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () { 
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO000" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 9 && MrsId <= 99) {
+                            let zero = "SO00";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: 0, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO00" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 99 && MrsId <= 1000) {
+                            let zero = "SO0";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: 0, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO0" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+                        if (MrsId > 1000 && MrsId <= 10000) {
+                            let zero = "SO";
+                            let salesOrderNo = zero + MrsId;
+                            $.ajax({
+                                url: "/SalesOrder/InsertIntoSales",
+                                data: { pacTypeQty: item.PackingTypeQty, pacType: item.PackingTypeId, salesOrderNo: salesOrderNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Celltype, Capacity: item.Capacity, Model: item.Model, Color: item.Color, IndividualPacking: item.IndivisualPacking, QtyIndividual: item.QtyIndivisual, BoxPacking: item.BoxPacking, BoxQty: item.QtyBox, RequierdBox: item.ReqBox, Cid: item.CustomerId, QtyToProduce: item.QtyToProduce, remark: item.Remark },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                    $(':button').hide();
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    let salesNo = salesOrderNo;
+
+                                    $('#son').html(salesNo);
+                                    $('.salesNo').show();
+                                    $('.salesNo1').hide();
+                                    //update in stock Table
+
+
+
+                                    alert("SO" + MrsId);
+                                    location.href = "/CreateCustomer/CustomerList";
+
+                                    print();
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        }
+
+                    }); 
+
+                    //Insert Into CustomerSalesOrder
+                $("#tablelist tbody").find('tr').each(function (i, el) { 
+                var $tds = $(this).find('td');
+                var item = {};
+                item.ProductCode = $tds.eq(0).text();
+                item.ProductName = $tds.eq(1).text();
+                item.Type = $tds.eq(2).text();
+                item.Capacity = $tds.eq(3).text();
+                item.Color = $tds.eq(4).text();
+                item.Model = $tds.eq(5).text();
+                item.Brand = $tds.eq(6).text();
+                item.Rate = $tds.eq(7).text();
+                item.Stock = $tds.eq(8).text().trim();
+                item.SoQty = $tds.eq(9).text().trim();
+                item.Amount = $tds.eq(10).text().trim();
+                item.GrossAmt = $tds.eq(11).text().trim();
+                item.OrderType = $('#Order :selected').val();
+                item.PaymentTerm = $('#Type :selected').val();
+                item.CreditP = $('#txtper').val();
+                item.CustomerName = $('#txtcustN').val();
+                item.Address = $('#txtaddr').val();
+                item.CNumber = $('#txtnum').val();
+                item.CPerson = $('#txtcp').val();
+                item.Cid = $('#Cid').val(); 
+                item.TotalAmt = parseInt($('#amt').html().trim());
+                item.TotalGrossAmt = parseInt($('#grossamt').html().trim()); 
+                        
+                $.ajax({
+                    url: "/SalesOrder/InsertIntoCustomerSalesOrder",
+                    data: { updatedQtyoProduce: 0, rate: item.Rate, qtytofreez: 0, qtytopro: item.SoQty, stock: item.Stock, brand: item.Brand, amt: item.Amount, totalamt: item.TotalAmt, grossAmt: item.GrossAmt, totalgrossAmt: item.TotalGrossAmt, soQty: item.SoQty, OrderType: item.OrderType, paymentTerm: item.PaymentTerm, creditPeriod: item.CreditP, cName: item.CustomerName, cAddress: item.Address, contactNo: item.CNumber, cPerson: item.CPerson, salesOrderNo: MrsId, Code: item.ProductCode, ProductlName: item.ProductName, Type: item.Type, Capacity: item.Capacity, Model: item.Model, Color: item.Color, Cid: item.Cid },
+                    type: "POST",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function () {
+                       
+                        $.ajax({
+                            url: "/SalesOrder/UpdateProductInStockTable/",
+                            data: { ProductCode: item.ProductCode, salesOrderNo: "SO000" + MrsId, proserialCode: "SO000" + MrsId + item.Cid + item.ProductCode.trim() + "0000" + MrsId + 1, qtyToFreez: frezQty, cid: item.Cid },
+                            type: "POST",
+                            success: function () {
+                            }
+                        });
+                    },
+                    error: function () {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Something Went Wrong',
+                            type: 'error'
+                        });
+                    }
+
+                });
+
+            });
+
+                }
+            })
+
+           
+        }) 
+    </script>
+}

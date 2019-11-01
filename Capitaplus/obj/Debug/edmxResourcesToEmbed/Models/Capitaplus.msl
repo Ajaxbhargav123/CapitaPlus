@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CapitaplusModelStoreContainer" CdmEntityContainer="CapitaplusEntities">
+    <EntitySetMapping Name="RoleMaterialCreations">
+      <EntityTypeMapping TypeName="CapitaplusModel.RoleMaterialCreation">
+        <MappingFragment StoreEntitySet="RoleMaterialCreation">
+          <ScalarProperty Name="SAC_CODE" ColumnName="SAC CODE" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="UOM_1" ColumnName="UOM-1" />
+          <ScalarProperty Name="QUOM" ColumnName="QUOM" />
+          <ScalarProperty Name="UOM_2" ColumnName="UOM-2" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity_AMH" ColumnName="Capacity_AMH" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuplierTypes">
+      <EntityTypeMapping TypeName="CapitaplusModel.SuplierType">
+        <MappingFragment StoreEntitySet="SuplierTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SuplierType1" ColumnName="SuplierType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.VendorMaster">
+        <MappingFragment StoreEntitySet="VendorMaster">
+          <ScalarProperty Name="S_No" ColumnName="S.No" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+          <ScalarProperty Name="DeliveryFrom" ColumnName="DeliveryFrom" />
+          <ScalarProperty Name="SuplierTypeId" ColumnName="SuplierTypeId" />
+          <ScalarProperty Name="MaterialCode" ColumnName="MaterialCode" />
+          <ScalarProperty Name="SuplierGstNo" ColumnName="SuplierGstNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PurchaseOrderSummaries">
+      <EntityTypeMapping TypeName="CapitaplusModel.PurchaseOrderSummary">
+        <MappingFragment StoreEntitySet="PurchaseOrderSummary">
+          <ScalarProperty Name="Sac" ColumnName="Sac" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+          <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+          <ScalarProperty Name="Fright" ColumnName="Fright" />
+          <ScalarProperty Name="GrossTotal" ColumnName="GrossTotal" />
+          <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Capacity_AMH" ColumnName="Capacity_AMH" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="UOM_1" ColumnName="UOM-1" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinishedGoods">
+      <EntityTypeMapping TypeName="CapitaplusModel.FinishedGood">
+        <MappingFragment StoreEntitySet="FinishedGood">
+          <ScalarProperty Name="GST" ColumnName="GST" />
+          <ScalarProperty Name="SAC" ColumnName="SAC" />
+          <ScalarProperty Name="ShortBrandCode" ColumnName="ShortBrandCode" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="ShortColorCode" ColumnName="ShortColorCode" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="ModelNo" ColumnName="ModelNo" />
+          <ScalarProperty Name="ShortProductName" ColumnName="ShortProductName" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Grns">
+      <EntityTypeMapping TypeName="CapitaplusModel.Grn">
+        <MappingFragment StoreEntitySet="Grn">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Receive" ColumnName="Receive" />
+          <ScalarProperty Name="Uom" ColumnName="Uom" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

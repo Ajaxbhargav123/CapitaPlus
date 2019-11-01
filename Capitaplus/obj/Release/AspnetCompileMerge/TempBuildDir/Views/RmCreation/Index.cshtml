@@ -1,0 +1,111 @@
+﻿@model Capitaplus.ViewModel.RMCreationWithCodeVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .lbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+<h2>Raw Material Creations</h2>
+
+@using (@Html.BeginForm("CreateRM", "RmCreation"))
+{
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.MaterialName, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.MaterialName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.MaterialName) 
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.MaterialGroup, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.MaterialGroup, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.MaterialGroup)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.UOM_1, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.UOM_1, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.UOM_1)
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.UOM_2, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.UOM_2, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.UOM_2)
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.QUOM, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.QUOM, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.QUOM)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.Rate, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.Rate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Rate)
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.Type, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.Type, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Type)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.Capacity_AMH, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.Capacity_AMH, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Capacity_AMH)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.Color, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.Color, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Color)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.rmCreation.Model, new { @class = "lbl" })
+                        @Html.TextBoxFor(x => x.rmCreation.Model, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Model)
+                    </div>
+
+                    <div class="form-group">
+                       <label class="lbl">Sac Code</label>
+                        @Html.TextBoxFor(x => x.rmCreation.SAC_CODE, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Model)
+                    </div>
+                    <div class="form-group">
+                        <label class="lbl">Stock</label>
+                        @Html.TextBoxFor(x => x.rmCreation.Stock, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.rmCreation.Stock)
+                    </div>
+                    <br />
+                    @Html.HiddenFor(x => x.rmCreation.Id)
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-lg btn-primary">Save</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,327 @@
+﻿@model IEnumerable<Capitaplus.Models.StockTable>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Quality ReCheck</h2>
+ 
+<div style="overflow-x:auto;">
+    <table class="table">
+        <tr> 
+            <th>
+                @Html.DisplayNameFor(model => model.WipNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BomNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat5)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat6)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat7)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat8)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat9)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mat10)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QcNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QcPass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rework)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.ProdSerialNo)
+            </th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.WipNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BomNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat6)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat7)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat8)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat9)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mat10)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QcNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QcPass)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rework)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProdSerialNo)
+                </td>
+                <td>
+                    <input type="button" id="btnadd" class="btn btn-primary" value="Edit" />
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+<h2 class="si">Selected Item</h2>
+<div style="overflow-x:auto;">
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Wip No</th>
+                <th>Bom No</th>
+                <th>Job No</th>
+                <th>Product Code</th>
+             
+                <th>Mat-1</th>
+                <th>Mat-2</th>
+                <th>Mat-3</th>
+                <th>Mat-4</th>
+                <th>Mat-5</th>
+                <th>Mat-6</th>
+                <th>Mat-7</th>
+                <th>Mat-8</th>
+                <th>Mat-9</th>
+                <th>Mat-10</th>
+                <th>Qc Pass</th>
+                <th>Rework Pass</th>
+                <th>Product Serial Code</th>
+                <th>QC Rework Pass</th>
+               
+                
+
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+</div>
+
+<button id="save" class="btn btn-primary" type="button">Save</button>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Qcno;
+            var ids;
+            var count = 0;
+            $('.tablelist').hide();
+            $('.fth').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('click', '#btnadd', function () {
+                $('.tablelist').show();
+                $('.boml').show();
+                let code = $(this).closest('tr');
+                var wipId = $("TD", code).eq(0).html();
+                var salesId = $("TD", code).eq(1).html();
+                var bomId = $("TD", code).eq(2).html().trim();
+                var procode = $("TD", code).eq(3).html().trim();
+                var mat1 = $("TD", code).eq(4).html().trim();
+                var mat2 = $("TD", code).eq(5).html().trim();
+                var mat3 = $("TD", code).eq(6).html().trim();
+                var mat4 = $("TD", code).eq(7).html().trim();
+                var mat5 = $("TD", code).eq(8).html().trim();
+                var mat6 = $("TD", code).eq(9).html().trim();
+                var mat7 = $("TD", code).eq(10).html().trim();
+                var mat8 = $("TD", code).eq(11).html().trim();
+                var mat9 = $("TD", code).eq(12).html().trim();
+                var mat10 = $("TD", code).eq(13).html().trim();
+                var Qcpass = $("TD", code).eq(15).html().trim();
+                var rework = $("TD", code).eq(16).html().trim();
+               
+                var proserialcode = $("TD", code).eq(17).html().trim();
+                ids = $("TD", code).eq(16).html().trim();
+
+                $(".tablelist tbody tr").remove();
+                    $(".tablelist").each(function () {
+                        var tds = '<tr>';
+                        jQuery.each($('tr:last', this), function () {
+                            tds += '<td class="salesid">' + wipId + '</td>'; 
+                            tds += '<td class="bomid">' + bomId + '</td>';
+                            tds += '<td class="salesid">' + salesId + '</td>';
+                            tds += '<td class="salesid">' + procode + '</td>';
+                            tds += '<td class="bomid">' + mat1 + '</td>';
+                            tds += '<td class="bomid">' + mat2 + '</td>';
+                            tds += '<td class="salesid">' + mat3 + '</td>';
+                            tds += '<td class="bomid">' + mat4 + '</td>';
+                            tds += '<td class="salesid">' + mat5 + '</td>';
+                            tds += '<td class="bomid">' + mat6 + '</td>';
+                            tds += '<td class="salesid">' + mat7 + '</td>';
+                            tds += '<td class="bomid">' + mat8 + '</td>';
+                            tds += '<td class="bomid">' + mat9 + '</td>';
+                            tds += '<td class="bomid">' + mat10 + '</td>';
+                            tds += '<td class="bomid">' + Qcpass + '</td>';
+                            tds += '<td class="bomid">' + rework + '</td>';
+                            tds += '<td class="bomid">' + proserialcode + '</td>';
+                            tds += '<td class="bomid">' + '<select id="sel" style="width:90px;" class="form-control"><option>Yes</option><option>No</option></select>' + '</td>';
+
+                        });
+                        tds += '</tr>';
+
+                        if ($('tbody', this).length > 0) {
+                            $('tbody', this).append(tds);
+                            $('.tablelist').show();
+                            $('#save').show();
+                            $('.save').show();
+                            $('#bomlist').show();
+                            $('.si').show();
+
+                            $('input[type="text"]').attr('value', 1);
+                            $('#Qcpass').html('Yes');
+                        } else {
+                            $(this).append(tds);
+                        }
+                    });
+
+                $(".tablebom tbody tr").remove();
+
+                $('.tablebom').show();
+                $('.bh').show();
+
+
+            })
+
+            //Save
+            $('#save').on('click', function () {
+                let id = $('#unique').val();
+                $(".tablelist tbody tr").each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.WipNo = $tds.eq(0).text().trim();
+                    item.BomNo = $tds.eq(1).text().trim();
+                    item.ProductCode = $tds.eq(2).text().trim();
+                    item.Mat1 = $tds.eq(3).text().trim();
+                    item.Mat2 = $tds.eq(4).text().trim();
+                    item.Mat3 = $tds.eq(5).text().trim();
+                    item.Mat4 = $tds.eq(6).text().trim();
+                    item.Mat5 = $tds.eq(7).text().trim();
+                    item.Mat6 = $tds.eq(8).text().trim();
+                    item.Mat7 = $tds.eq(9).text().trim();
+                    item.Mat8 = $tds.eq(10).text().trim();
+                    item.Mat9 = $tds.eq(11).text().trim();
+                    item.Mat10 = $tds.eq(12).text().trim();
+                    item.QcPass = $tds.eq(13).text().trim();
+                    item.ReworkPass = $tds.find('#sel :selected').text().trim();
+                    item.qcNo = Qcno;
+                    item.Id = ids;
+                    item.ProdSerialNo = $tds.eq(16).text().trim();
+                    $.ajax({
+                        url: "/QcRework/UpdateStocksTableQcRework",
+                        data: { wipno: item.WipNo, proserialNo: item.ProdSerialNo, qcrework: item.ReworkPass },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+                            count++
+                            if (count > 1)
+                                return;
+                            new PNotify({
+                                title: 'Done!',
+                                text: 'Updated',
+                                type: 'success'
+                            });
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+
+
+                });
+            })
+
+
+
+        })
+
+
+    </script>
+}

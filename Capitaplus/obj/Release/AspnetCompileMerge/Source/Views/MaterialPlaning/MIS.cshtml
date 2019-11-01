@@ -1,0 +1,359 @@
+﻿@model Capitaplus.ViewModel.JobSheetForMPLanning
+
+ 
+    <h2>Material Planing</h2>
+    <table class="table dat">
+        <tr>
+            <th>
+                <label>Job No</label>
+            </th>
+            <th>
+                <label>BOM No</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.CellType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.Capacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.saleOrder.QtyToPro)
+            </th>
+
+            <th>
+                Action
+            </th>
+        </tr>
+
+        @foreach (var item in Model.jobOrders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BomNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CellType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Capacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QtyToPro)
+                </td>
+
+                <td>
+                    <button type="button" id="btnadd" class="btn btn-primary">Add</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+    <hr />
+
+    <h2 class="si">Selected Item</h2>
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Job No</th>
+                <th>Bom No</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Brand</th>
+                <th>Qty To Produce</th>
+                @*<th>Requied Qty</th>
+                    <th>Remaining</th>*@
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    @*Table Bom*@
+    <h2 class="si">BOM Items</h2>
+    <div class="row">
+        <table id="tblbom" class="table tablebom table-striped">
+            <thead>
+                <tr>
+                    <th>Job No</th>
+                    <th>Bom No</th>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>Qty In Piece</th>
+                    <th>Requird Qty</th>
+                    <th>Qty in stock</th>
+                    <th>Qty To Purchase</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="save" class="btn btn-primary">
+            Save
+        </button>
+    </div>
+ 
+
+
+@section scripts{ 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('click', '#btnadd', function () {
+                $('.tablelist').show();
+                $('.boml').show();
+                let code = $(this).closest('tr');
+                var salesId = $("TD", code).eq(0).html();
+                var bomId = $("TD", code).eq(1).html().trim();
+                var ProCode = $("TD", code).eq(2).html();
+                var ProName = $("TD", code).eq(3).html();
+                var model = $("TD", code).eq(4).html();
+                var type = $("TD", code).eq(5).html();
+                var capacity = $("TD", code).eq(6).html();
+                var brand = $("TD", code).eq(8).html();
+                var color = $("TD", code).eq(7).html();
+                qtytopro = $("TD", code).eq(9).html();
+                $(".tablelist tbody tr").remove();
+                $(".tablelist").each(function () {
+                    var tds = '<tr>';
+                    jQuery.each($('tr:last', this), function () {
+                        tds += '<td class="salesid">' + salesId + '</td>';
+                        tds += '<td class="bomid">' + bomId + '</td>';
+                        tds += '<td class="procode">' + ProCode + '</td>';
+                        tds += '<td class="proname">' + ProName + '</td>';
+                        tds += '<td class="type">' + type + '</td>';
+                        tds += '<td class="capacity">' + capacity + '</td>';
+                        tds += '<td class="color">' + color + '</td>';
+                        tds += '<td class="model">' + model + '</td>';
+                        tds += '<td class="brand">' + brand + '</td>';
+                        tds += '<td class="qty">' + qtytopro + '</td>';
+                        //tds += '<td class="tqty">' + '<input type="text" id="tqty" class="form-control"/>' + '</td>';
+                        //tds += '<td class="remaining">' + '<input type="text" disabled id="remain" class="form-control"/>' + '</td>';
+
+                    });
+                    tds += '</tr>';
+                    if ($('tbody', this).length > 0) {
+                        $('tbody', this).append(tds);
+                        $('.tablelist').show();
+
+                        $('.save').show();
+                        $('#bomlist').show();
+                        $('.si').show();
+                    } else {
+                        $(this).append(tds);
+                    }
+                });  
+                $(".tablebom tbody tr").remove();
+              
+                $('.tablebom').show();
+                $('.bh').show();
+                
+                $.ajax({
+                    url: '/JobCard/GetBomDetails',
+                    data: { code: bomId },
+                    type: 'json',
+                    success: function (result) { 
+                        for (var i = 0; i < result.Data.length; i++) { 
+                            $("#tblbom").each(function () {
+                                var tds = '<tr class="all">';
+                                jQuery.each($('tr:last', this), function () {
+                                    tds += '<td class="jobid">' + salesId + '</td>';
+                                    tds += '<td class="bomid">' + bomId + '</td>';
+                                    tds += '<td class="code">' + result.Data[i].RmCode + '</td>'; 
+                                    tds += '<td class="proName">' + result.Data[i].MatName + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].Type + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Capacity + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Color + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Model + '</td>';
+                                    tds += '<td class="tqty">' + result.Data[i].Qty + '</td>';
+                                    let reqQty = qtytopro * result.Data[i].Qty;
+                                   
+                                    tds += '<td class="reqqty">' + '<input type="number" value='+`${reqQty}`+' disabled id="rqty" class="form-control"/>' + '</td>';
+                                    tds += '<td class="qtyinstock">' + '<input type="number" value="111" disabled id="instock" class="form-control"/>' + '</td>';
+                                    let qtyinstock = 120;
+                                    let qtytopur = reqQty - qtyinstock;
+                                     
+                                    tds += '<td class="qtytopro">' + '<input type="text" value=' + `${qtytopur}` + ' disabled id="qtytopr" class="form-control"/>' + '</td>';
+                                    $('#save').show();
+                                });
+                                tds += '</tr>';
+                             
+                                if ($('tbody', this).length > 0) { 
+                                    $('tbody', this).append(tds); 
+                                    $('.table').show();
+                                    $('.save').show(); 
+                                    $('#txtcode').val('');
+                                    $('#proName').val('');
+                                    $('#txtmodel').val('');
+                                    $('#txtcell').val('');
+                                    $('#txtcapacity').val('');
+                                    $('#txtcolor').val('');
+                                    $('#txtqtytopro').val('');
+                                    
+                                    //Calculations
+                                  
+                                } else {
+                                    $(this).append(tds);
+                                   
+                                }
+                            });
+                        }
+
+                    }
+                })
+            })
+
+            //KeyUp Events
+            $(document).on('keyup', '#tqty', function () {
+              let qq=  $('#tqty').val();
+              var wq = qtytopro - qq;
+
+              $('#remain').val(wq);
+            })
+  
+        })
+        $('#save').on('click', function () {
+            $("#tblbom tbody").find('tr').each(function (i, el) {
+                var item = {};
+                var $tds = $(this).find('td');
+                item.JobNo = $tds.eq(0).text();
+                item.BomNo = $tds.eq(1).text();
+                item.Code = $tds.eq(2).text();
+                item.MatName = $tds.eq(3).text();
+                item.Type = $tds.eq(4).text();
+                item.Capacity = $tds.eq(5).text();
+                item.Color = $tds.eq(6).text();
+                item.Model = $tds.eq(7).text();
+                item.Qty = $tds.eq(8).text().trim();
+                item.QtyReq = $(this).find('#rqty', this).val();  
+                item.QtyInStock = $(this).find('#instock', this).val();
+                item.QtyToPro = $(this).find('#qtytopr', this).val();
+                $.ajax({
+                    url: "/MaterialPlaning/GetLastMrsId",
+                    timeout: 20000,
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        let MrsId = parseInt(result) + 1;
+                        $.ajax({
+                            url: "/MaterialPlaning/InsertIntoMIS",
+                            data: {MrsNno:MrsId, jobno: item.JobNo, bobno: item.BomNo, Code: item.Code, ProductlName: item.MatName, Type: item.Type, Capacity: item.Capacity, Model: item.Model, Color: item.Color, Qty: item.Qty, QtyReq: item.QtyReq, QtyInStock: item.QtyInStock, QtyToProduce: item.QtyToPro },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $.ajax({
+                                    url: "/MaterialPlaning/GetMrsId", 
+                                    type: "GET",
+                                    ContentType: "application/json; charset=UTF-8",
+                                    success: function (result) {
+                                        if (result.length > 0) {
+
+                                            new PNotify({
+                                                title: 'Success!',
+                                                text: 'Done! Your Purchase Id Is: ' + result,
+                                                type: 'success'
+                                            });
+                                            $(".tablebom tbody tr").remove();
+                                            $(".tablelist tbody tr").remove();
+                                            $('.tablelist').hide();
+                                            $('#bomlist').hide();
+                                            $('#save').hide();
+                                            $('.si').hide();
+                                            $('.tablebom').hide();
+                                            $('.boml').hide();
+                                        }
+                                    }
+                                })
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+                    }
+                });
+               
+                //Save to check Table
+               
+            }); 
+
+
+            let jonno=$('.salesid').text().trim();
+            let bomid=$('.bomid').text().trim();
+            let code=$('.procode').text().trim();
+            let proname=$('.proname').text().trim();
+            let type=$('.type').text().trim();
+            let capacity=$('.capacity').text().trim();
+            let color=$('.color').text().trim();
+            let model=$('.model').text().trim();
+            let brand=$('.brand').text().trim();
+            let qty=$('.qty').text().trim();
+            $.ajax({
+                url: "/MaterialPlaning/InsertIntoCheckMat",
+                data: { jobno: jonno, bobno: bomid, Code: code, ProductlName: proname, Type: type, Capacity: capacity, Model: model, Color: color, Qty: qty, Brand: brand},
+                type: "POST",
+                ContentType: "application/json; charset=UTF-8",
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+
+            });
+        })
+    </script>
+}

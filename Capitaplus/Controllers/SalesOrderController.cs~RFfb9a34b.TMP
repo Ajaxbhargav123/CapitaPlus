@@ -1,0 +1,52 @@
+﻿using Capitaplus.Models;
+using Capitaplus.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Services;
+
+namespace Capitaplus.Controllers
+{
+    public class SalesOrderController : Controller
+    {
+        private CapitaplusEntities _capitaContext;
+
+        public SalesOrderController()
+        {
+            _capitaContext = new CapitaplusEntities();
+             
+        }
+        // GET: SalesOrder
+        public ActionResult Index()
+        {
+            var roCreation = _capitaContext.FinishedGoods.ToList();
+            var vmSalesOrder = new SalesOrderVM
+            {
+                fgGoods = roCreation,
+            };
+            return View(vmSalesOrder);
+        }
+        [HttpPost]
+        public JsonResult Insert(string Code, string MaterialName)
+        {
+            bool status = false;
+            System.Data.SqlClient.SqlConnection sqlConnection1 = new System.Data.SqlClient.SqlConnection("CapitaplusEntities");
+
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            //  cmd.CommandText = "INSERT INTO [TableName] (EmpId, Ename,Dept,Salary) VALUES (" + EmpId + ", " + Ename + ", " + Dept + ", " + Salary + ")";
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+            cmd.ExecuteNonQuery();
+            sqlConnection1.Close();
+
+            return new JsonResult { Data = new { status = status } };
+        }
+
+       
+    }
+}

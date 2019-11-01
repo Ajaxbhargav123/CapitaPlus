@@ -1,0 +1,532 @@
+﻿@model Capitaplus.ViewModel.JobSheetVm
+
+@{
+    ViewBag.Title = "JobSheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .hd {
+        display: none;
+    }
+
+    .cid {
+        display: none;
+    }
+
+    .id {
+        display: none;
+    }
+
+    .salesid {
+        display: none;
+    }
+</style>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
+<h2>Job Sheet</h2>
+
+<table class="table mainTable">
+    <tr>
+        <th class="id">
+            <label>Sales Id</label>
+        </th>
+        <th>
+            <label>Sales No</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.ProductCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Capacity)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.QtyTopProduce)
+        </th>
+        <th class="hd">
+            @Html.DisplayNameFor(model => model.saleOrder.Cid)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model.salesOrders)
+    {
+        <tr>
+            <td class="id">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalesOrderNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.QtyTopProduce)
+            </td>
+            <td class="hd">
+                @Html.DisplayFor(modelItem => item.Cid)
+            </td>
+            <td>
+                <button id="btnadd" class="btn btn-primary">Add</button>
+            </td>
+        </tr>
+    }
+
+</table>
+<hr />
+@*Add List*@
+
+<div class="row">
+    <h2 class="hed">BOM</h2>
+    <br />
+    <select class="form-control" id="bomlist"></select>
+
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th class="id">Sales Id</th>
+                <th>Sales No</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                @*<th>Brand</th>*@
+                <th>Qty To Produce</th>
+                <th class="hd">Customer Id</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+<hr />
+<div class="row">
+    <h2 class="bh">BOM Details</h2>
+    <table class="table tablebom table-striped">
+        <thead>
+            <tr>
+                <th>Bom No</th>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Qty</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+<hr />
+<div class="row">
+    <h2 class="he">
+        Delivery Schedule
+    </h2>
+    <table class="table table-ds table-striped">
+        <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+
+                <th>Delivery Address</th>
+                <th>Address</th>
+                <th>Address Delivery Qty</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+<hr />
+<div class="row">
+    <h2 class="pi">
+        Packing Instruction
+    </h2>
+    <table class="table table-pi table-striped">
+        <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>IndivisualPacking</th>
+                <th>QtyIndivisual</th>
+                <th>BoxPacking</th>
+                <th>QtyBox</th>
+                <th>Box Required</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button type="button" class="btn btn-primary save">Save</button>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+          //  $('.mainTable').DataTable();
+            $('.tablelist').hide();
+            $('.table-pi').hide();
+            $('.pi').hide();
+            $('.tablebom').hide();
+            $('.save').hide();
+            $('#bomlist').hide();
+            $('.table-ds').hide();
+            $('.he').hide();
+            $('hr').hide();
+            $('.hed').hide();
+            $('.bh').hide();
+            $(document).on('click', '#btnadd', function () {
+                $('hr').show();
+                $(".table-ds tbody tr").remove();
+                $(".tablelist tbody tr").remove();
+                $(".tablebom tbody tr").remove();
+                $(".table-pi tbody tr").remove();
+                $('#bomlist option').remove();
+                let code = $(this).closest('tr');
+                var salesId = $("TD", code).eq(0).html();
+                var salesNo = $("TD", code).eq(1).html().trim();
+                var ProCode = $("TD", code).eq(2).html().trim();
+                var ProName = $("TD", code).eq(3).html();
+                var model = $("TD", code).eq(4).html();
+                var type = $("TD", code).eq(5).html();
+                var capacity = $("TD", code).eq(6).html();
+                var color = $("TD", code).eq(7).html();
+                var QtyToPro = $("TD", code).eq(8).html();
+                var cid = $("TD", code).eq(9).html();
+                $(".tablelist").each(function () {
+                    var tds = '<tr>';
+                    jQuery.each($('tr:last', this), function () {
+                        tds += '<td class="salesid">' + salesId + '</td>';
+                        tds += '<td class="salesids">' + salesNo + '</td>';
+                        tds += '<td class="procode">' + ProCode + '</td>';
+                        tds += '<td class="proname">' + ProName + '</td>';
+                        tds += '<td class="type">' + type + '</td>';
+                        tds += '<td class="capacity">' + capacity + '</td>';
+                        tds += '<td class="color">' + color + '</td>';
+                        tds += '<td class="model">' + model + '</td>';
+                        tds += '<td class="qty">' + QtyToPro + '</td>';
+                        tds += '<td class="cid">' + cid + '</td>';
+
+                    });
+                    tds += '</tr>';
+                    if ($('tbody', this).length > 0) {
+                        $('tbody', this).append(tds);
+                        $('.tablelist').show();
+
+                        $('.save').show();
+                        $('#bomlist').show();
+
+                    } else {
+                        $(this).append(tds);
+                    }
+                });
+                //DS
+                $.ajax({
+                    url: '/JobCard/GetDSBySalesOrder',
+                    data: { id: ProCode, salesno: salesNo },
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (result) {
+                        for (var i = 0; i < result.Data.length; i++) {
+                            $(".table-ds").each(function () {
+                                var tds = '<tr>';
+                                jQuery.each($('tr:last', this), function () {
+                                    tds += '<td class="code">' + result.Data[i].Code + '</td>';
+                                    tds += '<td class="proname">' + result.Data[i].ProductName + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Model + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].CellType + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Capacity + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Color + '</td>';
+                                    tds += '<td class="date">' + result.Data[i].AddressDelivery + '</td>';
+
+                                    tds += '<td class="Address">' + '<input type="text" id="addr" class="form-control"/>' + '</td>';
+                                    tds += '<td class="qty">' + result.Data[i].DeliveryQty + '</td>';
+                                });
+                                tds += '</tr>';
+                                if ($('tbody', this).length > 0) {
+                                    $('tbody', this).append(tds);
+                                    $('.tablelist').show();
+
+                                    $('.he').show();
+                                    $('.hed').show();
+                                    $('.table-ds').show();
+
+                                } else {
+                                    $(this).append(tds);
+                                }
+                            });
+
+                        }
+
+
+                    }
+                })
+                //PI
+                $.ajax({
+                    url: '/JobCard/GetPIBySalesOrder',
+                    data: { id: ProCode, salesNo: salesNo },
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (result) {
+                        for (var i = 0; i < result.Data.length; i++) {
+                            $(".table-pi").each(function () {
+                                var tds = '<tr>';
+                                jQuery.each($('tr:last', this), function () {
+                                    tds += '<td class="code">' + result.Data[i].Code + '</td>';
+                                    tds += '<td class="proname">' + result.Data[i].ProductName + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Model + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].CellType + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Capacity + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Color + '</td>';
+                                    tds += '<td class="ip">' + result.Data[i].IndivisualPacking + '</td>';
+                                    tds += '<td class="qtyind">' + result.Data[i].QtyIndivisual + '</td>';
+                                    tds += '<td class="boxpac">' + result.Data[i].BoxPacking + '</td>';
+                                    tds += '<td class="qty">' + result.Data[i].QtyBox + '</td>';
+                                    tds += '<td class="qtyreq">' + result.Data[i].ReqBox + '</td>';
+                                });
+                                tds += '</tr>';
+                                if ($('tbody', this).length > 0) {
+                                    $('tbody', this).append(tds);
+                                    $('.table-pi').show();
+                                    $('.pi').show();
+
+                                } else {
+                                    $(this).append(tds);
+                                }
+                            });
+
+                        }
+
+                    }
+                })
+
+                //Value In Bom Drop Down
+                $(function () {
+                    $.ajax({
+                        url: '/JobCard/GetProductByMasterCode',
+                        type: "get",
+                        data: { code: ProCode },
+                        contentType: "application/json;charset=UTF-8",
+                        dataType: "json",
+                        success: function (responce) {
+                            let ss = responce.Data; 
+                            $.each(ss, function (key, value) { 
+                                $('#bomlist')
+                                    .append($("<option></option>")
+                                        .val(ss[key])
+                                        .text(ss[key]));
+                            });
+                            let code = $('#bomlist :selected').text();
+                            $.ajax({
+                                url: '/JobCard/GetBomDetails',
+                                data: { code: code },
+                                type: 'json',
+                                success: function (result) { 
+                                    for (var i = 0; i < result.Data.length; i++) { 
+                                        $(".tablebom").each(function () {
+                                            var tds = '<tr>';
+                                            jQuery.each($('tr:last', this), function () {
+                                                tds += '<td class="MasterProCode">' + result.Data[i].MasterProCode + '</td>';
+                                                tds += '<td class="code">' + result.Data[i].RmCode + '</td>';
+                                                tds += '<td class="proName">' + result.Data[i].MatName + '</td>';
+                                                tds += '<td class="type">' + result.Data[i].Type + '</td>';
+                                                tds += '<td class="capacity">' + result.Data[i].Capacity + '</td>';
+                                                tds += '<td class="color">' + result.Data[i].Color + '</td>';
+                                                tds += '<td class="model">' + result.Data[i].Model + '</td>';
+                                                tds += '<td class="tqty">' + result.Data[i].Qty + '</td>';
+
+                                            });
+                                            tds += '</tr>';
+                                            if ($('tbody', this).length > 0) {
+
+                                                $('tbody', this).append(tds);
+
+                                                $('.table').show();
+                                                $('.save').show();
+
+                                                $('#txtcode').val('');
+                                                $('#proName').val('');
+                                                $('#txtmodel').val('');
+                                                $('#txtcell').val('');
+                                                $('#txtcapacity').val('');
+                                                $('#txtcolor').val('');
+                                                $('#txtqtytopro').val('');
+
+                                            } else {
+                                                $(this).append(tds);
+
+                                            }
+                                        });
+                                    }
+
+                                }
+                            })
+                        }
+                    })
+                })
+
+            })
+
+            $('#bomlist').change(function () {
+                $(".tablebom tbody tr").remove();
+                $('.tablebom').show();
+                $('.bh').show();
+                let code = $('#bomlist :selected').text();
+                $.ajax({
+                    url: '/JobCard/GetBomDetails',
+                    data: { code: code },
+                    type: 'json',
+                    success: function (result) {
+                        for (var i = 0; i < result.Data.length; i++) {
+                            $(".tablebom").each(function () {
+                                var tds = '<tr>';
+                                jQuery.each($('tr:last', this), function () {
+                                    tds += '<td class="MasterProCode">' + result.Data[i].MasterProCode + '</td>';
+                                    tds += '<td class="code">' + result.Data[i].RmCode + '</td>';
+                                    tds += '<td class="proName">' + result.Data[i].MatName + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].Type + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Capacity + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Color + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Model + '</td>';
+                                    tds += '<td class="tqty">' + result.Data[i].Qty + '</td>';
+                                });
+                                tds += '</tr>';
+                                if ($('tbody', this).length > 0) {
+                                    $('tbody', this).append(tds);
+                                    $('.table').show();
+                                    $('.save').show();
+                                    $('#txtcode').val('');
+                                    $('#proName').val('');
+                                    $('#txtmodel').val('');
+                                    $('#txtcell').val('');
+                                    $('#txtcapacity').val('');
+                                    $('#txtcolor').val('');
+                                    $('#txtqtytopro').val('');
+
+                                } else {
+                                    $(this).append(tds);
+
+                                }
+                            });
+                        }
+
+                    }
+                })
+            })
+
+            //Save
+            $('.save').on('click', function () {
+                var salesId = $(".tablelist tbody tr").find('td:eq(0)').text().trim();
+                var salescode = $(".tablelist tbody tr").find('td:eq(1)').text().trim();
+                var updatecode = $(".tablelist tbody tr").find('td:eq(2)').text().trim();
+                var QtyToPro = $(".tablelist tbody tr").find('td:eq(8)').text().trim();
+                var cid = $(".tablelist tbody tr").find('td:eq(9)').text().trim();
+                var updateCode = $(".tablelist tbody tr").find('td:eq(2)').text().trim();
+                $(".tablebom tbody tr").each(function (index) {
+                    var item = {};
+                    item.SalesOrderNo = salescode;
+                    item.Code = $(this).find('.code', this).text().trim();
+                    item.MaterialName = $(this).find('.proName').text().trim();
+                    item.Type = $(this).find('.type').text().trim();
+                    item.Capacity = $(this).find('.capacity').text().trim();
+                    item.Color = $(this).find('.color').text().trim();
+                    item.Model = $(this).find('.model').text().trim();
+                    item.QtyToPro = QtyToPro;
+                    item.Brand = $(this).find('.proName').text().trim();
+                    item.BomNo = $(this).find('.MasterProCode').text().trim();
+                    item.QtyInPieace = $(this).find('.tqty').text().trim();
+                    let jobId = 'JN000' + salesId;
+                    $.ajax({
+                        url: "/JobCard/Insert",
+                        timeout: 20000,
+                        data: { updateqty: updatecode, JObNo: jobId, SalesNo: item.SalesOrderNo, BomNo: item.BomNo, Code: item.Code, MaterialName: item.MaterialName, Type: item.Type, Capacity_AMH: item.Capacity, Model: item.Model, Color: item.Color, QtyToPro: item.QtyToPro, QtyInPiece: item.QtyInPieace, Brand: 'ROCK' },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            $.ajax({
+                                url: "/JobCard/UpdateStatus",
+                                timeout: 20000,
+                                data: { saleNo: salesId, code: updateCode, Cid: cid },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+
+
+                                    location.reload();
+
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+
+                            location.reload();
+
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+                })
+
+            });
+        });
+    </script>
+}

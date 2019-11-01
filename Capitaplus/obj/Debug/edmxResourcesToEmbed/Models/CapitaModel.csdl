@@ -1,0 +1,1533 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CapitaplusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BillOfMat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RmCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="MasterProCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BrandMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BrandName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShortBrandName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CellTypeMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CellType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CheckMatToDisplay">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ColorMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CustomerMaster">
+    <Key>
+      <PropertyRef Name="S_No" />
+    </Key>
+    <Property Name="S_No" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="Int32" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="CustTypeId" Type="Int32" />
+    <NavigationProperty Name="CustomerType" Relationship="Self.FK_CustomerMasters_CustomerTypes" FromRole="CustomerMasters" ToRole="CustomerTypes" />
+    <NavigationProperty Name="SuplierType" Relationship="Self.FK_CustomerMasters_SuplierTypesIsd" FromRole="CustomerMasters" ToRole="SuplierTypes" />
+  </EntityType>
+  <EntityType Name="CustomerType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Types" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CustomerMasters" Relationship="Self.FK_CustomerMasters_CustomerTypes" FromRole="CustomerTypes" ToRole="CustomerMasters" />
+  </EntityType>
+  <EntityType Name="DeliverySchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CellType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DeliveryDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AddressDelivery" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DeliveryQty" Type="Int32" Nullable="false" />
+    <Property Name="Cid" Type="Int32" />
+    <Property Name="SalesOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="JobNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="FGstock">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaymentTerm" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreditPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Celltype" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="FgInStock" Type="Int32" Nullable="false" />
+    <Property Name="isFreez" Type="Boolean" Nullable="false" />
+    <Property Name="QtyToFreez" Type="Int32" Nullable="false" />
+    <Property Name="QtyToProduce" Type="Int32" Nullable="false" />
+    <Property Name="Cid" Type="Int32" Nullable="false" />
+    <Property Name="Rate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TQtyProduce" Type="Int32" />
+  </EntityType>
+  <EntityType Name="FinishedGood">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ShortProductName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ModelNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="CellType" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ShortColorCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ShortBrandCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SAC" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="GST" Type="Int32" Nullable="false" />
+    <Property Name="UOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="MIN" Type="Int32" />
+    <Property Name="Max" Type="Int32" />
+    <Property Name="Stock" Type="Int32" />
+    <Property Name="StockFreez" Type="Int32" />
+    <Property Name="SelfStock" Type="Int32" />
+    <Property Name="TRfSelf" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Int32" />
+    <Property Name="StockType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="CustomerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IsMinMax" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Cid" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Grn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Capacity" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="Uom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Receive" Type="Int32" />
+    <Property Name="Amount" Type="Int32" />
+    <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="GrnId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PurId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="EntryDate" Type="DateTime" Precision="3" />
+    <Property Name="RecieveDate" Type="DateTime" Precision="3" />
+    <Property Name="EntryGateNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="JobSheet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SalesOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CellType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QtyToPro" Type="Int32" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QtyInPieace" Type="Int32" Nullable="false" />
+    <Property Name="TotalQty" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MasterPackingType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PackingType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MaterialRequsitionSlip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="ActualQty" Type="Int32" Nullable="false" />
+    <Property Name="mrsNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="wastage" Type="Int32" />
+    <Property Name="ReqWasteqty" Type="Int32" />
+    <Property Name="SalesNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReqQty" Type="Int32" />
+    <Property Name="BalQtyReq" Type="Int32" />
+    <Property Name="Misytd" Type="Int32" />
+    <Property Name="MisQtyIssued" Type="Int32" />
+    <Property Name="MisBalQty" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MatIssueSlip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MrsNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Job" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Capacity" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="QtyInPiece" Type="Int32" />
+    <Property Name="BalanceQty" Type="Int32" />
+    <Property Name="DateCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BomNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="IssueQty" Type="Int32" />
+    <Property Name="ytd" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MatPlanning">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MatName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="QtyReq" Type="Int32" Nullable="false" />
+    <Property Name="QtyInStock" Type="Int32" />
+    <Property Name="MrsNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="MrsWastQty" Type="Int32" />
+    <Property Name="MrsReqWastQty" Type="Int32" />
+    <Property Name="MrsReqQty" Type="Int32" />
+    <Property Name="MrsBalanceQtyRequired" Type="Int32" />
+    <Property Name="SalesNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QtyToPurchase" Type="Int32" />
+    <Property Name="IsPoCreated" Type="Int32" />
+    <Property Name="WasteQty" Type="Int32" />
+    <Property Name="QtyAfterWast" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ModelMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Model" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="POType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShortCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PurchaseOrderSummary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UOM_1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Int32" Nullable="false" />
+    <Property Name="GrossAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="GrossTotal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Fright" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NetAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PurchaseId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="Sac" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="Rate" Type="Int32" />
+    <Property Name="GstAmount" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="GstTotal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="EntryDate" Type="DateTime" Precision="3" />
+    <Property Name="PoType" Type="Int32" />
+  </EntityType>
+  <EntityType Name="QualityCheck">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mat1" Type="Int32" />
+    <Property Name="Mat2" Type="Int32" />
+    <Property Name="Mat3" Type="Int32" />
+    <Property Name="Mat4" Type="Int32" />
+    <Property Name="Mat5" Type="Int32" />
+    <Property Name="Mat6" Type="Int32" />
+    <Property Name="Mat7" Type="Int32" />
+    <Property Name="Mat8" Type="Int32" />
+    <Property Name="Mat9" Type="Int32" />
+    <Property Name="Mat10" Type="Int32" />
+    <Property Name="ReworkPass" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="QcPass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QcNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WipNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="RoleMaterialCreation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UOM_1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QUOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="UOM_2" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SAC_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Int32" />
+    <Property Name="Stock" Type="Int32" />
+    <Property Name="UpdatedStock" Type="Int32" />
+    <Property Name="IsMinMax" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Max" Type="Int32" />
+    <Property Name="Min" Type="Int32" />
+  </EntityType>
+  <EntityType Name="SalesOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentTerm" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreditP" Type="Int32" />
+    <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="CPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Int32" />
+    <Property Name="Stock" Type="Int32" />
+    <Property Name="SoQty" Type="Int32" />
+    <Property Name="Amount" Type="Int32" />
+    <Property Name="GrossAmt" Type="Int32" />
+    <Property Name="TotalAmt" Type="Int32" />
+    <Property Name="TotalGrossAmt" Type="Int32" />
+    <Property Name="Cid" Type="Int32" />
+    <Property Name="SalesOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QtyToFreez" Type="Int32" />
+    <Property Name="QtyTopProduce" Type="Int32" />
+    <Property Name="IsCreated" Type="Boolean" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsPlanned" Type="Boolean" />
+    <Property Name="IsMatIssue" Type="Boolean" />
+    <Property Name="IsMatRequsite" Type="Boolean" />
+    <Property Name="UpdatedQtyToProduce" Type="Int32" />
+  </EntityType>
+  <EntityType Name="SalesOrdersPacking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CellType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Capacity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IndivisualPacking" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QtyIndivisual" Type="Int32" />
+    <Property Name="BoxPacking" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="QtyBox" Type="Int32" />
+    <Property Name="ReqBox" Type="Int32" />
+    <Property Name="QtyToProduce" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SalesOrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="JobNo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="PackingTypeId" Type="Int32" />
+    <Property Name="PackingTypeQty" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StatusYesNo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StockTable">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Location" Type="Int32" Nullable="false" />
+    <Property Name="WipNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mat1" Type="Int32" Nullable="false" />
+    <Property Name="Mat2" Type="Int32" Nullable="false" />
+    <Property Name="Mat3" Type="Int32" Nullable="false" />
+    <Property Name="Mat4" Type="Int32" Nullable="false" />
+    <Property Name="Mat5" Type="Int32" Nullable="false" />
+    <Property Name="Mat6" Type="Int32" Nullable="false" />
+    <Property Name="Mat7" Type="Int32" Nullable="false" />
+    <Property Name="Mat8" Type="Int32" Nullable="false" />
+    <Property Name="Mat9" Type="Int32" Nullable="false" />
+    <Property Name="Mat10" Type="Int32" Nullable="false" />
+    <Property Name="QcNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QcPass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Rework" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QcRework" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="IndivisualPacking" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="BoxPacking" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="PGI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ChallanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="challanDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SalesOrderId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ProdSerialNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SuplierType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SuplierType1" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CustomerMasters" Relationship="Self.FK_CustomerMasters_SuplierTypesIsd" FromRole="SuplierTypes" ToRole="CustomerMasters" />
+    <NavigationProperty Name="VendorMasters" Relationship="Self.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="SuplierTypes" ToRole="VendorMaster" />
+  </EntityType>
+  <EntityType Name="VendorMaster">
+    <Key>
+      <PropertyRef Name="S_No" />
+    </Key>
+    <Property Name="S_No" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VendorCode" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ContactPerson" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorAddress" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="Int32" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SuplierType" Relationship="Self.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="VendorMaster" ToRole="SuplierTypes" />
+  </EntityType>
+  <EntityType Name="WIP">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MatName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="StanderdConsuption" Type="Int32" Nullable="false" />
+    <Property Name="ActualConsuption" Type="Int32" Nullable="false" />
+    <Property Name="WastQty" Type="Int32" Nullable="false" />
+    <Property Name="WipNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BomNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="jobNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QtyAtLocation" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_CustomerMasters_CustomerTypes">
+    <End Role="CustomerTypes" Type="Self.CustomerType" Multiplicity="0..1" />
+    <End Role="CustomerMasters" Type="Self.CustomerMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CustomerTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerMasters">
+        <PropertyRef Name="CustTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CustomerMasters_SuplierTypesIsd">
+    <End Role="SuplierTypes" Type="Self.SuplierType" Multiplicity="1" />
+    <End Role="CustomerMasters" Type="Self.CustomerMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerMasters">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VendorMaster_VendorMasterSuplierTypes">
+    <End Role="SuplierTypes" Type="Self.SuplierType" Multiplicity="1" />
+    <End Role="VendorMaster" Type="Self.VendorMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VendorMaster">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CapitaplusEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BillOfMats" EntityType="Self.BillOfMat" />
+    <EntitySet Name="BrandMasters" EntityType="Self.BrandMaster" />
+    <EntitySet Name="CellTypeMasters" EntityType="Self.CellTypeMaster" />
+    <EntitySet Name="CheckMatToDisplays" EntityType="Self.CheckMatToDisplay" />
+    <EntitySet Name="ColorMasters" EntityType="Self.ColorMaster" />
+    <EntitySet Name="CustomerMasters" EntityType="Self.CustomerMaster" />
+    <EntitySet Name="CustomerTypes" EntityType="Self.CustomerType" />
+    <EntitySet Name="DeliverySchedules" EntityType="Self.DeliverySchedule" />
+    <EntitySet Name="FGstocks" EntityType="Self.FGstock" />
+    <EntitySet Name="FinishedGoods" EntityType="Self.FinishedGood" />
+    <EntitySet Name="Grns" EntityType="Self.Grn" />
+    <EntitySet Name="JobSheets" EntityType="Self.JobSheet" />
+    <EntitySet Name="MasterPackingTypes" EntityType="Self.MasterPackingType" />
+    <EntitySet Name="MaterialRequsitionSlips" EntityType="Self.MaterialRequsitionSlip" />
+    <EntitySet Name="MatIssueSlips" EntityType="Self.MatIssueSlip" />
+    <EntitySet Name="MatPlannings" EntityType="Self.MatPlanning" />
+    <EntitySet Name="ModelMasters" EntityType="Self.ModelMaster" />
+    <EntitySet Name="POTypes" EntityType="Self.POType" />
+    <EntitySet Name="ProductMasters" EntityType="Self.ProductMaster" />
+    <EntitySet Name="PurchaseOrderSummaries" EntityType="Self.PurchaseOrderSummary" />
+    <EntitySet Name="QualityChecks" EntityType="Self.QualityCheck" />
+    <EntitySet Name="RoleMaterialCreations" EntityType="Self.RoleMaterialCreation" />
+    <EntitySet Name="SalesOrders" EntityType="Self.SalesOrder" />
+    <EntitySet Name="SalesOrdersPackings" EntityType="Self.SalesOrdersPacking" />
+    <EntitySet Name="StatusYesNoes" EntityType="Self.StatusYesNo" />
+    <EntitySet Name="StockTables" EntityType="Self.StockTable" />
+    <EntitySet Name="SuplierTypes" EntityType="Self.SuplierType" />
+    <EntitySet Name="VendorMasters" EntityType="Self.VendorMaster" />
+    <EntitySet Name="WIPs" EntityType="Self.WIP" />
+    <AssociationSet Name="FK_CustomerMasters_CustomerTypes" Association="Self.FK_CustomerMasters_CustomerTypes">
+      <End Role="CustomerTypes" EntitySet="CustomerTypes" />
+      <End Role="CustomerMasters" EntitySet="CustomerMasters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CustomerMasters_SuplierTypesIsd" Association="Self.FK_CustomerMasters_SuplierTypesIsd">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="CustomerMasters" EntitySet="CustomerMasters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VendorMaster_VendorMasterSuplierTypes" Association="Self.FK_VendorMaster_VendorMasterSuplierTypes">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="VendorMaster" EntitySet="VendorMasters" />
+    </AssociationSet>
+    <FunctionImport Name="GetAllFromFg" ReturnType="Collection(CapitaplusModel.GetAllFromFg_Result)" />
+    <FunctionImport Name="getAllTypeQtyFromMatPlanning" ReturnType="Collection(CapitaplusModel.getAllTypeQtyFromMatPlanning_Result)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getjobsheet" ReturnType="Collection(CapitaplusModel.getjobsheet_Result)" />
+    <FunctionImport Name="sp_AddBom">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="MaterialName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="masterCode" Mode="In" Type="String" />
+      <Parameter Name="Qty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddCheckMat">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="TQty" Mode="In" Type="Int32" />
+      <Parameter Name="brand" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddCustomerSalesOrder">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="orderType" Mode="In" Type="String" />
+      <Parameter Name="PaymentTerm" Mode="In" Type="String" />
+      <Parameter Name="CreditPeriod" Mode="In" Type="Int32" />
+      <Parameter Name="custId" Mode="In" Type="Int32" />
+      <Parameter Name="customerName" Mode="In" Type="String" />
+      <Parameter Name="Address" Mode="In" Type="String" />
+      <Parameter Name="contactNo" Mode="In" Type="String" />
+      <Parameter Name="contactPer" Mode="In" Type="String" />
+      <Parameter Name="brand" Mode="In" Type="String" />
+      <Parameter Name="soQty" Mode="In" Type="Int32" />
+      <Parameter Name="stock" Mode="In" Type="Int32" />
+      <Parameter Name="Amount" Mode="In" Type="Int32" />
+      <Parameter Name="totalAmt" Mode="In" Type="Int32" />
+      <Parameter Name="grossAmt" Mode="In" Type="Int32" />
+      <Parameter Name="totalGrossAmt" Mode="In" Type="Int32" />
+      <Parameter Name="rate" Mode="In" Type="Int32" />
+      <Parameter Name="updatedProduceQty" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="salesOrderNo" Mode="In" Type="String" />
+      <Parameter Name="qtytofreez" Mode="In" Type="Int32" />
+      <Parameter Name="qtytoproduce" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddDeliverySchedule">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="custId" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="DeliveryDate" Mode="In" Type="String" />
+      <Parameter Name="AddressDelivery" Mode="In" Type="String" />
+      <Parameter Name="QtyDelivery" Mode="In" Type="Int32" />
+      <Parameter Name="salesOrderNo" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddFgGoods">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="customerName" Mode="In" Type="String" />
+      <Parameter Name="brand" Mode="In" Type="String" />
+      <Parameter Name="stock" Mode="In" Type="Int32" />
+      <Parameter Name="selfstock" Mode="In" Type="String" />
+      <Parameter Name="stockfrezz" Mode="In" Type="Int32" />
+      <Parameter Name="stockType" Mode="In" Type="String" />
+      <Parameter Name="trfselg" Mode="In" Type="String" />
+      <Parameter Name="rate" Mode="In" Type="Int32" />
+      <Parameter Name="max" Mode="In" Type="Int32" />
+      <Parameter Name="min" Mode="In" Type="Int32" />
+      <Parameter Name="gst" Mode="In" Type="Int32" />
+      <Parameter Name="cid" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="shortProCode" Mode="In" Type="String" />
+      <Parameter Name="shortColorCode" Mode="In" Type="String" />
+      <Parameter Name="shortBrandCode" Mode="In" Type="String" />
+      <Parameter Name="sac" Mode="In" Type="String" />
+      <Parameter Name="uom" Mode="In" Type="String" />
+      <Parameter Name="IsMinMax" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddFGStocks" ReturnType="Collection(Int32)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="orderType" Mode="In" Type="String" />
+      <Parameter Name="PaymentTerm" Mode="In" Type="String" />
+      <Parameter Name="CreditPeriod" Mode="In" Type="String" />
+      <Parameter Name="Cid" Mode="In" Type="Int32" />
+      <Parameter Name="customerName" Mode="In" Type="String" />
+      <Parameter Name="Address" Mode="In" Type="String" />
+      <Parameter Name="contactNo" Mode="In" Type="String" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="Qty" Mode="In" Type="Int32" />
+      <Parameter Name="brand" Mode="In" Type="String" />
+      <Parameter Name="rate" Mode="In" Type="String" />
+      <Parameter Name="TQtyProduce" Mode="In" Type="Int32" />
+      <Parameter Name="fgInStockt" Mode="In" Type="Int32" />
+      <Parameter Name="qtytopro" Mode="In" Type="Int32" />
+      <Parameter Name="qtyToFreez" Mode="In" Type="Int32" />
+      <Parameter Name="IsFreez" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddGrnOrder">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="MaterialName" Mode="In" Type="String" />
+      <Parameter Name="UOM1" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="Qty" Mode="In" Type="Int32" />
+      <Parameter Name="recive" Mode="In" Type="Int32" />
+      <Parameter Name="Amount" Mode="In" Type="Int32" />
+      <Parameter Name="vendorN" Mode="In" Type="String" />
+      <Parameter Name="vendorId" Mode="In" Type="Int32" />
+      <Parameter Name="PurchaseId" Mode="In" Type="String" />
+      <Parameter Name="grnId" Mode="In" Type="String" />
+      <Parameter Name="entryDate" Mode="In" Type="DateTime" />
+      <Parameter Name="recieveDate" Mode="In" Type="DateTime" />
+      <Parameter Name="gateno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddJobSheet">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="MaterialName" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="salesNo" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="brand" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="Qtytopro" Mode="In" Type="Int32" />
+      <Parameter Name="qtyinpic" Mode="In" Type="String" />
+      <Parameter Name="totalQty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddMatIssueSlip">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="mrsno" Mode="In" Type="String" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="QtyinPiece" Mode="In" Type="Int32" />
+      <Parameter Name="ytd" Mode="In" Type="Int32" />
+      <Parameter Name="balQty" Mode="In" Type="Int32" />
+      <Parameter Name="issueQty" Mode="In" Type="Int32" />
+      <Parameter Name="date" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddMis">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="TQty" Mode="In" Type="Int32" />
+      <Parameter Name="Qtyreq" Mode="In" Type="Int32" />
+      <Parameter Name="qtyinstock" Mode="In" Type="Int32" />
+      <Parameter Name="qtytopro" Mode="In" Type="Int32" />
+      <Parameter Name="mrsno" Mode="In" Type="String" />
+      <Parameter Name="waste" Mode="In" Type="Int32" />
+      <Parameter Name="qtyAfterWsste" Mode="In" Type="Int32" />
+      <Parameter Name="salesno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddMislip">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="sales" Mode="In" Type="String" />
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="TQty" Mode="In" Type="Int32" />
+      <Parameter Name="ActualQty" Mode="In" Type="Int32" />
+      <Parameter Name="wastage" Mode="In" Type="Int32" />
+      <Parameter Name="ReqWasteqty" Mode="In" Type="Int32" />
+      <Parameter Name="ReqQty" Mode="In" Type="Int32" />
+      <Parameter Name="BalQtyReq" Mode="In" Type="Int32" />
+      <Parameter Name="mrsno" Mode="In" Type="String" />
+      <Parameter Name="dates" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddPurchaseOrder">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="MaterialName" Mode="In" Type="String" />
+      <Parameter Name="MaterialGroup" Mode="In" Type="String" />
+      <Parameter Name="UOM1" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="Qty" Mode="In" Type="Int32" />
+      <Parameter Name="sac" Mode="In" Type="String" />
+      <Parameter Name="Amount" Mode="In" Type="Int32" />
+      <Parameter Name="fridge" Mode="In" Type="Int32" />
+      <Parameter Name="GrossAmount" Mode="In" Type="String" />
+      <Parameter Name="GrossTotal" Mode="In" Type="String" />
+      <Parameter Name="NetAmount" Mode="In" Type="String" />
+      <Parameter Name="gstAmt" Mode="In" Type="Int32" />
+      <Parameter Name="gstTotal" Mode="In" Type="Int32" />
+      <Parameter Name="vendorN" Mode="In" Type="String" />
+      <Parameter Name="vendorId" Mode="In" Type="Int32" />
+      <Parameter Name="PurchaseId" Mode="In" Type="String" />
+      <Parameter Name="rate" Mode="In" Type="Int32" />
+      <Parameter Name="quantity" Mode="In" Type="Int32" />
+      <Parameter Name="potype" Mode="In" Type="Int32" />
+      <Parameter Name="entyDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddQualityCheck" ReturnType="Collection(Int32)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="BomNo" Mode="In" Type="String" />
+      <Parameter Name="ProductCode" Mode="In" Type="String" />
+      <Parameter Name="ReworkPass" Mode="In" Type="String" />
+      <Parameter Name="mat1" Mode="In" Type="Int32" />
+      <Parameter Name="mat2" Mode="In" Type="Int32" />
+      <Parameter Name="mat3" Mode="In" Type="Int32" />
+      <Parameter Name="mat4" Mode="In" Type="Int32" />
+      <Parameter Name="mat5" Mode="In" Type="Int32" />
+      <Parameter Name="mat6" Mode="In" Type="Int32" />
+      <Parameter Name="mat7" Mode="In" Type="Int32" />
+      <Parameter Name="mat8" Mode="In" Type="Int32" />
+      <Parameter Name="mat9" Mode="In" Type="Int32" />
+      <Parameter Name="mat10" Mode="In" Type="Int32" />
+      <Parameter Name="qcpass" Mode="In" Type="String" />
+      <Parameter Name="qcNo" Mode="In" Type="String" />
+      <Parameter Name="wip" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddSalesOrder">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="custId" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="remark" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="TQtyPro" Mode="In" Type="Int32" />
+      <Parameter Name="IndivisualPacking" Mode="In" Type="String" />
+      <Parameter Name="QtyIndivisual" Mode="In" Type="Int32" />
+      <Parameter Name="BoxPacking" Mode="In" Type="String" />
+      <Parameter Name="QtyBox" Mode="In" Type="Int32" />
+      <Parameter Name="ReqBox" Mode="In" Type="Int32" />
+      <Parameter Name="pacTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="salesOrderNo" Mode="In" Type="String" />
+      <Parameter Name="pacTypeQty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddStockTable">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="location" Mode="In" Type="String" />
+      <Parameter Name="procode" Mode="In" Type="String" />
+      <Parameter Name="mat1" Mode="In" Type="String" />
+      <Parameter Name="mat2" Mode="In" Type="String" />
+      <Parameter Name="mat3" Mode="In" Type="String" />
+      <Parameter Name="mat4" Mode="In" Type="String" />
+      <Parameter Name="mat5" Mode="In" Type="String" />
+      <Parameter Name="mat6" Mode="In" Type="String" />
+      <Parameter Name="mat7" Mode="In" Type="String" />
+      <Parameter Name="mat8" Mode="In" Type="String" />
+      <Parameter Name="mat9" Mode="In" Type="String" />
+      <Parameter Name="mat10" Mode="In" Type="String" />
+      <Parameter Name="qcno" Mode="In" Type="String" />
+      <Parameter Name="qcpass" Mode="In" Type="String" />
+      <Parameter Name="rework" Mode="In" Type="String" />
+      <Parameter Name="qcrework" Mode="In" Type="String" />
+      <Parameter Name="custNo" Mode="In" Type="String" />
+      <Parameter Name="salesId" Mode="In" Type="String" />
+      <Parameter Name="prodSerialNo" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AddWIP">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Code" Mode="In" Type="String" />
+      <Parameter Name="productName" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+      <Parameter Name="Capacity_AMH" Mode="In" Type="String" />
+      <Parameter Name="Color" Mode="In" Type="String" />
+      <Parameter Name="Model" Mode="In" Type="String" />
+      <Parameter Name="TQty" Mode="In" Type="Int32" />
+      <Parameter Name="sc" Mode="In" Type="Int32" />
+      <Parameter Name="ac" Mode="In" Type="Int32" />
+      <Parameter Name="wastQty" Mode="In" Type="Int32" />
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="date" Mode="In" Type="String" />
+      <Parameter Name="bom" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="QtyAtLocation" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AgaintReorderTypwRM" ReturnType="Collection(CapitaplusModel.sp_AgaintReorderTypwRM_Result)" />
+    <FunctionImport Name="sp_CheckLocationfromStockTable" ReturnType="Collection(Int32)">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="bom" Mode="In" Type="String" />
+      <Parameter Name="wip" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_geMatIssueSlip" ReturnType="Collection(CapitaplusModel.sp_geMatIssueSlip_Result)" />
+    <FunctionImport Name="sp_getAllBomOnMasterProCode" ReturnType="Collection(CapitaplusModel.sp_getAllBomOnMasterProCode_Result)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getAllBomOnMasterProCodeNoId" ReturnType="Collection(String)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getAllFromMatRequsitionBymrsNo" ReturnType="Collection(CapitaplusModel.sp_getAllFromMatRequsitionBymrsNo_Result)">
+      <Parameter Name="mrsId" Mode="In" Type="String" />
+      <Parameter Name="date" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getAppCode" ReturnType="Collection(CapitaplusModel.sp_getAppCode_Result)" />
+    <FunctionImport Name="sp_getBomDetails" ReturnType="Collection(String)">
+      <Parameter Name="bomcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getBOMId" ReturnType="Collection(Int32)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getBomOfLastGenerated" ReturnType="Collection(CapitaplusModel.sp_getBomOfLastGenerated_Result)" />
+    <FunctionImport Name="sp_GetCodeByMatPlanningNo" ReturnType="Collection(CapitaplusModel.sp_GetCodeByMatPlanningNo_Result)">
+      <Parameter Name="mpn" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_GetDataInMatRequsition" ReturnType="Collection(CapitaplusModel.sp_GetDataInMatRequsition_Result)" />
+    <FunctionImport Name="sp_getDataOfPakingType" ReturnType="Collection(CapitaplusModel.sp_getDataOfPakingType_Result)">
+      <Parameter Name="jobNo" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getDataOfPakingTypeBox" ReturnType="Collection(CapitaplusModel.sp_getDataOfPakingTypeBox_Result)">
+      <Parameter Name="jobNo" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getFGBYCode">
+      <Parameter Name="json" Mode="InOut" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getFGBYFGstocks">
+      <Parameter Name="json" Mode="InOut" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getGRNIdByVendorId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getIssuedQty" ReturnType="Collection(Int32)">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getJff" ReturnType="Collection(String)" />
+    <FunctionImport Name="sp_getjobId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getJobSheetInMatPlan" ReturnType="Collection(String)" />
+    <FunctionImport Name="sp_getLastJobId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getMislipId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getMrsId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getMrslipId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getPackingMaterialIfBoxPacYes" ReturnType="Collection(CapitaplusModel.sp_getPackingMaterialIfBoxPacYes_Result)">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getPackingMaterialIfIndiPacYes" ReturnType="Collection(CapitaplusModel.sp_getPackingMaterialIfIndiPacYes_Result)">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getPobyCode" ReturnType="Collection(CapitaplusModel.sp_getPobyCode_Result)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getPOIdByVendorId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getProcode" ReturnType="Collection(CapitaplusModel.sp_getProcode_Result)">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getQtyByCodeId" ReturnType="Collection(Int32)">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getQualityId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getRmCodeFromBom" ReturnType="Collection(String)">
+      <Parameter Name="masterCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getSalesOrderId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getStockFromFg" ReturnType="Collection(Int32)">
+      <Parameter Name="procode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getStockFromRawMat" ReturnType="Collection(Int32)">
+      <Parameter Name="procode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getStockId" ReturnType="Collection(Int32)">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="Cid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getStockMasterProcodeId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getStockProductCodeId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_getStockQtyFromRawMatCreation" ReturnType="Collection(Int32)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getStockQtyFromRMByCode" ReturnType="Collection(Int32)">
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getWasteFromMatPlanningInRequsition" ReturnType="Collection(CapitaplusModel.sp_getWasteFromMatPlanningInRequsition_Result)">
+      <Parameter Name="job" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_getWipId" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_IsdataAddedInMatReq" ReturnType="Collection(CapitaplusModel.sp_IsdataAddedInMatReq_Result)">
+      <Parameter Name="jonno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_IsdataAddedInMatRequsition" ReturnType="Collection(CapitaplusModel.sp_IsdataAddedInMatRequsition_Result)">
+      <Parameter Name="mrs" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_IsdataAddedInMatRequsitionAll" ReturnType="Collection(CapitaplusModel.sp_IsdataAddedInMatRequsitionAll_Result)">
+      <Parameter Name="mrs" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_IsQtyOver" ReturnType="Collection(Int32)" />
+    <FunctionImport Name="sp_lASTiNSERTEDfG" ReturnType="Collection(CapitaplusModel.sp_lASTiNSERTEDfG_Result)" />
+    <FunctionImport Name="sp_truncateFg" />
+    <FunctionImport Name="sp_TruncateZeroQty" />
+    <FunctionImport Name="sp_UniqueBOM" ReturnType="Collection(CapitaplusModel.sp_UniqueBOM_Result)" />
+    <FunctionImport Name="sp_UniqueMatPlanningForAgainstPO" ReturnType="Collection(CapitaplusModel.sp_UniqueMatPlanningForAgainstPO_Result)" />
+    <FunctionImport Name="sp_UniquePurId" ReturnType="Collection(String)">
+      <Parameter Name="venId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UniqueWipFromStocktable" ReturnType="Collection(CapitaplusModel.sp_UniqueWipFromStocktable_Result)" />
+    <FunctionImport Name="sp_UniqueWipFromStocktableForRework" ReturnType="Collection(CapitaplusModel.sp_UniqueWipFromStocktableForRework_Result)" />
+    <FunctionImport Name="sp_updateBalQty">
+      <Parameter Name="jobsno" Mode="In" Type="String" />
+      <Parameter Name="matname" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="mrswastqty" Mode="In" Type="Int32" />
+      <Parameter Name="mrsreqwastqty" Mode="In" Type="Int32" />
+      <Parameter Name="mrsreqqty" Mode="In" Type="Int32" />
+      <Parameter Name="mrsbalqtyreq" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_updateBalQtyInMRSFromMis">
+      <Parameter Name="jobsno" Mode="In" Type="String" />
+      <Parameter Name="matname" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="bomNon" Mode="In" Type="String" />
+      <Parameter Name="mrsno" Mode="In" Type="String" />
+      <Parameter Name="misYtd" Mode="In" Type="Int32" />
+      <Parameter Name="misQtyIssue" Mode="In" Type="Int32" />
+      <Parameter Name="misbalQty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateDSJobNoFromJobSheet">
+      <Parameter Name="productcode" Mode="In" Type="String" />
+      <Parameter Name="salesNo" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateIssuedQty">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="qty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdatePackingJobNoFromJobSheet">
+      <Parameter Name="productcode" Mode="In" Type="String" />
+      <Parameter Name="salesNo" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdatePoFlagInMatPlanning">
+      <Parameter Name="mpno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateQtyInFgStock">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="qty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateQtyInFinishedFoods">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="qty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockInRawMat">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="updatedQty" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockInStockTableFromSalesOrder">
+      <Parameter Name="productcode" Mode="In" Type="String" />
+      <Parameter Name="salesNo" Mode="In" Type="String" />
+      <Parameter Name="qtyToUpdate" Mode="In" Type="Int32" />
+      <Parameter Name="proSerialCode" Mode="In" Type="String" />
+      <Parameter Name="cid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTable">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="location" Mode="In" Type="Int32" />
+      <Parameter Name="fromloc" Mode="In" Type="Int32" />
+      <Parameter Name="serialno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTableAfterQCRework">
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="procodeSerialNo" Mode="In" Type="String" />
+      <Parameter Name="qcrework" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTableAfterQualitycheck">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="procodeSerialNo" Mode="In" Type="String" />
+      <Parameter Name="qCNo" Mode="In" Type="String" />
+      <Parameter Name="qcpass" Mode="In" Type="String" />
+      <Parameter Name="mat1" Mode="In" Type="Int32" />
+      <Parameter Name="mat2" Mode="In" Type="Int32" />
+      <Parameter Name="mat3" Mode="In" Type="Int32" />
+      <Parameter Name="mat4" Mode="In" Type="Int32" />
+      <Parameter Name="mat5" Mode="In" Type="Int32" />
+      <Parameter Name="mat6" Mode="In" Type="Int32" />
+      <Parameter Name="mat7" Mode="In" Type="Int32" />
+      <Parameter Name="mat8" Mode="In" Type="Int32" />
+      <Parameter Name="mat9" Mode="In" Type="Int32" />
+      <Parameter Name="mat10" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTableAfterRework">
+      <Parameter Name="wipno" Mode="In" Type="String" />
+      <Parameter Name="procodeSerialNo" Mode="In" Type="String" />
+      <Parameter Name="rework" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTableFromJobSheet">
+      <Parameter Name="productcode" Mode="In" Type="String" />
+      <Parameter Name="salesNo" Mode="In" Type="String" />
+      <Parameter Name="jobno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_UpdateStockTablePacking">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="procodeSerialNo" Mode="In" Type="String" />
+      <Parameter Name="indPac" Mode="In" Type="String" />
+      <Parameter Name="boxPac" Mode="In" Type="String" />
+      <Parameter Name="location" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateBomJobInSO">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+      <Parameter Name="salesno" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateQtyInJobSheet">
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="remQty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateQtyInJobSheets">
+      <Parameter Name="jobno" Mode="In" Type="String" />
+      <Parameter Name="salesId" Mode="In" Type="String" />
+      <Parameter Name="RemQty" Mode="In" Type="Int32" />
+      <Parameter Name="procode" Mode="In" Type="String" />
+      <Parameter Name="bomno" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateQtyInPo">
+      <Parameter Name="vendorId" Mode="In" Type="Int32" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="RemQty" Mode="In" Type="Int32" />
+      <Parameter Name="purId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateQtyInSOPacking">
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="remQty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateQtyToProduceInSalesOrder">
+      <Parameter Name="salesOrder" Mode="In" Type="String" />
+      <Parameter Name="ProductCode" Mode="In" Type="String" />
+      <Parameter Name="qty" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateStatusInSalesOrder">
+      <Parameter Name="sono" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="cid" Mode="In" Type="Int32" />
+      <Parameter Name="status" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateStatusInSalesOrderFromMatIssueSlip">
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bom" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateStatusInSalesOrderFromMatPlanning">
+      <Parameter Name="sono" Mode="In" Type="String" />
+      <Parameter Name="code" Mode="In" Type="String" />
+      <Parameter Name="jonno" Mode="In" Type="String" />
+      <Parameter Name="bom" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="Boolean" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="GetAllFromFg_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="OrderType" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="PaymentTerm" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="CreditPeriod" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Address" Nullable="false" />
+    <Property Type="String" Name="ContactNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="Celltype" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="500" />
+    <Property Type="String" Name="Brand" Nullable="false" MaxLength="500" />
+    <Property Type="Int32" Name="Quantity" Nullable="false" />
+    <Property Type="Int32" Name="FgInStock" Nullable="false" />
+    <Property Type="Boolean" Name="isFreez" Nullable="false" />
+    <Property Type="Int32" Name="QtyToFreez" Nullable="false" />
+    <Property Type="Int32" Name="QtyToProduce" Nullable="false" />
+    <Property Type="Int32" Name="Cid" Nullable="false" />
+    <Property Type="String" Name="Rate" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="TQtyProduce" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getAllTypeQtyFromMatPlanning_Result">
+    <Property Type="Int32" Name="QtyAfterWast" Nullable="true" />
+    <Property Type="Int32" Name="QtyToPurchase" Nullable="true" />
+    <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getjobsheet_Result">
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="CellType" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Brand" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="QtyToPro" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_AgaintReorderTypwRM_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="MaterialName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MaterialGroup" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="UOM_1" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="QUOM" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="UOM_2" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Capacity_AMH" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="SAC_CODE" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Rate" Nullable="true" />
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+    <Property Type="Int32" Name="UpdatedStock" Nullable="true" />
+    <Property Type="String" Name="IsMinMax" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="Max" Nullable="true" />
+    <Property Type="Int32" Name="Min" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_geMatIssueSlip_Result">
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="mrsNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="CreatedDate" Nullable="true" MaxLength="50" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getAllBomOnMasterProCode_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="RmCode" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="String" Name="MasterProCode" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="sp_getAllFromMatRequsitionBymrsNo_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="Int32" Name="ActualQty" Nullable="false" />
+    <Property Type="String" Name="mrsNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="CreatedDate" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="wastage" Nullable="true" />
+    <Property Type="Int32" Name="ReqWasteqty" Nullable="true" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="ReqQty" Nullable="true" />
+    <Property Type="Int32" Name="BalQtyReq" Nullable="true" />
+    <Property Type="Int32" Name="Misytd" Nullable="true" />
+    <Property Type="Int32" Name="MisQtyIssued" Nullable="true" />
+    <Property Type="Int32" Name="MisBalQty" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getAppCode_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="sp_getBomOfLastGenerated_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="MasterProCode" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="sp_GetCodeByMatPlanningNo_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_GetDataInMatRequsition_Result">
+    <Property Type="String" Name="SalesOrderNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="JobNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ProductCode" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ProductName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Type" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="QtyTopProduce" Nullable="true" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getDataOfPakingType_Result">
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="PackingTypeQty" Nullable="true" />
+    <Property Type="Int32" Name="QtyIndivisual" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getDataOfPakingTypeBox_Result">
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="PackingTypeQty" Nullable="true" />
+    <Property Type="Int32" Name="QtyIndivisual" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getPackingMaterialIfBoxPacYes_Result">
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="sp_getPackingMaterialIfIndiPacYes_Result">
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="sp_getPobyCode_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="MaterialName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MaterialGroup" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="UOM_1" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="QUOM" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="UOM_2" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Capacity_AMH" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="SAC_CODE" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Rate" Nullable="true" />
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+    <Property Type="Int32" Name="UpdatedStock" Nullable="true" />
+    <Property Type="String" Name="IsMinMax" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="Max" Nullable="true" />
+    <Property Type="Int32" Name="Min" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_getProcode_Result">
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="WipNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Mat1" Nullable="false" />
+    <Property Type="Int32" Name="Mat2" Nullable="false" />
+    <Property Type="Int32" Name="Mat3" Nullable="false" />
+    <Property Type="Int32" Name="Mat4" Nullable="false" />
+    <Property Type="Int32" Name="Mat5" Nullable="false" />
+    <Property Type="Int32" Name="Mat6" Nullable="false" />
+    <Property Type="Int32" Name="Mat7" Nullable="false" />
+    <Property Type="Int32" Name="Mat8" Nullable="false" />
+    <Property Type="Int32" Name="Mat9" Nullable="false" />
+    <Property Type="Int32" Name="Mat10" Nullable="false" />
+    <Property Type="String" Name="QcPass" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_getWasteFromMatPlanningInRequsition_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="Int32" Name="QtyReq" Nullable="false" />
+    <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+    <Property Type="String" Name="MrsNo" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="MrsWastQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsReqWastQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsReqQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsBalanceQtyRequired" Nullable="true" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="QtyToPurchase" Nullable="true" />
+    <Property Type="Int32" Name="IsPoCreated" Nullable="true" />
+    <Property Type="Int32" Name="WasteQty" Nullable="true" />
+    <Property Type="Int32" Name="QtyAfterWast" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_IsdataAddedInMatReq_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="Int32" Name="QtyReq" Nullable="false" />
+    <Property Type="Int32" Name="QtyInStock" Nullable="true" />
+    <Property Type="String" Name="MrsNo" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="MrsWastQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsReqWastQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsReqQty" Nullable="true" />
+    <Property Type="Int32" Name="MrsBalanceQtyRequired" Nullable="true" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="QtyToPurchase" Nullable="true" />
+    <Property Type="Int32" Name="IsPoCreated" Nullable="true" />
+    <Property Type="Int32" Name="WasteQty" Nullable="true" />
+    <Property Type="Int32" Name="QtyAfterWast" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_IsdataAddedInMatRequsition_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="Int32" Name="ActualQty" Nullable="false" />
+    <Property Type="String" Name="mrsNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="CreatedDate" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="wastage" Nullable="true" />
+    <Property Type="Int32" Name="ReqWasteqty" Nullable="true" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="ReqQty" Nullable="true" />
+    <Property Type="Int32" Name="BalQtyReq" Nullable="true" />
+    <Property Type="Int32" Name="Misytd" Nullable="true" />
+    <Property Type="Int32" Name="MisQtyIssued" Nullable="true" />
+    <Property Type="Int32" Name="MisBalQty" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_IsdataAddedInMatRequsitionAll_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Code" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="MatName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Model" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Qty" Nullable="false" />
+    <Property Type="Int32" Name="ActualQty" Nullable="false" />
+    <Property Type="String" Name="mrsNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="CreatedDate" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="wastage" Nullable="true" />
+    <Property Type="Int32" Name="ReqWasteqty" Nullable="true" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="ReqQty" Nullable="true" />
+    <Property Type="Int32" Name="BalQtyReq" Nullable="true" />
+    <Property Type="Int32" Name="Misytd" Nullable="true" />
+    <Property Type="Int32" Name="MisQtyIssued" Nullable="true" />
+    <Property Type="Int32" Name="MisBalQty" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_lASTiNSERTEDfG_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ShortProductName" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="ModelNo" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="CellType" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="Capacity" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="ShortColorCode" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Brand" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="ShortBrandCode" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="SAC" Nullable="false" MaxLength="20" />
+    <Property Type="Int32" Name="GST" Nullable="false" />
+    <Property Type="String" Name="UOM" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="MIN" Nullable="true" />
+    <Property Type="Int32" Name="Max" Nullable="true" />
+    <Property Type="Int32" Name="Stock" Nullable="true" />
+    <Property Type="Int32" Name="StockFreez" Nullable="true" />
+    <Property Type="Int32" Name="SelfStock" Nullable="true" />
+    <Property Type="String" Name="TRfSelf" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="Rate" Nullable="true" />
+    <Property Type="String" Name="StockType" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="CustomerName" Nullable="true" MaxLength="40" />
+    <Property Type="String" Name="IsMinMax" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="Cid" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_UniqueBOM_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="MasterProCode" Nullable="false" MaxLength="100" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_UniqueMatPlanningForAgainstPO_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="MrsNo" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="SalesNo" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="QtyToPurchase" Nullable="true" />
+    <Property Type="Int32" Name="IsPoCreated" Nullable="true" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_UniqueWipFromStocktable_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="WipNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_UniqueWipFromStocktableForRework_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="WipNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="JobNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="BomNo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProductCode" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="ProdSerialNo" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="QcPass" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Rework" Nullable="false" MaxLength="50" />
+    <Property Type="Int64" Name="RowsNo" Nullable="true" />
+  </ComplexType>
+</Schema>

@@ -1,0 +1,703 @@
+﻿@model IEnumerable<Capitaplus.Models.sp_UniqueWipFromStocktable_Result>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #loading-image{
+  position:fixed;
+  top:450px;
+  right:650px;
+  width:25%;
+  height:25%;
+  background-color:#666; 
+  background-repeat:no-repeat;
+  background-position:center;
+  z-index:10000000;
+  opacity: 0.9;
+  filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+</style>
+<h2>Quality Check</h2>
+ 
+    <img id="loading-image"  src="~/Loader/Spinner-1s-70px.gif" style="display:none; width:40px;height:40px;" />
+ 
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WipNo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.BomNo)
+            </th>
+            <th>
+                <label>Product Code</label>
+            </th>
+            <th>
+                <label>Product Name</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobNo)
+            </th>
+            <th class="qtys">
+                <lable>Quantity</lable>
+            </th>
+
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (item.RowsNo == 1)
+            {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WipNo)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.BomNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductCode)
+        </td>
+        @if (item.ProductCode.Contains("CHR"))
+        {
+            <td>
+                CHARGER
+            </td>
+        }
+        @if (item.ProductCode.Contains("PB"))
+        {
+            <td>
+                POWER BANK
+            </td>
+        }
+        @if (item.ProductCode.Contains("BAT"))
+        {
+            <td>
+                BATTERY
+            </td>
+        }
+        @if (item.ProductCode.Contains("ACC"))
+        {
+            <td>
+                ACCESSORIES
+            </td>
+        }
+        @if (item.ProductCode.Contains("HOU"))
+        {
+            <td>
+                HOUSING
+            </td>
+        }
+        @if (item.ProductCode.Contains("BUT"))
+        {
+            <td>
+                BUTTON
+            </td>
+        }
+        @if (item.ProductCode.Contains("TWO_IN_ONE"))
+        {
+    <td>
+        TWO_IN_ONE
+    </td>
+        }
+        <td>
+            @Html.DisplayFor(modelItem => item.JobNo)
+        </td>
+        <td>
+            <input type="number" style="width:95px;" id="wipqty" class="form-control" readonly="readonly" value=".." />
+        </td>
+
+        <td>
+            <input type="button" id="btnadd" class="btn btn-primary" value="Add" />
+        </td>
+    </tr>
+            }
+
+        }
+
+    </table>
+ 
+@*Produce Based On WIPQtY*@
+<h2 class="si">Selected Item</h2>
+<table onload="loadingAjax('myDiv');" class="table tablelist table-striped">
+    <thead>
+        
+    </thead>
+    <tbody></tbody>
+    
+</table>
+ <button id="save" class="btn btn-primary" type="button">Save</button>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var salesId;
+            var bomno;
+            var QcNo;
+            var wipId
+            var procode;
+            var count = 0;
+            $('.tablelist').hide();
+            $('.qtys').hide();
+            $('#wipqty').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            $(document).on('click', '#btnadd', function () {  
+                $("#loading-image").show();
+                let code = $(this).closest('tr');
+                wipId = $("TD", code).eq(0).html().trim();
+                salesId = $("TD", code).eq(4).html().trim();
+                procode = $("TD", code).eq(2).html().trim();
+                bomno = $("TD", code).eq(1).html().trim();
+
+                 //getMat Name By Bom
+                $.ajax({
+                    url: "/QualityCheck/GetMatNameFromBom",
+                    data: { bomno: bomno },
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (results) {
+                     
+                        if (results.Data[0] == undefined) {
+                            results.Data[0] = "X";
+                        }
+                        if (results.Data[1] == undefined) {
+                            results.Data[1] = "X";
+                        }
+                        if (results.Data[2] == undefined) {
+                            results.Data[2] = "X";
+                        }
+                        if (results.Data[3] == undefined) {
+                            results.Data[3] = "X";
+                        }
+                        if (results.Data[4] == undefined) {
+                            results.Data[4] = "X";
+                        }
+                        if (results.Data[5] == undefined) {
+                            results.Data[5] = "X";
+                        }
+                        if (results.Data[6] == undefined) {
+                            results.Data[6] = "X";
+                        }
+                        if (results.Data[7] == undefined) {
+                            results.Data[7] = "X";
+                        }
+                         if (results.Data[8] == undefined) {
+                            results.Data[8] = "X";
+                        }
+                         if (results.Data[9] == undefined) {
+                            results.Data[9] = "X";
+                        }
+
+                        var thd = '<tr>';
+                        thd = '</tr>';
+                       
+                        thd += '<th>' + "Serial No" + '</th>';
+                         thd += '<th>' + results.Data[0] + '</th>';
+                        thd += '<th>' + results.Data[1] + '</th>';
+                        thd += '<th>' + results.Data[2] + '</th>';
+                        thd += '<th>' + results.Data[3] + '</th>';
+                        thd += '<th>' + results.Data[4] + '</th>';
+                        thd += '<th>' + results.Data[5] + '</th>';
+                        thd += '<th>' + results.Data[6] + '</th>';
+                        thd += '<th>' + results.Data[7] + '</th>';
+                        thd += '<th>' + results.Data[8] + '</th>';
+                        thd += '<th>' + results.Data[9] + '</th>'; 
+                         thd += '<th>' + "QC Pass" + '</th>';
+                        $('.tablelist').find('thead').append(thd);
+                          
+
+                    }
+
+                });
+
+
+                //check if Location Is O Or not from stock table 
+                $.ajax({
+                    url: "/QualityCheck/GetLocation",
+                    data: { jobno: salesId, bomno: bomno, wip: wipId },
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        var location = parseInt(result.trim());
+                        if (location == 2 || location == 0) {
+                            $('.tablelist').show();
+                            $('.boml').show();
+                            $(".tablelist tbody tr").remove();
+                            count = 0;
+                            $.ajax({
+                                url: "/QualityCheck/GetLastMrsId",
+                                type: "GET",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (results) {
+                                    QcNo = parseInt(results) + 1;
+                                    $("#loading-image").hide();
+                                }
+                            });
+
+                            //Get Procode
+                            $.ajax({
+                                url: "/QualityCheck/GetProCode",
+                                data: { jobno: salesId, wip: wipId, bomno: bomno },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) {  
+                                    for (var i = 0; i < result.Data.length; i++) {  
+                                        $(".tablelist").each(function () {   
+                                            var tds = '<tr>';
+                                            jQuery.each($('tr:last', this), function () {  
+                                                tds += '<td class="wipid">' + result.Data[i].ProdSerialNo + '</td>'; 
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat1}` + '  id="mat1" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat2}` + '  id="mat2" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtywithwasts">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat3}` + '   id="mat3" class="form-control"/>' + '</td>';
+
+                                                tds += '<td class="balanceQty">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat4}` + '  id="mat4" class="form-control"/>' + '</td>';
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat5}` + ' id="mat5" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat6}` + '  id="mat6" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtywithwasts">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat7}` + '  id="mat7" class="form-control"/>' + '</td>';
+                                                tds += '<td class="balanceQty">' + '<input style="width:35px;" type="text"  value=' + `${result.Data[i].Mat8}` + ' id="mat8" class="form-control"/>' + '</td>';
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" value=' + `${result.Data[i].Mat9}` + ' id="mat9" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input type="text" style="width:35px;" value=' + `${result.Data[i].Mat10}` + '  id="mat10" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<select style="width:95px;" id="Qcpas" class="form-control"><option>Ok</option><option>Scrap</option></select>' + '</td>';
+                                                tds += '<td class="waste">' + '<input type="text" style="width:35px; display:none;" value=' + `${result.Data[i].ProdSerialNo}` + '  id="serial" class="form-control"/>' + '</td>';
+                                                 
+                                            });
+                                            tds += '</tr>'; 
+                                            if ($('tbody', this).length > 0) { 
+                                                $('tbody', this).append(tds);
+                                                $('.tablelist').show();
+                                                $('#save').show();
+                                                $('.save').show();
+                                                $('#bomlist').show();
+                                                $('.si').show();
+                                                $('#wipqty').val(result.Data.length);
+                                                $('.qtys').show();
+                                                $('#wipqty').show();
+                                                $('.tablelist tbody tr').find("input[type=text]").each(function () {
+                                                    if (this.value == 0) {
+                                                        $(this).attr('disabled', true);
+                                                    }
+                                                    if (this.value == 2) {
+                                                        $(this).closest('tr').find("#Qcpas :selected").html('Rework');
+                                                    }
+                                                });
+
+                                            } else {
+                                                $(this).append(tds);
+                                            }
+                                        });
+                                    }
+                                   
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+                        } else {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Cannot Add! Please transfer Wip To Qc',
+                                type: 'error'
+                            });
+
+                        }
+                    }
+                });
+
+               
+            }) 
+            //Save
+            $('#save').on('click', function () { 
+                $("#loading-image").show();
+                $(".tablelist tbody tr").each(function (i, el) { 
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.WipNo = wipId;
+                    item.BomNo = bomno;
+                    item.ProductCode = procode;
+                    item.Mat1 = $tds.find('#mat1', this).val();
+                    item.Mat2 = $tds.find('#mat2', this).val();
+                    item.Mat3 = $tds.find('#mat3', this).val();
+                    item.Mat4 = $tds.find('#mat4', this).val();
+                    item.Mat5 = $tds.find('#mat5', this).val();
+                    item.Mat6 = $tds.find('#mat6', this).val();
+                    item.Mat7 = $tds.find('#mat7', this).val();
+                    item.Mat8 = $tds.find('#mat8', this).val();
+                    item.Mat9 = $tds.find('#mat9', this).val();
+                    item.Mat10 = $tds.find('#mat10', this).val();
+                    item.ProdSerialNo = $tds.eq(0).html();
+                    
+                    //item.QcPass = $tds.eq(13).text().trim();
+                    item.QcPass = $tds.find('select :selected').val();
+                    item.QcNo = QcNo;
+                    $.ajax({
+                        url: "/QualityCheck/UpdateIntoQualityCheck",
+                        data: { mat1: item.Mat1,mat2: item.Mat2,mat3: item.Mat3,mat4: item.Mat4,mat5: item.Mat5,mat6: item.Mat6,mat7: item.Mat7,mat8: item.Mat8,mat9: item.Mat9,mat10: item.Mat10, code: item.ProductCode, bom: bomno, qcNo: item.QcNo, qccheck: item.QcPass, jobno: salesId, wipno: item.WipNo, procodeNo:  item.ProdSerialNo },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            count++
+                            if (count > 1)
+                                return;
+                            $.ajax({
+                                url: "/QualityCheck/GetMrsId",
+                                type: "GET",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) {
+                                    if (result.length > 0) { 
+                                        new PNotify({
+                                            title: 'Success!',
+                                            text: 'Done! Your Code Id Is: ' + result,
+                                            type: 'success'
+                                        });
+                                        $(".tablebom tbody tr").remove();
+                                        $(".tablelist tbody tr").remove();
+                                        $('.tablelist').hide();
+                                        $('#bomlist').hide();
+                                        $('#save').hide();
+                                        $('.si').hide();
+                                        $('.tablebom').hide();
+                                        $('.boml').hide();
+                                        $("#loading-image").hide();
+                                        location.href = "/QualityCheck/Index";
+                                    }
+                                }
+                            })
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+
+
+                });
+            })
+
+            //KeyUp Events
+            $(document).on('keyup', '#mat1', function () { 
+                var isAll=true;
+                let qq = $(this).val().trim();
+               
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+
+                } else if (qq >2) {
+                  alert('This Field Accept Only 1 & 2');
+                  $(this).val('1'); 
+              }
+              
+             
+            })
+            $(document).on('keyup', '#mat2', function () {
+
+
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('Rework');
+                    }
+
+
+
+
+                } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+
+            })
+            $(document).on('keyup', '#mat3', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              }  else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat4', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                  if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat5', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                  if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              }  else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat6', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                 if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat7', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                 if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat8', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                  if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              }  else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat9', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                   if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            })
+            $(document).on('keyup', '#mat10', function () {
+                var isAll = true;
+                let qq = $(this).val().trim(); 
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpas :selected").html('Ok');
+                          
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpas :selected").html("Rework");
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('Rework');
+                  }
+                 
+                  
+                  
+                  
+              } else if (qq > 2) {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+                }
+            }) 
+        })
+  
+    
+    </script>
+}

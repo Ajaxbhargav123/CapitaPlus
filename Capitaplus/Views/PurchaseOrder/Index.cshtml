@@ -1,0 +1,673 @@
+﻿@model  Capitaplus.ViewModel.purchaseVm
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type=text] {
+        width: 96px;
+    }
+
+    #txtqty {
+        width: 60px;
+    }
+
+    .jumbotron {
+        height: 10px;
+    }
+
+    .lbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+
+    .jlbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+
+
+    /*.vendorname {
+        margin-top: -50px;
+    }
+
+    .vendorAddress {
+
+    }
+
+    .contactperson {
+        margin-top: -30px;
+    }
+
+    .contactno {
+        margin-left: 780px;
+        margin-top: -75px;
+    }
+
+    .date {
+        margin-left: 780px;
+    }*/
+</style>
+<h2>Purchase Order</h2>
+<hr />
+@if (Model.vendormasterDetails != null)
+{
+    <div class="">
+        <div class="container-fluid text-center">
+            <div class="row">
+                <div class="col-4">
+                    <div class="vendorname">
+                        <label class="jlbl">Vendor Name :</label>
+                        <span id="vname">@Model.vendormasterDetails.VendorName</span>
+                    </div>
+                </div>
+                <div class="col-4">
+
+                    <div class="vendorAddress">
+                        <label class="jlbl">Vendor Address :</label>
+                        <span id="vadd">@Model.vendormasterDetails.VendorAddress</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="contactno">
+                        <label class="jlbl">Contact Name :</label>
+                        <span id="vcn">@Model.vendormasterDetails.ContactPerson</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="contactperson">
+                        <label class="jlbl">Contact No :</label>
+                        <span>9658745896</span>
+                    </div>
+
+                </div>
+                <div class="col-lg-4">
+
+                    <div class="date">
+                        <label class="jlbl">
+                            Date:
+                        </label>
+                        <span>@DateTime.Now.ToShortDateString()</span>
+                    </div>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.vendormasterDetails.S_No, new { id = "id" })
+        </div>
+        <hr />
+        <div class="row AddingTable">
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Code, new { @class = "lbl" })
+                @Html.DropDownListFor(x => x.rolematerial.Code, new SelectList(Model.rolematarials, "Id", "Code"), "Select Material Code", new { id = "codelist", @class = "form-control" })
+            </div>
+            &nbsp;&nbsp;
+
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.MaterialName, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.MaterialName, new { id = "txtmaterialName", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Type, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.Type, new { id = "txttype", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Capacity_AMH, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.Capacity_AMH, new { id = "txtcapacity", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Color, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.Color, new { id = "txtcolor", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Model, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.Model, new { id = "txtmodel", @class = "form-control", disabled = "true" })
+
+            </div>
+
+            &nbsp;&nbsp;
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.rolematerial.UOM_1, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.UOM_1, new { id = "txtuom1", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label class="lbl">Sac Code</label>
+                @Html.TextBoxFor(x => x.rolematerial.SAC_CODE, new { id = "txtsac", @class = "form-control", disabled = "true" })
+
+            </div>
+            &nbsp;&nbsp;
+
+            <div class="form-group">
+                <label class="lbl">Qty</label>
+                <input type="text" id="txtqty" class="form-control" />
+            </div>
+            &nbsp;&nbsp;
+
+            <div style="margin-left:240px" class="form-group">
+                @Html.LabelFor(x => x.rolematerial.Rate, new { @class = "lbl" })
+                @Html.TextBoxFor(x => x.rolematerial.Rate, new { id = "txtrate", @class = "form-control" })
+
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label class="lbl">GST %</label>
+                <input type="text" id="txtgstper" disabled="disabled" class="form-control" value="18" />
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label class="lbl">Amount</label>
+                <input type="text" id="txtamt" disabled="disabled" class="form-control" />
+            </div>
+            &nbsp;&nbsp;
+
+
+            <div class="form-group">
+                <label class="lbl">GST Amount</label>
+                <input type="text" id="txtgstamt" disabled="disabled" class="form-control" />
+            </div>
+
+
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label class="lbl">Gross Amount</label>
+                <input type="text" id="txtgrossamt" disabled="disabled" class="form-control" />
+
+            </div>
+
+            <input type="button" style=" margin-left:16px; margin-top:26px; height:33px;" class="btn btn-primary" id="btnadd" value="Add" />
+
+        </div>
+
+    </div>
+    <div class="row">
+        <table class="table tablelist table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>MaterialName</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>UOM-1</th>
+                    <th>Sac</th>
+                    <th>Rate</th>
+                    <th>Quantity</th>
+                    <th>Gst Amount</th>
+                    <th>Amount</th>
+                    <th>Gross Amount</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn btn-primary btn-lg save"><i class="glyphicon-import"></i>Save</button>
+    </div>
+    @*//Summary*@
+    <div class="row">
+        <div class="col-lg-8">
+
+        </div>
+        <div class="col-lg-4">
+            <div  id="sum"  class="card">
+                <div class="card-header text-center">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <b> Amount</b>
+                        </div>
+                        <div class="col-lg-4">
+                            <b>Gross Amount</b>
+                        </div>
+                        <div class="col-lg-4">
+                            <b>Gst Amount</b>
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="amt"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="grossamt"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="gstamt"></label>
+                        </div>
+                       
+                    </div>
+                  
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-1">
+
+                        </div>
+                        <div class="col-lg-4">
+                            <b>Fright</b>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="text" id="txtfright" class="form-control" />
+                        </div>
+                    </div> 
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+     
+}
+else
+{
+    <h3 class="alert alert-info">No Vendor Selected To Create Purchase Order</h3>
+}
+
+@section scripts{
+   
+    <script type="text/javascript">
+        var count = 0;
+        
+        $(document).ready(function () { 
+            var PurchaseId;
+            $('#codelist').chosen();
+            $('#sum').hide();
+            $('#sums').hide();
+            $('#fri').hide();
+            $('.table').hide();
+            $('.save').hide();
+            $('#txtgstper').val('');
+            //qty Change Event
+            $('#txtqty').keyup(function () {
+                let qty = $('#txtqty').val();
+                let rate = $('#txtrate').val();
+                let totalAmt = qty * rate;
+                $('#txtamt').val(totalAmt);
+
+                var totalAmts = $('#txtamt').val();
+
+                var gst = 18;
+                var gstAmt = totalAmt / 100;
+                var final = gstAmt * gst;
+
+                $('#txtgstamt').val(final);
+                var grossAmt = parseInt(totalAmt) + parseInt(final);
+
+                $('#txtgrossamt').val(grossAmt);
+            })
+
+            //qty Change Event
+            $('#txtrate').keyup(function () {
+                let qty = $('#txtqty').val();
+                let rate = $('#txtrate').val();
+                let totalAmt = qty * rate;
+                $('#txtamt').val(totalAmt);
+
+                var totalAmts = $('#txtamt').val();
+
+                var gst = 18;
+                var gstAmt = totalAmt / 100;
+                var final = gstAmt * gst;
+
+                $('#txtgstamt').val(final);
+                var grossAmt = parseInt(totalAmt) + parseInt(final);
+
+                $('#txtgrossamt').val(grossAmt);
+            })
+             
+            //Dropdown Change Event
+            $('#codelist').on('change', function () {
+             
+                let val = $('#codelist').val();
+                
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/RoleMaterialCreations/' + val,
+
+                    success: function (result) {
+                        console.log(result);
+                        $('#txtmaterialName').val('');
+                        $('#txttype').val('');
+                        $('#txtcapacity').val('');
+                        $('#txtcolor').val('');
+                        $('#txtmodel').val('');
+                        $('#txtuom1').val('');
+                        $('#txtsac').val('');
+                        $('#txtrate').val('');
+                        $('#txtqty').val('');
+                        let materialName = result.MaterialName;
+                        let type = result.Type;
+                        let capacity = result.Capacity_AMH;
+                        let color = result.Color;
+                        let model = result.Model;
+                        let uom1 = result.UOM_1;
+                        let sac = result.SAC_CODE;
+                        let rate = result.Rate;
+
+                        $('#txtmaterialName').val(materialName);
+                        $('#txttype').val(type);
+                        $('#txtcapacity').val(capacity);
+                        $('#txtcolor').val(color);
+                        $('#txtmodel').val(model);
+                        $('#txtuom1').val(uom1);
+                        $('#txtsac').val(sac);
+                        $('#txtrate').val(rate);
+                        $('#txtqty').focus();
+                        $('#txtgstper').val(18);
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+
+            })
+         
+        });
+        //addbtn
+        $('#btnadd').on('click', function () {
+            $.ajax({
+                url: "/PurchaseOrder/GetLastPurId",
+                timeout: 20000,
+                type: "GET",
+                ContentType: "application/json; charset=UTF-8",
+                success: function (result) {
+                      PurchaseId = parseInt(result) + 1;
+
+                },
+                error: function () {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+
+            });
+
+
+            let code = $('#codelist :selected').text();
+            let materialName = $('#txtmaterialName').val();
+            let type = $('#txttype').val();
+            let capacity = $('#txtcapacity').val();
+            let color = $('#txtcolor').val();
+            let model = $('#txtmodel').val();
+            let quantity = $('#txtqty').val();
+            let Rate = $('#txtrate').val();
+            let gstAmt = $('#txtgstamt').val();
+            let amount = $('#txtamt').val();
+            let grossamount = $('#txtgrossamt').val();
+            let uom1 = $('#txtuom1').val();
+            let sac = $('#txtsac').val();
+
+            if (code == "Select Material Code") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Select Appropriate Code',
+                    type: 'error'
+                });
+                return
+            }
+            if (quantity == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Enter Quantity',
+                    type: 'error'
+                });
+                return
+            }
+            if (Rate == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Enter Rate',
+                    type: 'error'
+                });
+                return
+            }
+             if (materialName == "") {
+                new PNotify({
+                    title: 'Error!',
+                    text: 'Please Select Another Code',
+                    type: 'error'
+                });
+                return
+            }
+             
+
+            $(".tablelist").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="code">' + code + '</td>';
+                    tds += '<td class="materialName">' + materialName + '</td>';
+                    tds += '<td class="type">' + type + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + model + '</td>';
+                    tds += '<td class="uom1">' + uom1 + '</td>';
+                    tds += '<td class="sac">' + sac + '</td>';
+                    tds += '<td class="rate">' + Rate + '</td>';
+                    tds += '<td class="quantity">' + quantity + '</td>';
+                    tds += '<td class="gstAmt">' + gstAmt + '</td>'; 
+                    tds += '<td class="amount">' + amount + '</td>';
+                    tds += '<td class="grossamount">' + grossamount + '</td> ';
+                    tds += '<td>' + '<input type="button" value="Remove" onclick="Remove(this)" class="btn btn-danger"/>' + '</td>';
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+                    $('tbody', this).append(tds);
+                    $('.table').show();
+                    $('.save').show();
+                    $('#fri').show();
+
+                    $('#txtmaterialName').val('');
+                    $('#txtcell').val('');
+                    $('#txtcapacity').val('');
+                    $('#txtcolor').val('');
+                    $('#txttype').val('');
+                    $('#txtqty').val('');
+                    $('#txtrate').val('');
+                    $('#txtamt').val('');
+                    $('#txtgrossamt').val('');
+                    $('#txtbrand').val('');
+                    $('#txtgstamt').val('');
+                    $('#txtuom').val('');
+                    $('#txtstock').val(''); 
+                    $('#txtmodel').val('');
+                    $('#txtgstper').val('');
+                    $('#txtuom1').val('');
+                    $('#txtsac').val(''); 
+                } else {
+                    $(this).append(tds);
+                }
+            });
+
+            var sum = 0;
+            // iterate through each td based on class and add the values
+            $(".amount").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+                $('#amt').text(sum);
+                $('#sum').show();
+            });
+
+            var grosssum = 0;
+            // iterate through each td based on class and add the values
+            $(".grossamount").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    grosssum += parseFloat(value);
+                }
+                $('#grossamt').text(grosssum);
+                $('#sums').show();
+            });
+
+            //Gst Total Amount
+            var GstAmtTotal = 0;
+            $(".gstAmt").each(function () {
+
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    GstAmtTotal += parseFloat(value);
+                }
+                $('#gstamt').text(GstAmtTotal);
+                $('#sums').show();
+            });
+        })
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $(".tablelist")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+
+            }
+
+            // iterate through each td based on class and add the values
+            var amt = $("TD", row).eq(9).text();
+            var total = parseInt($('#amt').text());
+
+            // add only if the value is number
+            if (!isNaN(amt) && amt.length != 0) {
+                total -= parseFloat(amt);
+            }
+            $('#amt').text(total);
+
+            var grossamt = $("TD", row).eq(10).text();
+            var grosstotal = parseInt($('#grossamt').text());
+
+            // add only if the value is number
+            if (!isNaN(grossamt) && grossamt.length != 0) {
+                grosstotal -= parseFloat(grossamt);
+            }
+            $('#grossamt').text(grosstotal);
+
+        };
+        
+        $('.save').on('click', function () {  
+            $("table tbody tr").each(function (index) {
+                var item = {};
+                let v = $('#txtfright').val();
+                let netAmt = $('#grossamt').text();
+                let grossTotal = $('#amt').text();
+                let gstTotal = $('#gstamt').text();
+                item.Code = $(this).find('.code', this).text();
+                item.MaterialName = $(this).find('.materialName').text().trim();
+                item.Type = $(this).find('.type').text().trim();
+                item.Capacity_AMH = $(this).find('.capacity').text().trim();
+                item.Color = $(this).find('.color').text().trim();
+                item.Model = $(this).find('.model').text().trim();
+                item.Qty = $(this).find('.quantity').text().trim();
+                item.UOM_1 = $(this).find('.uom1').text().trim();
+                item.Sac = $(this).find('.sac').text().trim();
+                item.Rate = $(this).find('.rate').text().trim();
+                item.GstAmount = $(this).find('.gstAmt').text().trim();
+                item.Amount = $(this).find('.amount', this).text();
+                item.NetAmount = netAmt;
+                item.GrossAmount = $(this).find('.grossamount').text().trim();
+                item.GrossTotal = grossTotal;
+                item.GstTotal = gstTotal;
+                item.Fright = v;
+                item.MaterialGroup = $(this).find('.model').text().trim();
+                item.VendorId = $('#id').val();
+                item.VendorName = $('#vname').text();
+                item.PurchaseId = PurchaseId;
+                $.ajax({
+                    url: "/PurchaseOrder/Insert",
+                    timeout: 20000,
+                    data: {Quantity:item.Qty, Code: item.Code, MaterialName: item.MaterialName, MaterialGroup: item.MaterialGroup, UOM_1: item.UOM_1, Type: item.Type, Capacity_AMH: item.Capacity_AMH, Fridge: item.Fright, Model: item.Model, Color: item.Color, Rate: item.Rate, NetAmount: item.NetAmount, Amount: item.Amount, GrossAmount: item.GrossAmount, Sac: item.Sac, GrossTotal: item.GrossTotal, Qty: item.Qty, UOM_1: item.UOM_1, VN: item.VendorName, VI: item.VendorId, PurId: item.PurchaseId, Rate: item.Rate, GstAmt: item.GstAmount, GstTotal: item.GstTotal },
+                    type: "POST",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function () {
+                        $.ajax({
+                            url: "/PurchaseOrder/GetPurId",
+                            data: { VI: item.VendorId }, 
+                            type: "GET",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function (result) {
+                                 $(':button').hide();
+                                    $('.AddingTable').hide();
+                                if (result.length > 0) {
+                                   
+                                    count++
+                                    if (count > 1)
+                                        return;
+                                    alert(result);
+                                    location.href = "/Vendor/VendorList";
+                                    print();
+                                      
+                                }
+                            }
+                        })
+
+                    },
+                    error: function () {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Something Went Wrong',
+                            type: 'error'
+                        });
+                    }
+
+                });
+
+              
+                 
+            })  
+           
+        });
+
+         //OnEnter Pressed
+        jQuery('#txtqty').on("keypress", function (e) { 
+            if (e.keyCode == 13) {
+                $('#btnadd').click();
+               
+            }
+        });
+
+         //OnEnter Pressed
+        jQuery('#txtrate').on("keypress", function (e) { 
+            if (e.keyCode == 13) {
+                $('#btnadd').click();
+               
+            }
+        });
+    </script>
+}

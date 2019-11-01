@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Material Transfer</h2>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Job No:</label><input type="text" id="jobno" placeholder="Job No.." class="form-control" />
+
+        </div>
+        <div class="col-lg-3">
+            <label>From:</label><input type="number" placeholder="From" id="from" class="form-control" />
+
+        </div>
+        <div class="col-lg-3">
+            <label>To:</label><input type="number" placeholder="To" id="to" class="form-control" />
+             
+        </div>
+        <div class="col-lg-3">
+        <button type="button" style="margin-top:30px;" id="btntransfer" class="btn btn-sm btn-success">Transfer</button>
+        </div>
+    </div>
+</div>
+
+
+
+<h2 class="si">Selected Item</h2>
+<div style="overflow-x:auto;">
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Wip No</th>
+                <th>Bom No</th>
+                <th>Product Code</th>
+                <th>Mat-1</th>
+                <th>Mat-2</th>
+                <th>Mat-3</th>
+                <th>Mat-4</th>
+                <th>Mat-5</th>
+                <th>Mat-6</th>
+                <th>Mat-7</th>
+                <th>Mat-8</th>
+                <th>Mat-9</th>
+                <th>Mat-10</th>
+                <th>Qc No</th>
+                <th>Qc Pass</th>
+                <th>Product SerialNo</th>
+                <th>Transfer</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+
+
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var QcNo;
+            var count = 0;
+            let jobNo;
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('keyup', '#jobno', function () {
+                $('.tablelist tbody tr').remove();
+                $('.tablelist').show();
+                $('.boml').show();
+                 jobNo = $(this).val(); 
+                
+                $.ajax({
+                    url: '/StockTransfer/GetFromStock',
+                    data: { jobno: jobNo },
+                    type: 'json',
+                    success: function (result) {
+                        for (var i = 0; i < result.Data.length; i++) { 
+                            $(".tablelist").each(function () {
+                                var tds = '<tr class="all">';
+                                jQuery.each($('tr:last', this), function () {
+
+                                    tds += '<td class="jobid">' + result.Data[i].Location + '</td>';
+                                    tds += '<td class="wipid">' + result.Data[i].WipNo + '</td>';
+                                    tds += '<td class="code">' + result.Data[i].BomNo + '</td>';
+                                    tds += '<td class="proName">' + result.Data[i].ProductCode + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].Mat1 + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Mat2 + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Mat3 + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Mat4 + '</td>';
+                                    tds += '<td class="tqty">' + result.Data[i].Mat5 + '</td>';
+                                    tds += '<td class="type">' + result.Data[i].Mat6 + '</td>';
+                                    tds += '<td class="capacity">' + result.Data[i].Mat7 + '</td>';
+                                    tds += '<td class="color">' + result.Data[i].Mat8 + '</td>';
+                                    tds += '<td class="model">' + result.Data[i].Mat9 + '</td>';
+                                    tds += '<td class="tqty">' + result.Data[i].Mat10 + '</td>'; 
+                                    tds += '<td class="model">' + result.Data[i].QcNo + '</td>';
+                                    tds += '<td class="tqty">' + result.Data[i].QcPass + '</td>'; 
+                                    tds += '<td class="tqty">' + result.Data[i].ProdSerialNo + '</td>';
+                                    
+                                    tds += '<td class="reqqty">' + '<select style="width:80px;" class="form-control"><option>Yes</option><option>No</option></select>' + '</td>';
+
+                                    $('#save').show();
+                                });
+                                tds += '</tr>';
+
+                                if ($('tbody', this).length > 0) {
+                                    $('tbody', this).append(tds);
+                                    $('.table').show();
+                                    $('.save').show();
+                                    $('#txtcode').val('');
+                                    $('#proName').val('');
+                                    $('#txtmodel').val('');
+                                    $('#txtcell').val('');
+                                    $('#txtcapacity').val('');
+                                    $('#txtcolor').val('');
+                                    $('#txtqtytopro').val('');
+
+                                    //Calculations
+
+                                } else {
+                                    $(this).append(tds);
+
+                                }
+                            });
+                        }
+
+                    }
+                })
+            }) 
+            $('#btntransfer').on('click', function () {
+                let from = parseInt($('#from').val().trim());
+                let to = parseInt($('#to').val().trim());
+
+                //location 1 to 2 validation
+                if (from == 1) {
+                    if (to != 2) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 1(WIP) Only be tranfer in location 2(QC)',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 2 to 3,4 and 8 validation
+                if (from == 2) {
+                    if (to != 3 && to!=4 && to!=8) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 2(QC) Only be tranfer in location 3(Rework), 4(Packing) and 8(scrap).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 3 to 2 validation
+                if (from == 3) {
+                    if (to == 1) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 3(Rework) cannot be tranfer in location 1(Rework).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 4 to 5 only validation
+                if (from == 4) {
+                    if (to != 5) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 4(Packing) Only be tranfer in location 5(FG).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+              
+                $.ajax({
+                    url: '/StockTransfer/UpdateStocksTable',
+                    data: { jobno: jobNo,fromLoc:from, location: to },
+                    type: 'json',
+                    success: function (result) {
+                        new PNotify({
+                            title: 'Done!',
+                            text: 'Transfer Successufully',
+                            type: 'success'
+                        });
+                        $('#from').val('');
+                        $('#to').val('');
+                        $('#jobno').val('');
+                    }
+                })
+            })
+            
+        })
+
+
+    </script>
+}

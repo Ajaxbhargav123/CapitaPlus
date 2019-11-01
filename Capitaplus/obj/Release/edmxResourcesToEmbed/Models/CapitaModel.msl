@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CapitaplusModelStoreContainer" CdmEntityContainer="CapitaplusEntities">
+    <EntitySetMapping Name="BillOfMaterials">
+      <EntityTypeMapping TypeName="CapitaplusModel.BillOfMaterial">
+        <MappingFragment StoreEntitySet="BillOfMaterial">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="BOMCode" ColumnName="BOMCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BillOfMats">
+      <EntityTypeMapping TypeName="CapitaplusModel.BillOfMat">
+        <MappingFragment StoreEntitySet="BillOfMats">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RmCode" ColumnName="RmCode" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="MasterProCode" ColumnName="MasterProCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Capacities">
+      <EntityTypeMapping TypeName="CapitaplusModel.Capacity">
+        <MappingFragment StoreEntitySet="Capacity">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Capacity1" ColumnName="Capacity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CheckMatToDisplays">
+      <EntityTypeMapping TypeName="CapitaplusModel.CheckMatToDisplay">
+        <MappingFragment StoreEntitySet="CheckMatToDisplay">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Colors">
+      <EntityTypeMapping TypeName="CapitaplusModel.Color">
+        <MappingFragment StoreEntitySet="Color">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Color1" ColumnName="Color" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ColorMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.ColorMaster">
+        <MappingFragment StoreEntitySet="ColorMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="code" ColumnName="code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.CustomerMaster">
+        <MappingFragment StoreEntitySet="CustomerMasters">
+          <ScalarProperty Name="S_No" ColumnName="S.No" />
+          <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+          <ScalarProperty Name="DeliveryFrom" ColumnName="DeliveryFrom" />
+          <ScalarProperty Name="SuplierTypeId" ColumnName="SuplierTypeId" />
+          <ScalarProperty Name="SuplierGstNo" ColumnName="SuplierGstNo" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliverySchedules">
+      <EntityTypeMapping TypeName="CapitaplusModel.DeliverySchedule">
+        <MappingFragment StoreEntitySet="DeliverySchedule">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="AddressDelivery" ColumnName="AddressDelivery" />
+          <ScalarProperty Name="DeliveryQty" ColumnName="DeliveryQty" />
+          <ScalarProperty Name="Cid" ColumnName="Cid" />
+          <ScalarProperty Name="SalesOrderNo" ColumnName="SalesOrderNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FGstocks">
+      <EntityTypeMapping TypeName="CapitaplusModel.FGstock">
+        <MappingFragment StoreEntitySet="FGstocks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Celltype" ColumnName="Celltype" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="FgInStock" ColumnName="FgInStock" />
+          <ScalarProperty Name="isFreez" ColumnName="isFreez" />
+          <ScalarProperty Name="QtyToFreez" ColumnName="QtyToFreez" />
+          <ScalarProperty Name="QtyToProduce" ColumnName="QtyToProduce" />
+          <ScalarProperty Name="Cid" ColumnName="Cid" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="TQtyProduce" ColumnName="TQtyProduce" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinishedGoods">
+      <EntityTypeMapping TypeName="CapitaplusModel.FinishedGood">
+        <MappingFragment StoreEntitySet="FinishedGood">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ShortProductName" ColumnName="ShortProductName" />
+          <ScalarProperty Name="ModelNo" ColumnName="ModelNo" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="ShortColorCode" ColumnName="ShortColorCode" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="ShortBrandCode" ColumnName="ShortBrandCode" />
+          <ScalarProperty Name="SAC" ColumnName="SAC" />
+          <ScalarProperty Name="GST" ColumnName="GST" />
+          <ScalarProperty Name="UOM" ColumnName="UOM" />
+          <ScalarProperty Name="MIN" ColumnName="MIN" />
+          <ScalarProperty Name="Max" ColumnName="Max" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="StockFreez" ColumnName="StockFreez" />
+          <ScalarProperty Name="SelfStock" ColumnName="SelfStock" />
+          <ScalarProperty Name="TRfSelf" ColumnName="TRfSelf" />
+          <ScalarProperty Name="IsMinMax" ColumnName="IsMinMax" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Grns">
+      <EntityTypeMapping TypeName="CapitaplusModel.Grn">
+        <MappingFragment StoreEntitySet="Grn">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Uom" ColumnName="Uom" />
+          <ScalarProperty Name="Receive" ColumnName="Receive" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="GrnId" ColumnName="GrnId" />
+          <ScalarProperty Name="PurId" ColumnName="PurId" />
+          <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+          <ScalarProperty Name="RecieveDate" ColumnName="RecieveDate" />
+          <ScalarProperty Name="EntryGateNo" ColumnName="EntryGateNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="JobSheets">
+      <EntityTypeMapping TypeName="CapitaplusModel.JobSheet">
+        <MappingFragment StoreEntitySet="JobSheets">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="SalesOrderNo" ColumnName="SalesOrderNo" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="QtyToPro" ColumnName="QtyToPro" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="QtyInPieace" ColumnName="QtyInPieace" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaterialRequsitionSlips">
+      <EntityTypeMapping TypeName="CapitaplusModel.MaterialRequsitionSlip">
+        <MappingFragment StoreEntitySet="MaterialRequsitionSlip">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="QtyToIssue" ColumnName="QtyToIssue" />
+          <ScalarProperty Name="mrsNo" ColumnName="mrsNo" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MatPlannings">
+      <EntityTypeMapping TypeName="CapitaplusModel.MatPlanning">
+        <MappingFragment StoreEntitySet="MatPlanning">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="QtyReq" ColumnName="QtyReq" />
+          <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+          <ScalarProperty Name="QtyToPro" ColumnName="QtyToPro" />
+          <ScalarProperty Name="MrsNo" ColumnName="MrsNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.ProductMaster">
+        <MappingFragment StoreEntitySet="ProductMaster">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ShortCode" ColumnName="ShortCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PurchaseOrderSummaries">
+      <EntityTypeMapping TypeName="CapitaplusModel.PurchaseOrderSummary">
+        <MappingFragment StoreEntitySet="PurchaseOrderSummary">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="UOM_1" ColumnName="UOM-1" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity_AMH" ColumnName="Capacity_AMH" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="GrossAmount" ColumnName="GrossAmount" />
+          <ScalarProperty Name="GrossTotal" ColumnName="GrossTotal" />
+          <ScalarProperty Name="Fright" ColumnName="Fright" />
+          <ScalarProperty Name="NetAmount" ColumnName="NetAmount" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="Sac" ColumnName="Sac" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="GstAmount" ColumnName="GstAmount" />
+          <ScalarProperty Name="GstTotal" ColumnName="GstTotal" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QualityChecks">
+      <EntityTypeMapping TypeName="CapitaplusModel.QualityCheck">
+        <MappingFragment StoreEntitySet="QualityChecks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="Mat1" ColumnName="Mat1" />
+          <ScalarProperty Name="Mat2" ColumnName="Mat2" />
+          <ScalarProperty Name="Mat3" ColumnName="Mat3" />
+          <ScalarProperty Name="Mat4" ColumnName="Mat4" />
+          <ScalarProperty Name="Mat5" ColumnName="Mat5" />
+          <ScalarProperty Name="Mat6" ColumnName="Mat6" />
+          <ScalarProperty Name="Mat7" ColumnName="Mat7" />
+          <ScalarProperty Name="Mat8" ColumnName="Mat8" />
+          <ScalarProperty Name="Mat9" ColumnName="Mat9" />
+          <ScalarProperty Name="Mat10" ColumnName="Mat10" />
+          <ScalarProperty Name="ReworkPass" ColumnName="ReworkPass" />
+          <ScalarProperty Name="QcPass" ColumnName="QcPass" />
+          <ScalarProperty Name="QcNo" ColumnName="QcNo" />
+          <ScalarProperty Name="WipNo" ColumnName="WipNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleMaterialCreations">
+      <EntityTypeMapping TypeName="CapitaplusModel.RoleMaterialCreation">
+        <MappingFragment StoreEntitySet="RoleMaterialCreation">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="UOM_1" ColumnName="UOM-1" />
+          <ScalarProperty Name="QUOM" ColumnName="QUOM" />
+          <ScalarProperty Name="UOM_2" ColumnName="UOM-2" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity_AMH" ColumnName="Capacity_AMH" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="SAC_CODE" ColumnName="SAC CODE" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesOrders">
+      <EntityTypeMapping TypeName="CapitaplusModel.SalesOrder">
+        <MappingFragment StoreEntitySet="SalesOrder">
+          <ScalarProperty Name="IsCreated" ColumnName="IsCreated" />
+          <ScalarProperty Name="QtyTopProduce" ColumnName="QtyTopProduce" />
+          <ScalarProperty Name="QtyToFreez" ColumnName="QtyToFreez" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+          <ScalarProperty Name="CreditP" ColumnName="CreditP" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="CPerson" ColumnName="CPerson" />
+          <ScalarProperty Name="CNumber" ColumnName="CNumber" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="SoQty" ColumnName="SoQty" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="GrossAmt" ColumnName="GrossAmt" />
+          <ScalarProperty Name="TotalAmt" ColumnName="TotalAmt" />
+          <ScalarProperty Name="TotalGrossAmt" ColumnName="TotalGrossAmt" />
+          <ScalarProperty Name="Cid" ColumnName="Cid" />
+          <ScalarProperty Name="SalesOrderNo" ColumnName="SalesOrderNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesOrdersPackings">
+      <EntityTypeMapping TypeName="CapitaplusModel.SalesOrdersPacking">
+        <MappingFragment StoreEntitySet="SalesOrdersPacking">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="IndivisualPacking" ColumnName="IndivisualPacking" />
+          <ScalarProperty Name="QtyIndivisual" ColumnName="QtyIndivisual" />
+          <ScalarProperty Name="BoxPacking" ColumnName="BoxPacking" />
+          <ScalarProperty Name="QtyBox" ColumnName="QtyBox" />
+          <ScalarProperty Name="ReqBox" ColumnName="ReqBox" />
+          <ScalarProperty Name="QtyToProduce" ColumnName="QtyToProduce" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="SalesOrderNo" ColumnName="SalesOrderNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockTables">
+      <EntityTypeMapping TypeName="CapitaplusModel.StockTable">
+        <MappingFragment StoreEntitySet="StockTable">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="WipNo" ColumnName="WipNo" />
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="Mat1" ColumnName="Mat1" />
+          <ScalarProperty Name="Mat2" ColumnName="Mat2" />
+          <ScalarProperty Name="Mat3" ColumnName="Mat3" />
+          <ScalarProperty Name="Mat4" ColumnName="Mat4" />
+          <ScalarProperty Name="Mat5" ColumnName="Mat5" />
+          <ScalarProperty Name="Mat6" ColumnName="Mat6" />
+          <ScalarProperty Name="Mat7" ColumnName="Mat7" />
+          <ScalarProperty Name="Mat8" ColumnName="Mat8" />
+          <ScalarProperty Name="Mat9" ColumnName="Mat9" />
+          <ScalarProperty Name="Mat10" ColumnName="Mat10" />
+          <ScalarProperty Name="QcNo" ColumnName="QcNo" />
+          <ScalarProperty Name="QcPass" ColumnName="QcPass" />
+          <ScalarProperty Name="Rework" ColumnName="Rework" />
+          <ScalarProperty Name="QcRework" ColumnName="QcRework" />
+          <ScalarProperty Name="ProdSerialNo" ColumnName="ProdSerialNo" />
+          <ScalarProperty Name="IndivisualPacking" ColumnName="IndivisualPacking" />
+          <ScalarProperty Name="BoxPacking" ColumnName="BoxPacking" />
+          <ScalarProperty Name="SalesOrderId" ColumnName="SalesOrderId" />
+          <ScalarProperty Name="PGI" ColumnName="PGI" />
+          <ScalarProperty Name="ChallanNo" ColumnName="ChallanNo" />
+          <ScalarProperty Name="challanDate" ColumnName="challanDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuplierTypes">
+      <EntityTypeMapping TypeName="CapitaplusModel.SuplierType">
+        <MappingFragment StoreEntitySet="SuplierTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SuplierType1" ColumnName="SuplierType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Type1">
+      <EntityTypeMapping TypeName="CapitaplusModel.Type1">
+        <MappingFragment StoreEntitySet="Type">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Types" ColumnName="Types" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UOMs">
+      <EntityTypeMapping TypeName="CapitaplusModel.UOM">
+        <MappingFragment StoreEntitySet="UOM">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UOM1" ColumnName="UOM1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.VendorMaster">
+        <MappingFragment StoreEntitySet="VendorMaster">
+          <ScalarProperty Name="S_No" ColumnName="S.No" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+          <ScalarProperty Name="SuplierTypeId" ColumnName="SuplierTypeId" />
+          <ScalarProperty Name="SuplierGstNo" ColumnName="SuplierGstNo" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WIPs">
+      <EntityTypeMapping TypeName="CapitaplusModel.WIP">
+        <MappingFragment StoreEntitySet="WIP">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="StanderdConsuption" ColumnName="StanderdConsuption" />
+          <ScalarProperty Name="ActualConsuption" ColumnName="ActualConsuption" />
+          <ScalarProperty Name="WastQty" ColumnName="WastQty" />
+          <ScalarProperty Name="WipNo" ColumnName="WipNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="jobNo" ColumnName="jobNo" />
+          <ScalarProperty Name="WipQty" ColumnName="WipQty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionName="CapitaplusModel.Store.cbnfh" FunctionImportName="cbnfh">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CapitaplusModel.cbnfh_Result">
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetAllFromFg" FunctionName="CapitaplusModel.Store.GetAllFromFg">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CapitaplusModel.GetAllFromFg_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Celltype" ColumnName="Celltype" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="FgInStock" ColumnName="FgInStock" />
+          <ScalarProperty Name="isFreez" ColumnName="isFreez" />
+          <ScalarProperty Name="QtyToFreez" ColumnName="QtyToFreez" />
+          <ScalarProperty Name="QtyToProduce" ColumnName="QtyToProduce" />
+          <ScalarProperty Name="Cid" ColumnName="Cid" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="TQtyProduce" ColumnName="TQtyProduce" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getjobsheet" FunctionName="CapitaplusModel.Store.getjobsheet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CapitaplusModel.getjobsheet_Result">
+          <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+          <ScalarProperty Name="BomNo" ColumnName="BomNo" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="CellType" ColumnName="CellType" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="QtyToPro" ColumnName="QtyToPro" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_AddBom" FunctionName="CapitaplusModel.Store.sp_AddBom" />
+    <FunctionImportMapping FunctionImportName="sp_AddCheckMat" FunctionName="CapitaplusModel.Store.sp_AddCheckMat" />
+    <FunctionImportMapping FunctionImportName="sp_AddCustomerSalesOrder" FunctionName="CapitaplusModel.Store.sp_AddCustomerSalesOrder" />
+    <FunctionImportMapping FunctionImportName="sp_AddDeliverySchedule" FunctionName="CapitaplusModel.Store.sp_AddDeliverySchedule" />
+    <FunctionImportMapping FunctionImportName="sp_AddFGStocks" FunctionName="CapitaplusModel.Store.sp_AddFGStocks" />
+    <FunctionImportMapping FunctionImportName="sp_AddGrnOrder" FunctionName="CapitaplusModel.Store.sp_AddGrnOrder" />
+    <FunctionImportMapping FunctionImportName="sp_AddJobSheet" FunctionName="CapitaplusModel.Store.sp_AddJobSheet" />
+    <FunctionImportMapping FunctionImportName="sp_AddMis" FunctionName="CapitaplusModel.Store.sp_AddMis" />
+    <FunctionImportMapping FunctionImportName="sp_AddMislip" FunctionName="CapitaplusModel.Store.sp_AddMislip" />
+    <FunctionImportMapping FunctionImportName="sp_AddPurchaseOrder" FunctionName="CapitaplusModel.Store.sp_AddPurchaseOrder" />
+    <FunctionImportMapping FunctionImportName="sp_AddQualityCheck" FunctionName="CapitaplusModel.Store.sp_AddQualityCheck" />
+    <FunctionImportMapping FunctionImportName="sp_AddSalesOrder" FunctionName="CapitaplusModel.Store.sp_AddSalesOrder" />
+    <FunctionImportMapping FunctionImportName="sp_AddStockTable" FunctionName="CapitaplusModel.Store.sp_AddStockTable" />
+    <FunctionImportMapping FunctionImportName="sp_AddWIP" FunctionName="CapitaplusModel.Store.sp_AddWIP" />
+    <FunctionImportMapping FunctionImportName="sp_CheckLocationfromStockTable" FunctionName="CapitaplusModel.Store.sp_CheckLocationfromStockTable" />
+    <FunctionImportMapping FunctionImportName="sp_getAppCode" FunctionName="CapitaplusModel.Store.sp_getAppCode">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CapitaplusModel.sp_getAppCode_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_getBOMId" FunctionName="CapitaplusModel.Store.sp_getBOMId" />
+    <FunctionImportMapping FunctionImportName="sp_getFGBYCode" FunctionName="CapitaplusModel.Store.sp_getFGBYCode" />
+    <FunctionImportMapping FunctionImportName="sp_getFGBYFGstocks" FunctionName="CapitaplusModel.Store.sp_getFGBYFGstocks" />
+    <FunctionImportMapping FunctionImportName="sp_getGRNIdByVendorId" FunctionName="CapitaplusModel.Store.sp_getGRNIdByVendorId" />
+    <FunctionImportMapping FunctionImportName="sp_getJff" FunctionName="CapitaplusModel.Store.sp_getJff" />
+    <FunctionImportMapping FunctionImportName="sp_getJobSheetInMatPlan" FunctionName="CapitaplusModel.Store.sp_getJobSheetInMatPlan" />
+    <FunctionImportMapping FunctionImportName="sp_getLastJobId" FunctionName="CapitaplusModel.Store.sp_getLastJobId" />
+    <FunctionImportMapping FunctionImportName="sp_getMrsId" FunctionName="CapitaplusModel.Store.sp_getMrsId" />
+    <FunctionImportMapping FunctionImportName="sp_getMrslipId" FunctionName="CapitaplusModel.Store.sp_getMrslipId" />
+    <FunctionImportMapping FunctionImportName="sp_getPOIdByVendorId" FunctionName="CapitaplusModel.Store.sp_getPOIdByVendorId" />
+    <FunctionImportMapping FunctionImportName="sp_getProcode" FunctionName="CapitaplusModel.Store.sp_getProcode" />
+    <FunctionImportMapping FunctionImportName="sp_getQtyByCodeId" FunctionName="CapitaplusModel.Store.sp_getQtyByCodeId" />
+    <FunctionImportMapping FunctionImportName="sp_getQualityId" FunctionName="CapitaplusModel.Store.sp_getQualityId" />
+    <FunctionImportMapping FunctionImportName="sp_getSalesOrderId" FunctionName="CapitaplusModel.Store.sp_getSalesOrderId" />
+    <FunctionImportMapping FunctionImportName="sp_getStockId" FunctionName="CapitaplusModel.Store.sp_getStockId" />
+    <FunctionImportMapping FunctionImportName="sp_getStockProductCodeId" FunctionName="CapitaplusModel.Store.sp_getStockProductCodeId" />
+    <FunctionImportMapping FunctionImportName="sp_getWipId" FunctionName="CapitaplusModel.Store.sp_getWipId" />
+    <FunctionImportMapping FunctionImportName="sp_IsQtyOver" FunctionName="CapitaplusModel.Store.sp_IsQtyOver" />
+    <FunctionImportMapping FunctionImportName="sp_truncateFg" FunctionName="CapitaplusModel.Store.sp_truncateFg" />
+    <FunctionImportMapping FunctionImportName="sp_TruncateZeroQty" FunctionName="CapitaplusModel.Store.sp_TruncateZeroQty" />
+    <FunctionImportMapping FunctionImportName="sp_UniquePurId" FunctionName="CapitaplusModel.Store.sp_UniquePurId" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateQtyFromWipAfterQualitycheck" FunctionName="CapitaplusModel.Store.sp_UpdateQtyFromWipAfterQualitycheck" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateQtyInFgStock" FunctionName="CapitaplusModel.Store.sp_UpdateQtyInFgStock" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateQtyInFinishedFoods" FunctionName="CapitaplusModel.Store.sp_UpdateQtyInFinishedFoods" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateStockTable" FunctionName="CapitaplusModel.Store.sp_UpdateStockTable" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateStockTableAfterQCRework" FunctionName="CapitaplusModel.Store.sp_UpdateStockTableAfterQCRework" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateStockTableAfterQualitycheck" FunctionName="CapitaplusModel.Store.sp_UpdateStockTableAfterQualitycheck" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateStockTableAfterRework" FunctionName="CapitaplusModel.Store.sp_UpdateStockTableAfterRework" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateStockTablePacking" FunctionName="CapitaplusModel.Store.sp_UpdateStockTablePacking" />
+    <FunctionImportMapping FunctionImportName="UpdateQtyInJobSheet" FunctionName="CapitaplusModel.Store.UpdateQtyInJobSheet" />
+    <FunctionImportMapping FunctionImportName="UpdateQtyInJobSheets" FunctionName="CapitaplusModel.Store.UpdateQtyInJobSheets" />
+    <FunctionImportMapping FunctionImportName="UpdateQtyInPo" FunctionName="CapitaplusModel.Store.UpdateQtyInPo" />
+    <FunctionImportMapping FunctionImportName="sp_getAllBomOnMasterProCode" FunctionName="CapitaplusModel.Store.sp_getAllBomOnMasterProCode">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CapitaplusModel.sp_getAllBomOnMasterProCode_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RmCode" ColumnName="RmCode" />
+          <ScalarProperty Name="MatName" ColumnName="MatName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="MasterProCode" ColumnName="MasterProCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UpdateQtyInSOPacking" FunctionName="CapitaplusModel.Store.UpdateQtyInSOPacking" />
+    <FunctionImportMapping FunctionImportName="sp_getAllBomOnMasterProCodeNoId" FunctionName="CapitaplusModel.Store.sp_getAllBomOnMasterProCodeNoId" />
+  </EntityContainerMapping>
+</Mapping>

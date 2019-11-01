@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CapitaplusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="RoleMaterialCreation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MaterialGroup" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UOM-1" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="QUOM" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="UOM-2" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Type" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Model" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SuplierTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SuplierType" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VendorMaster">
+    <Key>
+      <PropertyRef Name="S.No" />
+    </Key>
+    <Property Name="S.No" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorCode" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="VendorName" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="ContactPerson" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="VendorAddress" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="int" Nullable="false" />
+    <Property Name="MaterialCode" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_VendorMaster_VendorMasterSuplierTypes">
+    <End Role="SuplierTypes" Type="Self.SuplierTypes" Multiplicity="1" />
+    <End Role="VendorMaster" Type="Self.VendorMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VendorMaster">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CapitaplusModelStoreContainer">
+    <EntitySet Name="RoleMaterialCreation" EntityType="Self.RoleMaterialCreation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SuplierTypes" EntityType="Self.SuplierTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorMaster" EntityType="Self.VendorMaster" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_VendorMaster_VendorMasterSuplierTypes" Association="Self.FK_VendorMaster_VendorMasterSuplierTypes">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="VendorMaster" EntitySet="VendorMaster" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CapitaplusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="RoleMaterialCreation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UOM_1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QUOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="UOM_2" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SuplierType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SuplierTypes" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="VendorMasters" Relationship="CapitaplusModel.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="SuplierType" ToRole="VendorMaster" />
+  </EntityType>
+  <EntityType Name="VendorMaster">
+    <Key>
+      <PropertyRef Name="S_No" />
+    </Key>
+    <Property Name="S_No" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VendorCode" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ContactPerson" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorAddress" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="Int32" Nullable="false" />
+    <Property Name="MaterialCode" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SuplierType" Relationship="CapitaplusModel.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="VendorMaster" ToRole="SuplierType" />
+  </EntityType>
+  <EntityContainer Name="CapitaplusEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="RoleMaterialCreations" EntityType="Self.RoleMaterialCreation" />
+    <EntitySet Name="SuplierTypes" EntityType="Self.SuplierType" />
+    <EntitySet Name="VendorMasters" EntityType="Self.VendorMaster" />
+    <AssociationSet Name="FK_VendorMaster_VendorMasterSuplierTypes" Association="CapitaplusModel.FK_VendorMaster_VendorMasterSuplierTypes">
+      <End Role="SuplierType" EntitySet="SuplierTypes" />
+      <End Role="VendorMaster" EntitySet="VendorMasters" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_VendorMaster_VendorMasterSuplierTypes">
+    <End Type="CapitaplusModel.SuplierType" Role="SuplierType" Multiplicity="1" />
+    <End Type="CapitaplusModel.VendorMaster" Role="VendorMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VendorMaster">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

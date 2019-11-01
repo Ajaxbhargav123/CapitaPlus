@@ -1,0 +1,453 @@
+﻿@model Capitaplus.ViewModel.matIssueS
+
+    <h2>Deskboard Material Isuue</h2>
+<table class="table">
+    <tr>
+        <th>
+            <label>Job No</label>
+        </th>
+        <th>
+            <label>MRS No</label>
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Action
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model.jobOrders)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.JobNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.mrsNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CreatedDate)
+    </td>
+
+    <td>
+        <button type="button" id="btnadd" class="btn btn-primary">Add</button>
+    </td>
+    @*<td class="bom">
+            @Html.DisplayFor(modelItem => item.BomNo)
+        </td>
+        <td class="bom">
+            @Html.DisplayFor(modelItem => item.ActualQty)
+        </td>*@
+</tr>
+    }
+
+</table>
+<hr />
+@*Table Bom*@
+<h2 class="si">BOM Items</h2>
+<div class="row">
+    <table id="tblbom" class="table tablebom table-striped">
+        <thead>
+            <tr>
+                <th>Job No</th>
+                <th>Bom No</th>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Qty In Stock</th>
+                <th>Qty Required</th>
+                <th>YTD</th>
+                <th>Qty To be Issue</th>
+                <th>Balance Qty To Issue</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button id="save" class="btn btn-primary">
+        Save
+    </button>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () { 
+            var MrsId;
+            var isSecondsave;
+            var count = 0;
+            
+            $('.bom').hide();
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('click', '#btnadd', function () { 
+                 $.ajax({
+                    url: "/MaterialIssueSlip/GetLastMrsId",
+                    timeout: 20000,
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) { 
+                         let i = 1;
+                        let val = parseInt(result) + parseInt(i);
+                        MrsId = "MIN000" + val;
+                    }
+                 }); 
+
+                $('#tblbom tbody tr').remove();
+                $('.tablelist').show();
+                $('.boml').show();
+                $('.si').show();
+                let code = $(this).closest('tr');
+                 mrsId = $("TD", code).eq(1).html().trim();
+                 qtytopro = $("TD", code).eq(5).html();
+                $.ajax({
+                    url: '/MaterialIssueSlip/GetDataFromMatRequsition',
+                    data: { mrs:mrsId },
+                    type: 'json',
+                    success: function (result) {
+                        if (result.Data.length != 0) { 
+                            isSecondsave = true;
+                            for (var i = 0; i < result.Data.length; i++) {
+                                let jobno = result.Data[i].JobNo;
+                                let bomno = result.Data[i].BomNo;
+                                let code = result.Data[i].Code;
+                                let matname = result.Data[i].MatName;
+                                 let type = result.Data[i].Type;
+                                let capacity = result.Data[i].Capacity;
+                                let color = result.Data[i].Color;
+                                let model = result.Data[i].Model;
+                                let misId = result.Data[i].Misytd;
+                                let misBal = result.Data[i].MisBalQty;
+                                let reqQty = result.Data[i].ReqQty;
+                                 
+                                 //Qty From RawMats
+                                $.ajax({
+                                    url: '/MaterialIssueSlip/GetQtyFromRawMat',
+                                    data: { code: code },
+                                    type: 'json',
+                                    success: function (qty) { 
+                                        $("#tblbom").each(function () {
+                                            var tds = '<tr class="all">';
+                                            jQuery.each($('tr:last', this), function () {
+                                                tds += '<td class="jobid">' + jobno + '</td>';
+                                                tds += '<td class="bomid">' + bomno + '</td>';
+                                                tds += '<td class="code">' + code + '</td>';
+                                                tds += '<td class="proName">' + matname + '</td>';
+                                                tds += '<td class="type">' + type + '</td>';
+                                                tds += '<td class="capacity">' + capacity + '</td>';
+                                                tds += '<td class="color">' + color + '</td>';
+                                                tds += '<td class="model">' + model + '</td>'; 
+                                                tds += '<td class="instock">' + qty + '</td>';
+                                                tds += '<td class="tqty">' + reqQty + '</td>';
+                                                //    let reqQty = qtytopro * result.Data[i].Qty;
+                                                tds += '<td class="reqqty">' + '<input type="number" value=' + `${misId}` + '  readonly="readonly"  id="ytd" class="form-control"/>' + '</td>';
+                                                tds += '<td class="reqqty">' + '<input type="number" value="0" id="rqty" class="form-control"/>' + '</td>';
+                                                //tds += '<td class="reqqty">' + '<input type="number" value=' + `${reqQty}` + ' disabled id="rqty" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtybal">' + '<input type="number" value=' + `${misBal}` + ' style="width:80px;"  readonly="readonly" id="qtytobal" class="form-control"/>' + '</td>';
+                                                $('#save').show();
+                                            });
+                                            tds += '</tr>';
+
+                                            if ($('tbody', this).length > 0) {
+                                                $('tbody', this).append(tds);
+                                                $('.table').show();
+                                                $('.save').show();
+                                                $('#txtcode').val('');
+                                                $('#proName').val('');
+                                                $('#txtmodel').val('');
+                                                $('#txtcell').val('');
+                                                $('#txtcapacity').val('');
+                                                $('#txtcolor').val('');
+                                                $('#txtqtytopro').val(''); 
+                                                 
+                                            } else {
+                                                $(this).append(tds);
+
+                                            }
+                                        });
+                                    }
+                                })
+
+
+                            
+                        }
+
+                        }
+
+                        //iF Data
+                        if (result.Data.length == 0) {  
+                            isSecondsave = false;
+                            $.ajax({
+                                url: '/MaterialIssueSlip/GetDataFromMatRequsitionAll',
+                                data: { mrs: mrsId },
+                                type: 'json',
+                                success: function (result) { 
+                                    for (var i = 0; i < result.Data.length; i++) {
+                                        let jobno = result.Data[i].JobNo;
+                                        let bomno = result.Data[i].BomNo;
+                                        let code = result.Data[i].Code;
+                                        let matname = result.Data[i].MatName;
+                                        let type = result.Data[i].Type;
+                                        let capacity = result.Data[i].Capacity;
+                                        let color = result.Data[i].Color;
+                                        let model = result.Data[i].Model; 
+                                        let reqQty = result.Data[i].ReqQty;
+                                         //Qty From RawMats
+                                    $.ajax({
+                                        url: '/MaterialIssueSlip/GetQtyFromRawMat',
+                                        data: { code: code },
+                                        type: 'json',
+                                        success: function (qty) {
+                                             $("#tblbom").each(function () {
+                                            var tds = '<tr class="all">';
+                                                 jQuery.each($('tr:last', this), function () {
+                                                     tds += '<td class="jobid">' + jobno + '</td>';
+                                                     tds += '<td class="bomid">' + bomno + '</td>';
+                                                     tds += '<td class="code">' + code + '</td>';
+                                                     tds += '<td class="proName">' + matname + '</td>';
+                                                     tds += '<td class="type">' + type + '</td>';
+                                                     tds += '<td class="capacity">' + capacity + '</td>';
+                                                     tds += '<td class="color">' + color + '</td>';
+                                                     tds += '<td class="model">' + model + '</td>';
+                                                     tds += '<td class="instock">' + qty + '</td>';
+                                                     tds += '<td class="tqty">' + reqQty + '</td>';
+                                                 tds += '<td class="reqqty">' + '<input type="number" value="0" readonly="readonly" id="ytd" class="form-control"/>' + '</td>';
+                                                tds += '<td class="reqqty">' + '<input type="number"     id="rqty" class="form-control"/>' + '</td>';
+                                                //tds += '<td class="reqqty">' + '<input type="number" value=' + `${reqQty}` + ' disabled id="rqty" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtybal">' + '<input type="number" readonly="readonly"   id="qtytobal" class="form-control"/>' + '</td>';
+                                                $('#save').show();
+                                            });
+                                            tds += '</tr>';
+
+                                            if ($('tbody', this).length > 0) {
+                                                $('tbody', this).append(tds);
+                                                $('.table').show();
+                                                $('.save').show();
+                                                $('#txtcode').val('');
+                                                $('#proName').val('');
+                                                $('#txtmodel').val('');
+                                                $('#txtcell').val('');
+                                                $('#txtcapacity').val('');
+                                                $('#txtcolor').val('');
+                                                $('#txtqtytopro').val('');
+
+                                                //Calculations
+
+                                            } else {
+                                                $(this).append(tds);
+
+                                            }
+                                        });
+                                        }
+                                    })
+
+
+                                       
+                                    } 
+                                }
+                            })
+                        } 
+                    }
+                })
+            })
+
+            //KeyUp Events 
+            $(document).on('keyup', '#qtytoissue', function () {  
+                    let qq = $(this).val();
+                let qty = $(this).closest('tr').find('#rqty').val();
+                
+                    if (qty < qq) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Opps! Number Exceed',
+                            type: 'error'
+                           
+                        });
+                       
+                        $(this).closest('tr').find('#qtytoissue').val();
+                        $(this).closest('tr').find('#qtytobal').val(0);  
+                        return;
+                    }
+                          
+
+                    let IssuedQty = parseInt(qty - qq);
+                    $(this).find('#qtytobal', this).val(parseInt(IssuedQty));
+            })
+
+            $(document).on('keyup', '#rqty', function () { 
+                let qq = $(this).val();
+                  let qtytopros = $(this).closest('tr').find('#ytd').val();
+                  let qtywast = parseInt($(this).closest('tr').find('.tqty').html());
+                  let qtyInstock = parseInt($(this).closest('tr').find('.instock').html());
+                let balqty = parseInt($(this).closest('tr').find('#qtytobal').val());
+                
+                   
+                    if (qtywast < qq) { 
+                      $(this).closest('tr').find('#qtytobal').val('');
+                      $(this).val('0'); 
+                      alert("Opps! Number Exceed");
+                      return;
+                  }
+
+                    
+
+                   if (qtyInstock < qq) {
+
+                      $(this).closest('tr').find('#qtytobal').val('');
+                      $(this).val('0');
+                    
+                      alert("Opps! Number Exceed");
+                      return;
+                  }
+
+                
+
+                var wq = qtywast - qtytopros;
+                var final = wq - qq;
+                if (final < 0) { 
+                         $(this).closest('tr').find('#qtytobal').val('');
+                      $(this).val('0'); 
+                      alert("Opps! Number Exceed");
+                      return;
+                  }
+                $(this).closest('tr').find('#qtytobal').val('');
+                $(this).closest('tr').find('#qtytobal').val(final);
+                  
+            })
+
+            //Save Event
+            $('#save').on('click', function () {
+
+                $("#tblbom tbody").find('tr').each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+
+                    item.JobNo = $tds.eq(0).text();
+                    item.BomNo = $tds.eq(1).text();
+                    item.Code = $tds.eq(2).text();
+                    item.ProductName = $tds.eq(3).text().trim(); 
+                    item.Type = $tds.eq(4).text();
+                    item.Capacity = $tds.eq(5).text();
+                    item.Color = $tds.eq(6).text();
+                    item.Model = $tds.eq(7).text();
+                    item.QtyInPiece = $tds.eq(8).text().trim();
+                    item.IssueQty = $tds.find('#rqty', this).val();
+                    item.ytd = $tds.find('#ytd', this).val();
+                    item.BalanceQty = $tds.find('#qtytobal', this).val();
+                    item.MrsNo =  MrsId; 
+
+                    if (item.IssueQty == "") {
+                        item.IssueQty = 0;
+                    }
+
+                    let updatedRawMatQty = parseInt(item.QtyInPiece) - parseInt(item.IssueQty);
+                    
+                    if (isSecondsave == true) {
+                        item.ReqQty = $tds.find('#Rqty', this).val();
+                        item.BalQtyReq = $tds.find('#balQty', this).val();
+
+                        let ytd = parseInt($tds.find('#ytd', this).val());
+                        let rqt = parseInt($tds.find('#rqty', this).val());
+                        
+                        item.Misytd = ytd + rqt;
+                        
+                    }
+                    if (isSecondsave == false) {
+                        item.ReqQty = $tds.find('#Rqty', this).val();
+                        item.BalQtyReq = $tds.find('#balQty', this).val();
+
+                        let ytd = parseInt($tds.find('#ytd', this).val());
+                        let rqt = parseInt($tds.find('#rqty', this).val());
+                        
+                        item.Misytd = ytd + parseInt(rqt);
+                          
+                    }
+                   
+                    //Save
+                    $.ajax({
+                        url: "/MaterialIssueSlip/InsertIntoMIS",
+                        data: { MrsNno: item.MrsNo, jobno: item.JobNo, bobno: item.BomNo, Code: item.Code, ProductlName: item.ProductName, Type: item.Type, Capacity: item.Capacity, Model: item.Model, Color: item.Color, QtyInPiece: item.QtyInPiece, ytd: item.Misytd, issueQty: item.IssueQty, BalanceQty: item.BalanceQty },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                           
+                            //Update Status
+                            $.ajax({
+                                url: "/MaterialIssueSlip/UpdateStatus",
+                                timeout: 20000,
+                                data: { jobno: item.JobNo, bomno: item.BomNo },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+
+                             //Update Qty In RawMat
+                            $.ajax({
+                                url: "/MaterialIssueSlip/UpdateStockInRawMat",
+                                timeout: 20000,
+                                data: { code: item.Code, qty: updatedRawMatQty },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function () {
+                                     count++
+                                    if (count > 1)
+                                        return;
+                                    alert("Your Material Issue Id Is: " + item.MrsNo);
+                                    location.href = "/MaterialIssueSlip/Index";
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            });
+
+                            //Update
+                            $.ajax({
+                                url: "/MaterialIssueSlip/UpdateQtyInMAtReqPlanning",
+                                type: "post",
+                                data: { mrsno: mrsId, code: item.Code, jobno: item.JobNo, mat: item.ProductName, bom: item.BomNo, misytd:  item.Misytd, misqtyissue: item.IssueQty, misbalqty: item.BalanceQty },
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) { 
+                                   
+                                }
+                            })
+                            
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+                });
+            })
+        })
+      
+    </script>
+}

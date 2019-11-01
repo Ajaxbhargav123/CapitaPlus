@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a3cba098227a49509a2ed5a773a9d389" Name="Diagram1">
+        <EntityTypeShape EntityType="CapitaplusModel.BillOfMaterial" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.BillOfMat" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.Capacity" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.CheckMatToDisplay" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.Color" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.ColorMaster" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.CustomerMaster" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.DeliverySchedule" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.FGstock" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.FinishedGood" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.Grn" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.JobSheet" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.MaterialRequsitionSlip" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.MatPlanning" Width="1.5" PointX="11.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.ProductMaster" Width="1.5" PointX="11.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.PurchaseOrderSummary" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.QualityCheck" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.RoleMaterialCreation" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.SalesOrder" Width="1.5" PointX="13.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.SalesOrdersPacking" Width="1.5" PointX="10.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.StockTable" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.SuplierType" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.Type1" Width="1.5" PointX="2.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.UOM" Width="1.5" PointX="14.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.VendorMaster" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapitaplusModel.WIP" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="CapitaplusModel.FK_CustomerMasters_SuplierTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="CapitaplusModel.FK_VendorMaster_VendorMasterSuplierTypes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

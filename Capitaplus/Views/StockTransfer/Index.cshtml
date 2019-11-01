@@ -1,0 +1,640 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+<h2>Material Transfer</h2>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Job No:</label><input type="text" id="jobno" placeholder="Job No.." class="form-control" />
+
+        </div>
+        <div class="col-lg-2">
+            <label>From:</label><input type="number" placeholder="From" id="from" class="form-control" />
+           <label id="tip" style="font-size:12px; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-top:2px; font-size:initial;" class="pull-right badge badge-warning"></label>
+
+        </div>
+        <div class="col-lg-2">
+            <label>To:</label><input type="number" placeholder="To" id="to" class="form-control" />
+            <label id="tip2" style="font-size:12px; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-top:2px; font-size:initial;" class="pull-right badge badge-danger"></label>
+        </div>
+        <div class="col-lg-3">
+            <button type="button" style="margin-top:30px;" id="btntransfer" class="btn btn-sm btn-success">Transfer</button>
+        </div>
+        <div class="col-lg-2">
+            <label>Quantity</label>
+           <input type="text" class="form-control" value="0" width:80px;" readonly="readonly" id="qty" />
+        </div>
+    </div>
+</div> 
+<h2 class="si">Selected Item</h2>
+<div style="overflow-x:auto;">
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Wip No</th>
+                <th>Product SerialNo</th>
+                <th>Bom No</th>
+                <th>Product Code</th>
+                <th>Mat-1</th>
+                <th>Mat-2</th>
+                <th>Mat-3</th>
+                <th>Mat-4</th>
+                <th>Mat-5</th>
+                <th>Mat-6</th>
+                <th>Mat-7</th>
+                <th>Mat-8</th>
+                <th>Mat-9</th>
+                <th>Mat-10</th> 
+                <th>Qc Remark</th>
+                <th>Rework Remark</th>
+                <th>Qc Rework Remark</th>
+                <th>Transfer</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+
+
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tip').hide();
+            $('#tip2').hide();  
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide(); 
+
+            //Global Variables
+             let from;
+            var count = 0;
+              
+            //From Keyup
+            $(document).on('keyup', '#from', function () {
+                $('.tablelist tbody tr').empty();
+                $('.tablelist').show();
+                $('.boml').show();
+                from = $(this).val();
+                let jobno = $('#jobno').val();
+                //Location 3 to 2
+                if (from == 3) {  
+                    $.ajax({ 
+                        url: '/StockTransfer/GetFromStock',
+                        data: { jobno: jobno, location: from },
+                        type: 'json',
+                        success: function (result) { 
+                            $('#qty').val(result.Data.length);
+                            for (var i = 0; i < result.Data.length; i++) {
+                                $(".tablelist").each(function () {
+                                    var tds = '<tr class="all">';
+                                    jQuery.each($('tr:last', this), function () {
+                                        tds += '<td class="jobid">' + result.Data[i].Location + '</td>'; 
+                                        tds += '<td class="wipid">' + result.Data[i].WipNo + '</td>';
+                                        tds += '<td class="serialno">' + result.Data[i].ProdSerialNo + '</td>';
+                                        tds += '<td class="code">' + result.Data[i].BomNo + '</td>';
+                                        tds += '<td class="proName">' + result.Data[i].ProductCode + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat1 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat2 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat3 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat4 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat5 + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat6 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat7 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat8 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat9 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat10 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].QcPass + '</td>';
+                                         tds += '<td class="serialno">' + result.Data[i].Rework + '</td>'; 
+                                         tds += '<td class="model">' + result.Data[i].QcRework + '</td>';  
+                                        tds += '<td class="reqqty">' + '<select style="width:80px;" id="istransfer"  class="form-control"><option>Yes</option><option>No</option></select>' + '</td>';
+
+                                        $('#save').show();
+                                    });
+                                    tds += '</tr>';
+
+                                    if ($('tbody', this).length > 0) {
+                                        $('tbody', this).append(tds);
+                                        $('.table').show();
+                                        $('.save').show();
+                                        $('#txtcode').val('');
+                                        $('#proName').val('');
+                                        $('#txtmodel').val('');
+                                        $('#txtcell').val('');
+                                        $('#txtcapacity').val('');
+                                        $('#txtcolor').val('');
+                                        $('#txtqtytopro').val('');
+                                      
+                                        //Calculations
+
+                                    } else {
+                                        $(this).append(tds);
+
+                                    }
+                                });
+                            }
+                            
+                        }
+                    })
+                }
+
+
+                //From
+                if (from == 1) {
+                    $('#tip').show();
+                    $('#tip').text("Wip")
+                }
+                 if (from == 2) {
+                    $('#tip').show();
+                    $('#tip').text("QC")
+                }
+                  if (from == 3) {
+                    $('#tip').show();
+                    $('#tip').text("Rework")
+                }
+                 if (from == 4) {
+                    $('#tip').show();
+                    $('#tip').text("Packing")
+                }
+                 if (from == 5) {
+                    $('#tip').show();
+                    $('#tip').text("FG")
+                }
+                 if (from == 6) {
+                    $('#tip').show();
+                    $('#tip').text("PGI")
+                }
+                 if (from == 7) {
+                    $('#tip').show();
+                    $('#tip').text("Dispatch")
+                }
+                if (from == "") {
+                    $('#tip').hide();
+                    
+                }
+
+
+                jobNo = $('#jobno').val();
+                if (jobNo == "") {
+                      new PNotify({
+                            title: 'Error!',
+                            text: 'Please Fill Job Number.',
+                            type: 'error', 
+                        });
+                        return;
+                }
+                if (from != 2) {
+                    $.ajax({
+                        url: '/StockTransfer/GetFromStock',
+                        data: { jobno: jobNo, location: from },
+                        type: 'json',
+                        success: function (result) {
+                            $('#qty').val(result.Data.length);
+                            if (result.Data.length == 0) {
+                                new PNotify({
+                                    title: 'Warning!',
+                                    text: 'Ohh! No Result Found.',
+                                    type: 'warning',
+                                });
+                                return;
+                            }
+                            for (var i = 0; i < result.Data.length; i++) {
+                                $(".tablelist").each(function () {
+                                    var tds = '<tr class="all">';
+                                    jQuery.each($('tr:last', this), function () {
+                                          tds += '<td class="jobid">' + result.Data[i].Location + '</td>'; 
+                                        tds += '<td class="wipid">' + result.Data[i].WipNo + '</td>';
+                                        tds += '<td class="serialno">' + result.Data[i].ProdSerialNo + '</td>';
+                                        tds += '<td class="code">' + result.Data[i].BomNo + '</td>';
+                                        tds += '<td class="proName">' + result.Data[i].ProductCode + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat1 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat2 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat3 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat4 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat5 + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat6 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat7 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat8 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat9 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat10 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].QcPass + '</td>';
+                                         tds += '<td class="serialno">' + result.Data[i].Rework + '</td>'; 
+                                         tds += '<td class="model">' + result.Data[i].QcRework + '</td>';
+
+                                        tds += '<td class="reqqty">' + '<select style="width:80px;" id="istransfer"  class="form-control"><option>Yes</option><option>No</option></select>' + '</td>';
+
+                                        $('#save').show();
+                                    });
+                                    tds += '</tr>';
+
+                                    if ($('tbody', this).length > 0) {
+                                        $('tbody', this).append(tds);
+                                        $('.table').show();
+                                        $('.save').show();
+                                        $('#txtcode').val('');
+                                        $('#proName').val('');
+                                        $('#txtmodel').val('');
+                                        $('#txtcell').val('');
+                                        $('#txtcapacity').val('');
+                                        $('#txtcolor').val('');
+                                        $('#txtqtytopro').val('');
+
+                                        //Calculations
+
+                                    } else {
+                                        $(this).append(tds);
+
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+                if (from == 2) {
+                    $.ajax({
+                        url: '/StockTransfer/GetFromStockWhenFromTwo',
+                        data: { jobno: jobNo, fromlocation: from },
+                        type: 'json',
+                        success: function (result) {
+                            console.log(result);
+                            $('#qty').val(result.Data.length);
+                            if (result.Data.length == 0) {
+                                new PNotify({
+                                    title: 'Warning!',
+                                    text: 'Ohh! No Result Found.',
+                                    type: 'warning',
+                                });
+                                return;
+                            }
+                            for (var i = 0; i < result.Data.length; i++) {
+                                $(".tablelist").each(function () {
+                                    var tds = '<tr class="all">';
+                                    jQuery.each($('tr:last', this), function () {
+                                        tds += '<td class="jobid">' + result.Data[i].Location + '</td>';
+                                        tds += '<td class="wipid">' + result.Data[i].WipNo + '</td>';
+                                        tds += '<td class="serialno">' + result.Data[i].ProdSerialNo + '</td>';
+                                        tds += '<td class="code">' + result.Data[i].BomNo + '</td>';
+                                        tds += '<td class="proName">' + result.Data[i].ProductCode + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat1 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat2 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat3 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat4 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat5 + '</td>';
+                                        tds += '<td class="type">' + result.Data[i].Mat6 + '</td>';
+                                        tds += '<td class="capacity">' + result.Data[i].Mat7 + '</td>';
+                                        tds += '<td class="color">' + result.Data[i].Mat8 + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].Mat9 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].Mat10 + '</td>';
+                                        tds += '<td class="tqty">' + result.Data[i].QcPass + '</td>';
+                                        tds += '<td class="serialno">' + result.Data[i].Rework + '</td>';
+                                        tds += '<td class="model">' + result.Data[i].QcRework + '</td>';
+
+                                        tds += '<td class="reqqty">' + '<select style="width:80px;" id="istransfer"  class="form-control"><option>Yes</option><option>No</option></select>' + '</td>';
+
+                                        $('#save').show();
+                                    });
+                                    tds += '</tr>';
+
+                                    if ($('tbody', this).length > 0) {
+                                        $('tbody', this).append(tds);
+                                        $('.table').show();
+                                        $('.save').show();
+                                        $('#txtcode').val('');
+                                        $('#proName').val('');
+                                        $('#txtmodel').val('');
+                                        $('#txtcell').val('');
+                                        $('#txtcapacity').val('');
+                                        $('#txtcolor').val('');
+                                        $('#txtqtytopro').val('');
+
+                                        //Calculations
+
+                                    } else {
+                                        $(this).append(tds);
+
+                                    }
+                                });
+                            }
+                        }
+                    })
+                }
+            })  
+
+            //to keyup
+            $(document).on('keyup', '#to', function () {
+                let to = $(this).val();
+                if (to == "") {
+                    $('#tip2').hide();
+                    $('#tip2').text("");
+                }
+                //To
+                 if (to == 1) {
+                    $('#tip2').show();
+                    $('#tip2').text("Wip")
+                }
+                 if (to == 2) {
+                    $('#tip2').show();
+                    $('#tip2').text("QC")
+                }
+                  if (to == 3) {
+                    $('#tip2').show();
+                    $('#tip2').text("Rework")
+                }
+                 if (to == 4) {
+                    $('#tip2').show();
+                    $('#tip2').text("Packing")
+                }
+                 if (to == 5) {
+                    $('#tip2').show();
+                    $('#tip2').text("FG")
+                }
+                 if (to == 6) {
+                    $('#tip2').show();
+                    $('#tip2').text("PGI")
+                }
+                 if (to == 7) {
+                    $('#tip2').show();
+                    $('#tip2').text("Dispatch")
+                }
+                if (to == 8) {
+                    $('#tip2').show();
+                    $('#tip2').text("Scrap")
+                }
+                if (to == "") {
+                    $('#tip2').hide();
+                    
+                }
+
+            }) 
+            //Transfer Click
+            $('#btntransfer').on('click', function () {
+                let from = parseInt($('#from').val().trim());
+                let to = parseInt($('#to').val().trim());
+
+                if (from == 2) {
+                    if (to == 4) {
+                         $('.tablelist >tbody>tr').each(function () {
+                    var $tds = $(this).find('td');
+                    let ProSerialCode = $tds.eq(2).text().trim();
+                    let select = $tds.find('#istransfer :selected').val();
+                     
+                         $.ajax({
+                        url: '/StockTransfer/UpdateStocksTable',
+                        data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode },
+                        type: 'json',
+                        success: function (result) {
+                            count++;
+                            if (count > 1)
+                                return;
+                            new PNotify({
+                                title: 'Done!',
+                                text: 'Transfer Successufully',
+                                type: 'success'
+                            });
+                            $('#from').val('');
+                            $('#to').val('');
+                            $('#jobno').val('');
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+
+                            
+                        }
+                    })  
+                }) 
+                    }
+                }
+
+                //location 1 to 2 validation
+                if (from == 1) {
+                    if (to != 2) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 1(WIP) Only be tranfer in location 2(QC)',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 2 to 3,4 and 8 validation
+                if (from == 2) {
+                    if (to != 3 && to != 4 && to != 8) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 2(QC) Only be tranfer in location 3(Rework), 4(Packing) and 8(scrap).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 3 to 2 validation
+                if (from == 3) {
+                    if (to !=2) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 3(Rework) cannot be tranfer in location 1(Rework).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                //location 4 to 5 only validation
+                if (from == 4) {
+                    if (to != 5) {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Location 4(Packing) Only be tranfer in location 5(FG).',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                if (to != 4) {
+                      $('.tablelist >tbody>tr').each(function () {
+                    var $tds = $(this).find('td');
+                    let ProSerialCode = $tds.eq(2).text().trim();
+                    let select = $tds.find('#istransfer :selected').val();
+                    if (select == "Yes") {
+                         $.ajax({
+                        url: '/StockTransfer/UpdateStocksTable',
+                        data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode },
+                        type: 'json',
+                        success: function (result) {
+                            count++;
+                            if (count > 1)
+                                return;
+                            new PNotify({
+                                title: 'Done!',
+                                text: 'Transfer Successufully',
+                                type: 'success'
+                            });
+                            $('#from').val('');
+                            $('#to').val('');
+                            $('#jobno').val('');
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+
+                            
+                        }
+                    }) 
+                    }
+                   
+                })
+                }
+
+                if (from == 2) {
+                    if (to == 3) {
+                     $('.tablelist tbody tr').each(function () {
+                    var $tds = $(this).find('td');
+                         let ProSerialCode = $tds.eq(2).text().trim();
+                          let qcpass = $tds.eq(15).text().trim();
+                          
+                             $.ajax({
+                                 url: '/StockTransfer/UpdateStocksTable',
+                                 data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode, qcremark: qcpass },
+                                 type: 'json',
+                                 success: function (result) {
+                                     count++;
+                                     if (count > 1)
+                                         return;
+                                     new PNotify({
+                                         title: 'Done!',
+                                         text: 'Transfer Successufully',
+                                         type: 'success'
+                                     });
+                                     $('#from').val('');
+                                     $('#to').val('');
+                                     $('#jobno').val('');
+                                     $('.tablelist tbody tr').remove();
+                                     $('.tablelist').hide();
+
+
+                                 }
+                             })  
+                }) 
+                    }
+                }
+
+                //From 2 to 4 packing
+                if (from == 2) {
+                    if (to == 4) {
+                        $('.tablelist tbody tr').each(function () {
+                            var $tds = $(this).find('td');
+                            let ProSerialCode = $tds.eq(2).text().trim();
+                            let qcpass = $tds.eq(15).text().trim();
+
+                            $.ajax({
+                                url: '/StockTransfer/UpdateStocksTableFromTwoTo4',
+                                data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode, qcPass: qcpass },
+                                type: 'json',
+                                success: function (result) {
+                                    count++;
+                                    if (count > 1)
+                                        return;
+                                    new PNotify({
+                                        title: 'Done!',
+                                        text: 'Transfer Successufully',
+                                        type: 'success'
+                                    });
+                                    $('#from').val('');
+                                    $('#to').val('');
+                                    $('#jobno').val('');
+                                    $('.tablelist tbody tr').remove();
+                                    $('.tablelist').hide();
+
+
+                                }
+                            })
+
+                        })
+                    }
+                }
+
+                //from 2 to 8 scrap
+                 if (from == 2) {
+                    if (to == 8) {
+                        $('.tablelist tbody tr').each(function () {
+                            var $tds = $(this).find('td');
+                            let ProSerialCode = $tds.eq(2).text().trim();
+                            let qcpass = $tds.eq(15).text().trim();
+
+                            $.ajax({
+                                url: '/StockTransfer/UpdateStocksTableFromTwoTo8',
+                                data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode, qcremark: qcpass },
+                                type: 'json',
+                                success: function (result) {
+                                    count++;
+                                    if (count > 1)
+                                        return;
+                                    new PNotify({
+                                        title: 'Done!',
+                                        text: 'Transfer Successufully',
+                                        type: 'success'
+                                    });
+                                    $('#from').val('');
+                                    $('#to').val('');
+                                    $('#jobno').val('');
+                                    $('.tablelist tbody tr').remove();
+                                    $('.tablelist').hide();
+
+
+                                }
+                            })
+
+                        })
+                    }
+                }
+
+                  //from 1 to 2 QC
+                 if (from == 1) {
+                    if (to == 2) {
+                        $('.tablelist tbody tr').each(function () {
+                            var $tds = $(this).find('td');
+                            let ProSerialCode = $tds.eq(2).text().trim();
+ 
+                            $.ajax({
+                                url: '/StockTransfer/UpdateStocksTableFromOneTo2',
+                                data: { jobno: jobNo, fromLoc: from, location: to, serialcode: ProSerialCode },
+                                type: 'json',
+                                success: function (result) {
+                                    count++;
+                                    if (count > 1)
+                                        return;
+                                    new PNotify({
+                                        title: 'Done!',
+                                        text: 'Transfer Successufully',
+                                        type: 'success'
+                                    });
+                                    $('#from').val('');
+                                    $('#to').val('');
+                                    $('#jobno').val('');
+                                    $('.tablelist tbody tr').remove();
+                                    $('.tablelist').hide();
+
+
+                                }
+                            })
+
+                        })
+                    }
+                }
+                 
+            })
+            
+        }) 
+    </script>
+}

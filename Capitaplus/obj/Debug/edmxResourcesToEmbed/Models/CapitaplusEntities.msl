@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CapitaplusModelStoreContainer" CdmEntityContainer="CapitaplusEntities">
+    <EntitySetMapping Name="RoleMaterialCreations">
+      <EntityTypeMapping TypeName="CapitaplusModel.RoleMaterialCreation">
+        <MappingFragment StoreEntitySet="RoleMaterialCreation">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="MaterialGroup" ColumnName="MaterialGroup" />
+          <ScalarProperty Name="UOM_1" ColumnName="UOM-1" />
+          <ScalarProperty Name="QUOM" ColumnName="QUOM" />
+          <ScalarProperty Name="UOM_2" ColumnName="UOM-2" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity_AMH" ColumnName="Capacity_AMH" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuplierTypes">
+      <EntityTypeMapping TypeName="CapitaplusModel.SuplierType">
+        <MappingFragment StoreEntitySet="SuplierTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SuplierTypes" ColumnName="SuplierType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorMasters">
+      <EntityTypeMapping TypeName="CapitaplusModel.VendorMaster">
+        <MappingFragment StoreEntitySet="VendorMaster">
+          <ScalarProperty Name="S_No" ColumnName="S.No" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+          <ScalarProperty Name="DeliveryFrom" ColumnName="DeliveryFrom" />
+          <ScalarProperty Name="SuplierTypeId" ColumnName="SuplierTypeId" />
+          <ScalarProperty Name="MaterialCode" ColumnName="MaterialCode" />
+          <ScalarProperty Name="SuplierGstNo" ColumnName="SuplierGstNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

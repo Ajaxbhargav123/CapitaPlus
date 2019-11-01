@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Packing</h2>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-lg-3">
+            <label>Job No:</label><input type="text" id="jobno" placeholder="Job No.." class="form-control" />
+
+        </div>
+       
+    </div>
+</div>
+
+
+
+<h2 class="si">Selected Item</h2>
+<div style="overflow-x:auto;">
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Job No</th> 
+                <th>Product Serial Code</th>
+                
+                <th>Individual Packing</th>
+                <th>Box Packing</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+
+
+</div>
+
+<button id="save" class="btn btn-primary" type="button">Save</button>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var QcNo;
+            var count = 0;
+            let jobNo;
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('keyup', '#jobno', function () {
+                $('.tablelist tbody tr').remove();
+                $('.tablelist').show();
+                $('.boml').show();
+                 jobNo = $(this).val();
+
+                $.ajax({
+                    url: '/Packing/GetFromStock',
+                    data: { jobno: jobNo },
+                    type: 'json',
+                    success: function (result) {
+                        console.log(result);
+                        for (var i = 0; i < result.Data.length; i++) {
+                            $(".tablelist").each(function () {
+                                var tds = '<tr class="all">';
+                                jQuery.each($('tr:last', this), function () {
+
+                                    tds += '<td class="jobid">' + result.Data[i].JobNo + '</td>';
+                                    tds += '<td class="wipid">' + result.Data[i].ProdSerialNo + '</td>';
+                                     
+                                    tds += '<td class="reqqty">' + '<select id="indpac" style="width:80px;" class="form-control"><option>No</option><option>Yes</option></select>' + '</td>';
+
+                                    tds += '<td class="reqqty">' + '<select id="boxpac" style="width:80px;" class="form-control"><option>No</option><option>Yes</option></select>' + '</td>';
+
+                                    $('#save').show();
+                                });
+                                tds += '</tr>';
+
+                                if ($('tbody', this).length > 0) {
+                                    $('tbody', this).append(tds);
+                                    $('.table').show();
+                                    $('.save').show();
+                                    $('#txtcode').val('');
+                                    $('#proName').val('');
+                                    $('#txtmodel').val('');
+                                    $('#txtcell').val('');
+                                    $('#txtcapacity').val('');
+                                    $('#txtcolor').val('');
+                                    $('#txtqtytopro').val('');
+                                    $('.si').show();
+                                    
+                                } else {
+                                    $(this).append(tds);
+
+                                }
+                            });
+                        }
+
+                    }
+                })
+            })
+
+
+            //Save
+            $('#save').on('click', function () {
+                let id = $('#unique').val();
+                $(".tablelist tbody tr").each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.JobNo = $tds.eq(0).text().trim();
+                    item.ProdSerialNo = $tds.eq(1).text().trim(); 
+                    item.IndivisualPacking = $tds.find('#indpac :selected').text().trim();
+                    item.BoxPacking = $tds.find('#boxpac :selected').text().trim();
+                    
+                    $.ajax({
+                        url: "/Packing/UpdateStocksTableFromPacking",
+                        data: { jobno: item.JobNo, proserialNo: item.ProdSerialNo, IndivisualPacking: item.IndivisualPacking, BoxPacking: item.BoxPacking },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+                            count++
+                            if (count > 1)
+                                return;
+                            new PNotify({
+                                title: 'Done!',
+                                text: 'Updated',
+                                type: 'success'
+                            });
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+
+
+                });
+            })
+
+
+        })
+
+
+    </script>
+}

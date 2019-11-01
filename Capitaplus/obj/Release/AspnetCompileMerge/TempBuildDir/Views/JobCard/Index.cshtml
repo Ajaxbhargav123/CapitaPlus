@@ -1,0 +1,218 @@
+﻿@model Capitaplus.ViewModel.JobSheetVm
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div class="row">
+
+    <div class="form-group">
+        <label>Select Order</label>
+        @Html.DropDownListFor(x => x.saleOrder.Id, new SelectList(Model.salesOrders, "Id", "Id"), "Select Sales Order", new { id = "codelist", @class = "form-control" })
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.Code, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.Code, new { id = "txtcode", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.ProductName, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.ProductName, new { id = "proName", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.Model, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.Model, new { id = "txtmodel", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.CellType, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.CellType, new { id = "txtcell", @class = "form-control", disabled = "true" })
+
+    </div>
+    &nbsp;&nbsp;
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.Capacity, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.Capacity, new { id = "txtcapacity", @class = "form-control", disabled = "true" })
+
+    </div>
+
+    &nbsp;&nbsp;
+
+    <div style="margin-left:165px" class="form-group">
+        @Html.LabelFor(x => x.saleOrder.Color, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.Color, new { id = "txtcolor", @class = "form-control", disabled = "true" })
+
+    </div>
+
+    &nbsp;&nbsp;
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.saleOrder.QtyToProduce, new { @class = "lbl" })
+        @Html.TextBoxFor(x => x.saleOrder.QtyToProduce, new { id = "txtqtytopro", @class = "form-control", disabled = "true" })
+
+    </div>
+    <input type="button" style="margin-left:16px; margin-top:26px; height:33px;" class="btn btn-primary" id="btnadd" value="Add" />
+
+</div>
+
+<div class="row">
+    <div style="margin-left:1020px;">
+        @Html.DropDownListFor(x => x.bom.ID, new SelectList(Model.boms, "ID", "ID"), "Select BOM", new { id = "bomlist", @class = "form-control" })
+
+    </div>
+   <hr />
+    <table class="table tablelist table-striped">
+        <thead>
+            <tr>
+                <th>Sale Id </th>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Qty To PRODUCE</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button class="btn btn-primary btn-lg save"><i class="glyphicon-import"></i>Save</button>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#codelist').chosen();
+            $('#bomlist').hide();
+            $('.tablelist').hide();
+            $('.save').hide();
+
+            //Dropdown Change Event
+            $('#codelist').on('change', function () {
+                let val = $('#codelist').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/SalesOrders/' + val,
+                    success: function (result) {
+                        $('#txtcode').val('');
+                        $('#proName').val('');
+                        $('#txtmodel').val('');
+                        $('#txtcell').val('');
+                        $('#txtcapacity').val('');
+                        $('#txtcolor').val('');
+                        $('#txtqtytopro').val('');
+
+                        let code = result.Code;
+                        let type = result.CellType;
+                        let capacity = result.Capacity;
+                        let color = result.Color;
+                        let model = result.Model;
+                        let proname = result.ProductName;
+                        let qtytppro = result.QtyToProduce;
+
+
+                        $('#txtcode').val(code);
+                        $('#proName').val(proname);
+                        $('#txtmodel').val(model);
+                        $('#txtcell').val(type);
+                        $('#txtcapacity').val(capacity);
+                        $('#txtcolor').val(color);
+                        $('#txtqtytopro').val(qtytppro);
+                    },
+                    error: function (xhr) {
+                        alert(xhr);
+                    }
+
+                })
+
+            })
+
+        });
+
+        //addbtn
+        $('#btnadd').on('click', function () { 
+            //$.ajax({
+            //    url: "/JobCard/GetBom",
+            //    datatype: "JSON",
+            //    type: "Get",
+            //    success: function (data) { 
+            //        console.log(data);
+            //        for (var i = 0; i < data.length; i++) {
+                      
+            //            var opt = new Option(data[i].BOMCode);
+            //            $("#bomid").append(opt);
+            //        }
+            //    }
+            //});
+            $('#bomlist').show();
+            $('.save').show();
+            $('.tablelist').show();
+            let salesCode = $('#codelist :selected').text();
+            let code = $('#txtcode').val();
+            let proName = $('#proName').val();
+            let type = $('#txtcell').val();
+            let capacity = $('#txtcapacity').val();
+            let color = $('#txtcolor').val();
+            let model = $('#txtmodel').val();
+            let quantity = $('#txtqtytopro').val(); 
+
+            $(".tablelist").each(function () {
+                var tds = '<tr>';
+                jQuery.each($('tr:last', this), function () {
+                    tds += '<td class="scode">' + salesCode + '</td>';
+                    tds += '<td class="code">' + code + '</td>';
+                    tds += '<td class="proName">' +proName + '</td>';
+                    tds += '<td class="type">' + type + '</td>';
+                    tds += '<td class="capacity">' + capacity + '</td>';
+                    tds += '<td class="color">' + color + '</td>';
+                    tds += '<td class="model">' + model + '</td>'; 
+                    tds += '<td class="tqty">' + quantity + '</td>';  
+                    tds += '<td>' + '<input type="button" value="Remove" onclick="Remove(this)" class="btn btn-danger"/>' + '</td>';
+                });
+                tds += '</tr>';
+                if ($('tbody', this).length > 0) {
+
+                    $('tbody', this).append(tds);
+                
+                    $('.table').show();
+                    $('.save').show();
+                
+                    $('#txtcode').val('');
+                    $('#proName').val('');
+                    $('#txtmodel').val('');
+                    $('#txtcell').val('');
+                    $('#txtcapacity').val('');
+                    $('#txtcolor').val('');
+                    $('#txtqtytopro').val('');
+                   
+                } else {
+                    $(this).append(tds); 
+                  
+                }
+            }); 
+           
+        })
+       
+    </script>
+}

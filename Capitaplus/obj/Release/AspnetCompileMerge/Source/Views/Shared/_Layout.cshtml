@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Capita Plus</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/pnotify.custom.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
+            margin-top: 0;
+        }    
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+        <a class="navbar-brand" href="~/Home/Index">CapitaPlus</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Creation<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/Vendor/CreateVendor">Create Vendor <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/RmCreation/Index">Create Raw Materials</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/CreateCustomer/Index">Create Customer</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/FinishedGood/Index">FG Create</a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Materials Planing<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/MaterialPlaning/MIS">Material Planing <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/MaterialRequsitionSlip/MIS">Material Requsition Slip</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/MaterialIssueSlip/Index">Material Issue Slip <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/WIPStockGer/MIS">WIP Stock Genration</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Lists Of Materials<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/RmCreation/RmList">Raw Materials <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/FinishedGood/FgList">Finishing Goods</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/CreateCustomer/CustomerList">Customers <span class="sr-only">(current)</span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Materials Check<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/QualityCheck/Index">Quality Check</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/ReworkArea/Index">Rework Area</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/QcRework/Index">QC Rework Area</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/StockTransfer/Index">Stock Transfer</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/Packing/Index">Packing</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Members<span class="caret"></span></a>
+
+                        <ul style="background-color:#158cba" class="dropdown-menu">
+                            <li class="nav-item">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/Vendor/VendorList">Vendor List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/CreateCustomer/CustomerList">Customer List</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                @*//Create Orders*@
+                <li>
+                    <div class="dropdown">
+                        <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" data-toggle="dropdown" href="" class="nav-link dropdown-toggle">Create Order<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/Vendor/VendorList">Purchase Order</a>
+                            </li>
+                            <li class="nav-item" style="background-color:#158cba">
+                                <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/CreateCustomer/CustomerList"> Sales Order</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+             
+                <li class="nav-item" style="background-color:#158cba">
+                    <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/BillOfMaterials/BOMIndex">BOM</a>
+                </li>
+                <li class="nav-item" style="background-color:#158cba">
+                    <a style="font-family:'Times New Roman', Times, serif; font-weight:bold" class="nav-link" href="~/JobCard/JobSheet">Job Sheet</a>
+                </li>
+
+            </ul>
+
+         
+            @*<form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>*@
+        </div>
+    </nav>
+    <div class="container body-content">
+        <br />
+        <br />
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - CapitaPlus</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+
+    <script src="~/Scripts/pnotify.custom.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+@section scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('li').on('click', function () {
+            alert('done');
+            $(this).addClass('active');
+        })
+    });
+</script>
+}

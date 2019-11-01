@@ -1,0 +1,648 @@
+﻿@model IEnumerable<Capitaplus.Models.WIP>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #loading-image{
+  position:fixed;
+  top:300px;
+  right:650px;
+  width:25%;
+  height:25%;
+  background-color:#666; 
+  background-repeat:no-repeat;
+  background-position:center;
+  z-index:10000000;
+  opacity: 0.9;
+  filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+</style>
+<h2>Quality Check</h2>
+ 
+    <img id="loading-image"  src="~/Loader/Infinity-1s-200px.gif" style="display:none; width:100px;height:100px;" />
+ 
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.WipNo)
+        </th>
+      
+        <th>
+            @Html.DisplayNameFor(model => model.BomNo)
+        </th>
+        <th>
+           <label>Product Code</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.jobNo)
+        </th>
+        <th>
+            <label>Product Name</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Model)
+        </th> 
+        <th>
+         <label>WIP Quantity</label>
+        </th> 
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WipNo)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.BomNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.jobNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Capacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Color)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Model)
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.WipQty)
+        </td>
+       
+        <td>
+          <input type="button" id="btnadd" class="btn btn-primary" value="Add" />
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@*Produce Based On WIPQtY*@
+<h2 class="si">Selected Item</h2>
+<table onload="loadingAjax('myDiv');" class="table tablelist table-striped">
+    <thead>
+        <tr>
+            <th>Wip No</th>
+            <th>Bom No</th>
+            <th>Product Code</th>
+            <th>Mat-1</th>
+            <th>Mat-2</th>
+            <th>Mat-3</th>
+            <th>Mat-4</th>
+            <th>Mat-5</th>
+            <th>Mat-6</th>
+            <th>Mat-7</th>
+            <th>Mat-8</th>
+            <th>Mat-9</th>
+            <th>Mat-10</th>
+            <th>Qc Pass</th>
+            <th>Product Serial Code</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    
+</table>
+ <button id="save" class="btn btn-info" type="button">Save</button>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var salesId;
+            var bomno;
+            var QcNo;
+            var count = 0;
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var qtytopro;
+            $(document).on('click', '#btnadd', function () { 
+                $("#loading-image").show();
+                let code = $(this).closest('tr');
+                var wipId = $("TD", code).eq(0).html().trim();
+                salesId = $("TD", code).eq(3).html().trim();
+                
+                var procode = $("TD", code).eq(2).html().trim();
+                bomno = $("TD", code).eq(1).html().trim();
+                var qty = parseInt($("TD", code).eq(9).html().trim()); 
+              
+                //check if Location Is O Or not from stock table 
+                $.ajax({
+                    url: "/QualityCheck/GetLocation",
+                    data: { jobno: salesId, bomno: bomno, wip: wipId },
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                      var  location = parseInt(result.trim()); 
+                      if (location == 2 || location==0) {
+                          $('.tablelist').show();
+                          $('.boml').show();
+                          $(".tablelist tbody tr").remove();
+                            count = 0;
+                            $.ajax({
+                                url: "/QualityCheck/GetLastMrsId",
+                                type: "GET",
+                                ContentType: "application/json; charset=UTF-8",
+                             
+                                success: function (result) {
+                                    QcNo = parseInt(result) + 1;
+                                    $("#loading-image").hide();
+                                }
+                            }); 
+
+                          //Get Procode
+                            $.ajax({
+                                url: "/QualityCheck/GetProCode",
+                                data: { jobno: salesId, wip: wipId, bomno: bomno },
+                                type: "POST",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) { 
+                                    for (var i = 0; i < qty; i++) {
+
+                                        $(".tablelist").each(function () {
+                                            var tds = '<tr>';
+                                            jQuery.each($('tr:last', this), function () {
+                                                tds += '<td class="wipid">' + wipId + '</td>';
+                                                tds += '<td class="bomid">' + bomno + '</td>';
+                                                tds += '<td class="salesid">' + procode + '</td>';
+
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" id="mat1" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input style="width:35px;" type="text"   id="mat2" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtywithwasts">' + '<input style="width:35px;" type="text"   id="mat3" class="form-control"/>' + '</td>';
+                                                tds += '<td class="balanceQty">' + '<input style="width:35px;" type="text"   id="mat4" class="form-control"/>' + '</td>';
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" id="mat5" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input style="width:35px;" type="text"   id="mat6" class="form-control"/>' + '</td>';
+                                                tds += '<td class="qtywithwasts">' + '<input style="width:35px;" type="text"   id="mat7" class="form-control"/>' + '</td>';
+                                                tds += '<td class="balanceQty">' + '<input style="width:35px;" type="text"   id="mat8" class="form-control"/>' + '</td>';
+                                                tds += '<td class="Reqqty">' + '<input style="width:35px;" type="text" id="mat9" class="form-control"/>' + '</td>';
+                                                tds += '<td class="waste">' + '<input type="text" style="width:35px;"   id="mat10" class="form-control"/>' + '</td>';
+                                                //tds += '<td class="waste">' + '<span id="Qcpass">Yes</span>' + '</td>';
+                                                tds += '<td class="waste">' + '<select style="width:95px;" class="form-control"><option>Ok</option><option>Rework</option><option>Scrap</option></select>' + '</td>';
+                                                tds += '<td class="waste">' + result.Data[i]+ '</td>';
+
+                                            });
+                                            tds += '</tr>';
+
+                                            if ($('tbody', this).length > 0) {
+                                                $('tbody', this).append(tds);
+                                                $('.tablelist').show();
+                                                $('#save').show();
+                                                $('.save').show();
+                                                $('#bomlist').show();
+                                                $('.si').show();
+
+                                                $('input[type="text"]').attr('value', 1);
+                                                $('#Qcpass').html('Yes');
+                                            } else {
+                                                $(this).append(tds);
+                                            }
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+
+                            }); 
+                      } else {
+                          new PNotify({
+                              title: 'Error!',
+                              text: 'Cannot Add! Please transfer Wip To Qc',
+                              type: 'error'
+                          });
+                            
+                        }
+                    }
+                }); 
+            }) 
+            //Save
+            $('#save').on('click', function () {
+                $("#loading-image").show();
+                $(".tablelist tbody tr").each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.WipNo = $tds.eq(0).text().trim();
+                    item.BomNo = $tds.eq(1).text().trim();
+                    item.ProductCode = $tds.eq(2).text().trim();
+                    item.Mat1 = $tds.find('#mat1', this).val();
+                    item.Mat2 = $tds.find('#mat2', this).val();
+                    item.Mat3 = $tds.find('#mat3', this).val();
+                    item.Mat4 = $tds.find('#mat4', this).val();
+                    item.Mat5 = $tds.find('#mat5', this).val();
+                    item.Mat6 = $tds.find('#mat6', this).val();
+                    item.Mat7 = $tds.find('#mat7', this).val();
+                    item.Mat8 = $tds.find('#mat8', this).val();
+                    item.Mat9 = $tds.find('#mat9', this).val();
+                    item.Mat10 = $tds.find('#mat10', this).val();
+                    item.ProdSerialNo = $tds.eq(14).text().trim(); 
+                    //item.QcPass = $tds.eq(13).text().trim();
+                    item.QcPass = $tds.find('select :selected').val().trim();
+                   
+                    item.QcNo = QcNo;
+                    $.ajax({
+                        url: "/QualityCheck/UpdateIntoQualityCheck",
+                        data: {code:item.ProductCode, bom: bomno, qcNo: item.QcNo, qccheck: item.QcPass, jobno: salesId, wipno: item.WipNo, procodeNo: item.ProdSerialNo },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            count++
+                            if (count > 1)
+                                return;
+                            $.ajax({
+                                url: "/QualityCheck/GetMrsId",
+                                type: "GET",
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) {
+                                    if (result.length > 0) { 
+                                        new PNotify({
+                                            title: 'Success!',
+                                            text: 'Done! Your Code Id Is: ' + result,
+                                            type: 'success'
+                                        });
+                                        $(".tablebom tbody tr").remove();
+                                        $(".tablelist tbody tr").remove();
+                                        $('.tablelist').hide();
+                                        $('#bomlist').hide();
+                                        $('#save').hide();
+                                        $('.si').hide();
+                                        $('.tablebom').hide();
+                                        $('.boml').hide();
+                                        $("#loading-image").hide();
+                                        location.href = "/QualityCheck/Index";
+                                    }
+                                }
+                            })
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+
+
+                });
+            })
+
+            //KeyUp Events
+            $(document).on('keyup', '#mat1', function () {
+                var isAll=true;
+                let qq = $(this).val().trim(); 
+              
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+                        
+                        if (this.value == "1" && isAll!=false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+ 
+                  if (qq == "2") {
+                     $(this).closest('tr').find("#Qcpass").html('No');
+                  }
+                 
+                  
+                  
+                  
+              } else {
+                  alert('This Field Accept Only 1 & 2');
+                  $(this).val('1');
+                  
+              }
+              
+             
+            })
+            $(document).on('keyup', '#mat2', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat3', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat4', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat5', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat6', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat7', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat8', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat9', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+            $(document).on('keyup', '#mat10', function () {
+                var isAll = true;
+                let qq = $(this).val().trim();
+
+                if (qq == "1" || qq == "2") {
+                    $(this).closest('tr').find("input").each(function () {
+
+                        if (this.value == "1" && isAll != false) {
+                            $(this).closest('tr').find("#Qcpass").html('Yes');
+                        }
+                        if (this.value == "2") {
+                            $(this).closest('tr').find("#Qcpass").html('No');
+                            isAll = false;
+                        }
+                    });
+
+
+                    if (qq == "2") {
+                        $(this).closest('tr').find("#Qcpass").html('No');
+                    }
+
+
+
+
+                } else {
+                    alert('This Field Accept Only 1 & 2');
+                    $(this).val('1');
+
+                }
+
+
+            })
+
+        })
+  
+    
+    </script>
+}

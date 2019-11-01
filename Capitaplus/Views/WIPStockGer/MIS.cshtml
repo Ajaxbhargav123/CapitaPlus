@@ -1,0 +1,851 @@
+﻿@model Capitaplus.ViewModel.MIS
+@{
+    ViewBag.Title = "MIS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>WIP Stock Generation</h2>
+<table class="table">
+    <tr>
+        <th>
+            <label>Job No</label>
+        </th>
+        <th>
+            <label>BOM No</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.ProductCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.CellType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Capacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.Brand)
+        </th>
+        <th>
+            <lable>Qty To Produce</lable>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saleOrder.SalesOrderNo)
+        </th>
+        <th>
+            Action
+        </th>
+        <th>
+           <lable>Cid</lable>
+        </th>
+    </tr>
+
+    @foreach (var item in Model.salesOrders)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.JobNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BomNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProductCode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProductName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Model)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Type)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Capacity)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Color)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Brand)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UpdatedQtyToProduce)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SalesOrderNo)
+    </td>
+    <td>
+        <button type="button" id="btnadd" class="btn btn-primary">Add</button>
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cid)
+    </td>
+</tr>
+    }
+
+</table>
+<hr />
+<h2 class="si">FG Generation</h2>
+<table class="table tablelist table-striped">
+    <thead>
+        <tr>
+            <th>Job No</th>
+            <th>Bom No</th>
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Color</th>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Qty To Produce</th>
+            <th>WipProduce</th>
+            <th>Balance Qty</th>
+            <th>Sales No</th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<hr />
+@*Table Bom*@
+<h2 class="si">Raw Material Consuptions</h2>
+<div class="row">
+    <table id="tblbom" class="table tablebom table-striped">
+        <thead>
+            <tr>
+
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Color</th>
+                <th>Model</th>
+                <th>Qty In Piece</th>
+                <th>Stock Qty</th>
+                <th>Qty Avalable At Location</th>
+                <th>Standerd Consuption</th>
+                <th>Wastage Qty</th>
+                <th>Actual Consuption</th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button id="save" class="btn btn-primary">
+        Save
+    </button>
+</div>
+
+    
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tablelist').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide();
+            var MrsId;
+            var stockLastId;
+            var count = 0;
+            var Qtycount = 0;
+            var qtytopro;  
+            var salesNo;
+            var custId;
+            var ProCode;
+              
+            $(document).on('click', '#btnadd', function () {
+                //Get LAST iD oF WIP
+                $.ajax({
+                url: "/WIPStockGer/GetLastMrsId",
+                timeout: 20000,
+                type: "GET",
+                ContentType: "application/json; charset=UTF-8",
+                success: function (result) {
+                    MrsId = parseInt(result) + 1;  
+                    } 
+                });  
+
+                //Get LAST iD oF StockTable               
+                $.ajax({
+                    url: "/WIPStockGer/GetLastProductCodeId",
+                    timeout: 20000,
+                    type: "GET",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        stockLastId = parseInt(result) + 1;
+
+                    }
+                });  
+
+                $('.tablelist').show();
+                $('.boml').show();
+                let code = $(this).closest('tr');
+                var salesId = $("TD", code).eq(0).html();
+                var bomId = $("TD", code).eq(1).html().trim();
+                ProCode = $("TD", code).eq(2).html().trim();
+                var ProName = $("TD", code).eq(3).html();
+                var model = $("TD", code).eq(4).html();
+                var type = $("TD", code).eq(5).html();
+                var capacity = $("TD", code).eq(6).html();
+                var brand = $("TD", code).eq(8).html();
+                var color = $("TD", code).eq(7).html();
+                salesNo = $("TD", code).eq(10).html().trim();
+                custId = $("TD", code).eq(12).html().trim();
+                qtytopro = $("TD", code).eq(9).html().trim();
+                
+                $(".tablelist tbody tr").remove();
+                $(".tablelist").each(function () {
+                    var tds = '<tr>';
+                    jQuery.each($('tr:last', this), function () {
+                        tds += '<td class="salesid">' + salesId + '</td>';
+                        tds += '<td class="bomid">' + bomId + '</td>';
+                        tds += '<td class="procode">' + ProCode + '</td>';
+                        tds += '<td class="proname">' + ProName + '</td>';
+                        tds += '<td class="type">' + type + '</td>';
+                        tds += '<td class="capacity">' + capacity + '</td>';
+                        tds += '<td class="color">' + color + '</td>';
+                        tds += '<td class="model">' + model + '</td>';
+                        tds += '<td class="brand">' + brand + '</td>';
+                        tds += '<td class="qty">' + qtytopro + '</td>';
+                         tds += '<td class="wip">' + '<input type="number" id="vippro" class="form-control"/>' + '</td>';
+                        tds += '<td class="bal">' + '<input type="text" disabled id="balqty" class="form-control"/>' + '</td>'; 
+                        tds += '<td class="qty">' + salesNo + '</td>';
+                       
+                    });
+                    tds += '</tr>';
+                    if ($('tbody', this).length > 0) {
+                        $('tbody', this).append(tds);
+                        $('.tablelist').show();
+
+                        $('.save').show();
+                        $('#bomlist').show();
+                        $('.si').show();
+                    } else {
+                        $(this).append(tds);
+                    }
+                });
+                $(".tablebom tbody tr").remove();
+
+                $('.tablebom').show();
+                $('.bh').show();
+
+                $.ajax({
+                    url: '/JobCard/GetBomDetails',
+                    data: { code: bomId },
+                    type: 'json',
+                    success: function (results) { 
+                        let jobno = $(".salesid").html().trim();
+                        for (var i = 0; i < results.Data.length; i++) { 
+                            let rmcode = results.Data[i].RmCode.trim();
+                            let mat = results.Data[i].MatName;
+                            let type = results.Data[i].Type;
+                            let cap = results.Data[i].Capacity;
+                            let color = results.Data[i].Color;
+                            let model = results.Data[i].Model;
+                            let qty = results.Data[i].Qty;
+                            $.ajax({
+                                url: '/WIPStockGer/GetQtyFromStock',
+                                data: { code: rmcode },
+                               type: 'get',
+                                success: function (StockQty) {
+                                    $.ajax({
+                                        url: '/WIPStockGer/GetIssueQtyFromMIS',
+                                        data: { jobno: jobno, code: rmcode },
+                                        type: 'get',
+                                        success: function (result) {
+                                            $("#tblbom").each(function () {
+                                                var tds = '<tr class="all">';
+                                                jQuery.each($('tr:last', this), function () {
+                                                    tds += '<td class="code">' + rmcode + '</td>';
+                                                    tds += '<td class="proName">' + mat + '</td>';
+                                                    tds += '<td class="type">' + type + '</td>';
+                                                    tds += '<td class="capacity">' + cap + '</td>';
+                                                    tds += '<td class="color">' + color + '</td>';
+                                                    tds += '<td class="model">' + model + '</td>'; 
+                                                    tds += '<td class="tqty">' + qty + '</td>';
+                                                     tds += '<td class="model">' + StockQty + '</td>';
+
+                                                    let wip = $('#vippro').val();
+                                                    let reqQty = wip * qty;
+                                                    tds += '<td class="sc">' + '<input type="number" value=' + `${result}` + ' disabled id="qal" class="form-control"/>' + '</td>';
+                                                    tds += '<td class="sc">' + '<input type="number" value=' + `${reqQty}` + ' disabled id="scs" class="form-control"/>' + '</td>';
+                                                    tds += '<td class="wc">' + '<input type="text" id="wcs" class="form-control"/>' + '</td>';
+                                                    tds += '<td class="ac">' + '<input type="number"  id="acs" disabled class="form-control"/>' + '</td>';
+
+                                                    $('#save').show();
+                                                });
+                                                tds += '</tr>';
+
+                                                if ($('tbody', this).length > 0) {
+                                                    $('tbody', this).append(tds);
+                                                    $('.table').show();
+                                                    $('.save').show();
+                                                    $('#txtcode').val('');
+                                                    $('#proName').val('');
+                                                    $('#txtmodel').val('');
+                                                    $('#txtcell').val('');
+                                                    $('#txtcapacity').val('');
+                                                    $('#txtcolor').val('');
+                                                    $('#txtqtytopro').val('');
+
+                                                    //Calculations
+
+                                                } else {
+                                                    $(this).append(tds);
+
+                                                }
+                                            });
+
+
+                                        }
+
+                                    })
+                                }
+                            })
+                             
+                           
+                        }
+
+                       
+
+                    }
+                })
+            })
+
+            //KeyUp Events
+            $(document).on('keyup', '#vippro', function () {
+                var qtyToProduce = parseInt($(".tablelist tbody tr").find('td').eq(9).text().trim());
+                let qq =parseInt($(this).val());
+               
+                if (qq>qtyToProduce) {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                    $('#balqty').val('');
+                    $(this).val('');
+                  
+                }
+
+              var wq = qtytopro - qq;
+
+              $('#balqty').val(wq); 
+
+              let qtywast = parseInt($('#vippro').val());
+              $("#tblbom tbody").find('tr').each(function (i, el) {
+                  var $tds = $(this).find('td');
+                  let qty = parseInt($tds.eq(6).text().trim());
+                  let IssuedQty = parseInt(qtywast * qty);
+                  $(this).find('#scs', this).val(parseInt(IssuedQty));
+                  let qtyAtLoc = parseInt($tds.find('#qal').val());
+                
+                  if (IssuedQty > qtyAtLoc) { 
+                       $('#vippro').val('');
+                        $('#balqty').val('');
+                      Qtycount++
+                      if (Qtycount > 1)
+                          return;
+                      alert("Opps! Quantity Exceed");
+                     
+                      
+                  }
+              });
+           
+            }) 
+
+            $(document).on('keyup', '#wcs', function () {
+                let qtybox = parseInt($(this).val());
+                let individual = parseInt($(this).closest('tr').find('#scs').val()); 
+                let actualCusuption = parseInt($(this).closest('tr').find('#acs').val()); 
+                let locQty = parseInt($(this).closest('tr').find('#qal').val());
+                   let res = parseInt(individual + qtybox);
+                $(this).closest('tr').find('#acs').val(res);
+                if (res >locQty ) {
+                    $(this).closest('tr').find('#acs').val('');
+                   $(this).val('');
+                    alert("Opps! Number Exceed");
+                    return;
+                }
+            
+
+             
+            })
+
+            $('#save').on('click', function () {
+                $.ajax({
+                    url: "/WIPStockGer/GetLastProductCodeId",
+                    timeout: 20000,
+                    type: 'get',
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        let val = parseInt(result) + 1;
+                        Ids = parseInt(val);
+                    }
+                }) 
+                  var matName = [];
+                
+                $("#tblbom tbody").find('tr').each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.Code = $tds.eq(0).text();
+                    item.MatName = $tds.eq(1).text();
+                    item.Type = $tds.eq(2).text();
+                    item.Capacity = $tds.eq(3).text();
+                    item.Color = $tds.eq(4).text();
+                    item.Model = $tds.eq(5).text();
+                    item.Qty = $tds.eq(6).text().trim();
+                    item.StanderdConsuption = $(this).find('#scs', this).val();
+                    item.ActualConsuption = $(this).find('#acs', this).val();
+                    item.WastQty = $(this).find('#wcs', this).val();
+                    item.BomNo = $('.bomid').html().trim();
+                    item.jobNo = $('.salesid').html().trim();
+                    item.QtyAtLocation = $('#qal', this).val();
+                    let wipQ = $('#vippro').val();
+                    //Save To WipTable 
+                    var updateQty = parseInt(qtytopro) - parseInt(wipQ);
+                    var IssueQty = parseInt(item.QtyAtLocation) - parseInt(item.ActualConsuption);
+                    $.ajax({
+                        url: "/WIPStockGer/InsertIntoMIS",
+                        data: { Wipno: MrsId, Code: item.Code, ProductlName: item.MatName, Type: item.Type, Capacity: item.Capacity, Model: item.Model, Color: item.Color, Qty: item.Qty, sc: item.StanderdConsuption, ac: item.ActualConsuption, WastQty: item.WastQty, bom: item.BomNo, jobno: item.jobNo, AvalableQty: item.QtyAtLocation },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {  
+                           
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong In Updating Issue Quantity',
+                                type: 'error'
+                            });
+                        }
+
+                    }); 
+                    $.ajax({
+                        url: "/WIPStockGer/UpdateUpdatedQtyInSalesOrder",
+                        data: { procode: ProCode, salesOrder: salesNo, updateQty: updateQty },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            count++;
+                            if (count == 1) {
+                                alert("Wip Id Is WIP000" + MrsId);
+                                //Update Produce qty In SalesOrder 
+                              
+                            }
+                        }
+                    })
+
+                     //Udate IssueQty
+                     $.ajax({
+                        url: "/WIPStockGer/UpdateIssueQty",
+                        data: { procode: item.Code, jobNo: item.jobNo, updateQty: IssueQty },
+                        type: "POST",
+                        ContentType: "application/json; charset=utf-8",
+                        success: function () {
+                              location.reload();
+                        }
+                    })
+                });
+                //Save to Stock Table  
+                var qty = $('#vippro').val();
+                var item = {};
+
+                $("#tblbom tbody").find('tr').each(function (i, el) {
+                    var $tds = $(this).find('td');
+                    matName.push($tds.eq(1).text().trim().toUpperCase()); 
+                })
+                var qtyToProduce = $(".tablelist tbody tr").find('td').eq(9).text().trim();
+                var salesno = $(".tablelist tbody tr").find('td').eq(10).text().trim();
+                
+                //if length 1
+                if (matName.length == 1) {
+                    for (var i = 0; i < qty; i++) {
+                      let num = parseInt(i) + parseInt(stockLastId); 
+                        
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 0;
+                        item.Mat3 = 0;
+                        item.Mat4 = 0;
+                        item.Mat5 = 0;
+                        item.Mat6 = 0;
+                        item.Mat7 = 0;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = custId + salesNo + item.ProductCode + "0000" + num;
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    } 
+                }
+
+                //if length 2
+                if (matName.length == 2) {   
+                    for (var i = 0; i < qty; i++) { 
+                        let num = parseInt(i) + parseInt(stockLastId);  
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 0;
+                        item.Mat4 = 0;
+                        item.Mat5 = 0;
+                        item.Mat6 = 0;
+                        item.Mat7 = 0;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = custId + salesNo + item.ProductCode + "0000" + num;
+
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+                }
+
+                //if length 3
+                if (matName.length == 3) {
+                    //  For Battery
+                    for (var i = 0; i < qty; i++) {
+                        let num = parseInt(i) + parseInt(stockLastId); 
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 1;
+                        item.Mat4 = 0;
+                        item.Mat5 = 0;
+                        item.Mat6 = 0;
+                        item.Mat7 = 0;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = salesNo + item.ProductCode+"0000" + num;
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesno, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+
+                }
+
+                //if length 4
+                if (matName.length == 4) {
+                    for (var i = 0; i < qty; i++) {
+                       let num = parseInt(i) + parseInt(stockLastId); 
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 1;
+                        item.Mat4 = 1;
+                        item.Mat5 = 0;
+                        item.Mat6 = 0;
+                        item.Mat7 = 0;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                      item.ProdSerialNo = salesNo + item.ProductCode+"0000" + num;
+
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+
+                }
+
+                //if length 5
+                if (matName.length == 5) {
+                    for (var i = 0; i < qty; i++) {
+                    let num = parseInt(i) + parseInt(stockLastId); 
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 1;
+                        item.Mat4 = 1;
+                        item.Mat5 = 1;
+                        item.Mat6 = 0;
+                        item.Mat7 = 0;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = salesNo + item.ProductCode+"0000" + num;
+
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+                }
+
+                //if length 6
+                if (matName.length == 6) {
+                    for (var i = 0; i < qty; i++) {
+                       let num = parseInt(i) + parseInt(stockLastId); 
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 1;
+                        item.Mat4 = 1;
+                        item.Mat5 = 1;
+                        item.Mat6 = 1;
+                        item.Mat7 = 1;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = salesNo + item.ProductCode +"0000" +num;
+
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+                }
+
+                if (matName.length == 7) {
+                    for (var i = 0; i < qty; i++) {
+                      let num = parseInt(i) + parseInt(stockLastId); 
+                        item.WipNo = MrsId;
+                        item.JobNo = $('.salesid').html().trim();
+                        item.BomNo = $('.bomid').html().trim();
+                        item.ProductCode = $('.procode').html().trim();
+                        item.Location = 001;
+                        item.Mat1 = 1;
+                        item.Mat2 = 1;
+                        item.Mat3 = 1;
+                        item.Mat4 = 1;
+                        item.Mat5 = 1;
+                        item.Mat6 = 1;
+                        item.Mat7 = 1;
+                        item.Mat8 = 0;
+                        item.Mat9 = 0;
+                        item.Mat10 = 0;
+                        item.QcNo = 'NA';
+                        item.QcPass = 'NA';
+                        item.Rework = 'NA';
+                        item.QcRework = 'NA';
+                        item.ProdSerialNo = salesNo + item.ProductCode +"0000"+ num;
+
+                        $.ajax({
+                            url: "/WIPStockGer/InsertIntoStockTable",
+                            data: { custno: custId, salesNo: salesNo, Wipno: item.WipNo, JobNo: item.JobNo, BomNo: item.BomNo, ProductCode: item.ProductCode, location: item.Location, mat1: item.Mat1, mat2: item.Mat2, mat3: item.Mat3, mat4: item.Mat4, mat5: item.Mat5, mat6: item.Mat6, mat7: item.Mat7, mat8: item.Mat8, mat9: item.Mat9, mat10: item.Mat10, QCNo: item.QcNo, Qcpass: item.QcPass, rework: item.Rework, qcRework: item.QcRework, productSerialNo: item.ProdSerialNo, Qty: qtyToProduce, Recive: qty },
+                            type: "POST",
+                            ContentType: "application/json; charset=UTF-8",
+                            success: function () {
+                                $(".tablebom tbody tr").remove();
+                                $(".tablelist tbody tr").remove();
+                                $('.tablelist').hide();
+                                $('#bomlist').hide();
+                                $('#save').hide();
+                                $('.si').hide();
+                                $('.tablebom').hide();
+                                $('.boml').hide();
+                            },
+                            error: function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Something Went Wrong',
+                                    type: 'error'
+                                });
+                            }
+
+                        });
+
+                    }
+                }
+            })
+        })
+     
+      
+    </script>
+}

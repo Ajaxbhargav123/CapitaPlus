@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CapitaplusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="RoleMaterialCreation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UOM_1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QUOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="UOM_2" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Capacity_AMH" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SAC_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="SuplierType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SuplierType1" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="VendorMasters" Relationship="Self.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="SuplierTypes" ToRole="VendorMaster" />
+  </EntityType>
+  <EntityType Name="VendorMaster">
+    <Key>
+      <PropertyRef Name="S_No" />
+    </Key>
+    <Property Name="S_No" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VendorCode" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ContactPerson" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="VendorAddress" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DeliveryFrom" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SuplierTypeId" Type="Int32" Nullable="false" />
+    <Property Name="MaterialCode" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="SuplierGstNo" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SuplierType" Relationship="Self.FK_VendorMaster_VendorMasterSuplierTypes" FromRole="VendorMaster" ToRole="SuplierTypes" />
+  </EntityType>
+  <Association Name="FK_VendorMaster_VendorMasterSuplierTypes">
+    <End Role="SuplierTypes" Type="Self.SuplierType" Multiplicity="1" />
+    <End Role="VendorMaster" Type="Self.VendorMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SuplierTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VendorMaster">
+        <PropertyRef Name="SuplierTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CapitaplusEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="RoleMaterialCreations" EntityType="Self.RoleMaterialCreation" />
+    <EntitySet Name="SuplierTypes" EntityType="Self.SuplierType" />
+    <EntitySet Name="VendorMasters" EntityType="Self.VendorMaster" />
+    <AssociationSet Name="FK_VendorMaster_VendorMasterSuplierTypes" Association="Self.FK_VendorMaster_VendorMasterSuplierTypes">
+      <End Role="SuplierTypes" EntitySet="SuplierTypes" />
+      <End Role="VendorMaster" EntitySet="VendorMasters" />
+    </AssociationSet>
+    <EntitySet Name="PurchaseOrderSummaries" EntityType="CapitaplusModel.PurchaseOrderSummary" />
+    <EntitySet Name="FinishedGoods" EntityType="CapitaplusModel.FinishedGood" />
+    <EntitySet Name="Grns" EntityType="CapitaplusModel.Grn" />
+  </EntityContainer>
+  <EntityType Name="PurchaseOrderSummary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="MaterialName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MaterialGroup" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UOM_1" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="QUOM" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="UOM_2" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Capacity_AMH" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Color" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Model" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Qty" Type="Int32" Nullable="false" />
+    <Property Name="Rate" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Int32" Nullable="false" />
+    <Property Name="GrossAmount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GrossTotal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Fright" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NetAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PurchaseId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="VendorId" Type="Int32" />
+    <Property Name="Sac" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="FinishedGood">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="ShortProductName" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ModelNo" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="CellType" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="Capacity" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="Color" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="ShortColorCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Brand" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="ShortBrandCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="SAC" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="GST" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Grn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Capacity" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="Uom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Receive" Type="Int32" />
+    <Property Name="Amount" Type="Int32" />
+  </EntityType>
+</Schema>

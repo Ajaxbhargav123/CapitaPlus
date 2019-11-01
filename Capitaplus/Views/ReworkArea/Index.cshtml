@@ -1,0 +1,287 @@
+﻿@model Capitaplus.ViewModel.ReworkAreaMatName
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .reworkpass{
+        width:100px;
+    }
+</style>
+ <div style="overflow-x:auto;">
+     <table class="table">
+         <tr> 
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.WipNo)
+             </th>
+             <th>
+                 @Html.DisplayNameFor(model => model.bom)
+             </th>
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.ProductCode)
+             </th>
+             <th>
+                <lable id="mat1"></lable>
+             </th>
+             <th>
+                 <lable id="mat2"></lable>
+             </th>
+             <th>
+                 <lable id="mat3"></lable>
+             </th>
+             <th>
+                 <lable id="mat4"></lable>
+             </th>
+             <th>
+                 <lable id="mat5"></lable>
+             </th>
+             <th>
+                 <lable id="mat6"></lable>
+             </th>
+             <th>
+                 <lable id="mat7"></lable>
+             </th>
+             <th>
+                 <lable id="mat8"></lable>
+             </th>
+             <th>
+                 <lable id="mat9"></lable>
+             </th>
+             <th>
+                 <lable id="mat10"></lable>
+             </th>
+
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.QcPass)
+             </th>
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.QcNo)
+             </th>
+
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.ProdSerialNo)
+             </th>
+
+             <th class="fth">
+                 @Html.DisplayNameFor(model => model.stockRework.Id)
+             </th>
+             <th>
+                 @Html.DisplayNameFor(model => model.stockRework.Location)
+             </th>
+             <th>Action</th>
+         </tr>
+
+         @foreach (var item in Model.stockReworks)
+         {
+             <tr>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.WipNo)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.BomNo)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.ProductCode)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat1)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat2)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat3)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat4)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat5)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat6)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat7)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat8)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat9)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Mat10)
+                 </td>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.QcPass)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.QcNo) 
+                 </td>
+
+                 <td>
+                     @Html.DisplayFor(modelItem => item.ProdSerialNo)
+
+                 </td>
+
+                 <td class="fth">
+                     @Html.DisplayFor(modelItem => item.Id)
+                 </td>
+                 <td>
+                     @Html.DisplayFor(modelItem => item.Location)
+                 </td>
+                 <td>
+                     <select class="form-control reworkpass">
+                         <option>No</option>
+                         <option>Yes</option>
+                     </select>
+                 </td>
+             </tr>
+
+         }
+
+     </table> 
+ </div> 
+ 
+<button id="save" class="btn btn-primary" type="button">Save</button>
+ 
+@section scripts{
+    <script type="text/javascript">
+        $(window).ready(function () {
+          $.ajax({
+                url: "/ReworkArea/GetMatNameFromBom",
+                data: { bomNo:'@Model.bom'},
+                type: "POST",
+                ContentType: "application/json; charset=UTF-8",
+                success: function (results) {
+                   if (results.Data[0] == undefined) {
+                            results.Data[0] = "X";
+                        }
+                        if (results.Data[1] == undefined) {
+                            results.Data[1] = "X";
+                        }
+                        if (results.Data[2] == undefined) {
+                            results.Data[2] = "X";
+                        }
+                        if (results.Data[3] == undefined) {
+                            results.Data[3] = "X";
+                        }
+                        if (results.Data[4] == undefined) {
+                            results.Data[4] = "X";
+                        }
+                        if (results.Data[5] == undefined) {
+                            results.Data[5] = "X";
+                        }
+                        if (results.Data[6] == undefined) {
+                            results.Data[6] = "X";
+                        }
+                        if (results.Data[7] == undefined) {
+                            results.Data[7] = "X";
+                        }
+                         if (results.Data[8] == undefined) {
+                            results.Data[8] = "X";
+                        }
+                         if (results.Data[9] == undefined) {
+                            results.Data[9] = "X";
+                        }
+
+                    $('#mat1').text(results.Data[0]);
+                    $('#mat2').text(results.Data[1]);
+                    $('#mat3').text(results.Data[2]);
+                    $('#mat4').text(results.Data[3]);
+                    $('#mat5').text(results.Data[4]);
+                    $('#mat6').text(results.Data[5]);
+                    $('#mat7').text(results.Data[6]);
+                    $('#mat8').text(results.Data[7]);
+                    $('#mat9').text(results.Data[8]);
+                    $('#mat10').text(results.Data[9]);
+                },
+                error: function () {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Something Went Wrong',
+                        type: 'error'
+                    });
+                }
+
+            });
+        })
+
+        $(document).ready(function () {
+            var Qcno;
+            var ids;
+            var count = 0;
+            $('.tablelist').hide();
+            $('.fth').hide();
+            $('#bomlist').hide();
+            $('#save').hide();
+            $('.si').hide();
+            $('.tablebom').hide();
+            $('.boml').hide(); 
+           
+            //Save
+            $('#save').on('click', function () {
+                let id = $('#unique').val();
+                $(".tablelist tbody tr").each(function (i, el) {
+                    var item = {};
+                    var $tds = $(this).find('td');
+                    item.WipNo = $tds.eq(0).text().trim();
+                    item.BomNo = $tds.eq(1).text().trim();
+                    item.ProductCode = $tds.eq(2).text().trim();
+                    item.Mat1 = $tds.eq(3).text().trim();
+                    item.Mat2 = $tds.eq(4).text().trim();
+                    item.Mat3 = $tds.eq(5).text().trim();
+                    item.Mat4 = $tds.eq(6).text().trim();
+                    item.Mat5 = $tds.eq(7).text().trim();
+                    item.Mat6 = $tds.eq(8).text().trim();
+                    item.Mat7 = $tds.eq(9).text().trim();
+                    item.Mat8 = $tds.eq(10).text().trim();
+                    item.Mat9 = $tds.eq(11).text().trim();
+                    item.Mat10 = $tds.eq(12).text().trim();
+                    item.QcPass = $tds.eq(13).text().trim();
+                    item.ReworkPass = $tds.find('#sel :selected').text().trim();
+                    item.qcNo = Qcno;
+                    item.Id = ids;
+                    item.ProdSerialNo = $tds.eq(14).text().trim();
+                    $.ajax({
+                        url: "/ReworkArea/UpdateStocksTableRework",
+                        data: { wipno: item.WipNo, proserialNo: item.ProdSerialNo, rework: item.ReworkPass },
+                        type: "POST",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function () {
+                            count++
+                            if (count > 1)
+                                return;
+                            new PNotify({
+                                title: 'Done!',
+                                text: 'Updated',
+                                type: 'success'
+                            });
+                            $('.tablelist tbody tr').remove();
+                            $('.tablelist').hide();
+                        },
+                        error: function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Something Went Wrong',
+                                type: 'error'
+                            });
+                        }
+
+                    });
+
+
+                });
+            })
+
+            
+
+        })
+
+
+    </script>
+}

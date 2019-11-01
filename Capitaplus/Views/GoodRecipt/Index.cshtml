@@ -1,0 +1,571 @@
+﻿@model  Capitaplus.ViewModel.purchaseOrderVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type=text] {
+        width: 97px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #ddlState {
+        width: 103px;
+    }
+
+    #ddlDistrict {
+        width: 220px;
+    }
+
+    #txtqty {
+        width: 60px;
+    }
+
+    .jumbotron {
+        height: 180px;
+    }
+
+    .lbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+
+    .jlbl {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+
+    .orderid {
+        margin-top: -50px;
+    }
+
+    .vendorname {
+        margin-left: 300px;
+        margin-top: -27px;
+    }
+
+    .vendorAddress {
+        margin-left: 300px;
+        margin-top: 10px;
+    }
+
+    .contactperson {
+        margin-top: -30px;
+    }
+
+    .contactno {
+        margin-left: 780px;
+        margin-top: -75px;
+    }
+
+
+    .date {
+        margin-left: 780px;
+    }
+</style>
+<link href="~/DatePicker/bootstrap-datepicker.css" rel="stylesheet" />
+
+@if (Model.Purorder == null)
+{
+    <h3>No Purchase Order Avalable For This Vendor.</h3>
+}
+else
+{
+    <h2>Create GRN</h2>
+
+    <div class="jumbotron">
+        <div class="orderid">
+            <label class="jlbl">Purchase Order# :</label>
+            @Html.DropDownListFor(x => x.StateNames, Model.StateNames, "--Select--", new { @id = "ddlState" })
+
+        </div>
+
+        <div class="vendorname">
+            <label class="jlbl">Vendor Name :</label>
+            <span id="vN">@Model.vendormasterDetails.VendorName</span>
+        </div>
+
+        @Html.HiddenFor(x => x.vendormasterDetails.S_No, new { id = "id" })
+        <div class="vendorAddress">
+            <label class="jlbl">Vendor Address :</label>
+            <span>@Model.vendormasterDetails.VendorAddress</span>
+        </div>
+
+
+        <div class="contactperson">
+            <label class="jlbl">Contact No :</label>
+            <span>@Model.vendormasterDetails.ContactNo</span>
+        </div>
+
+        <div class="contactno">
+            <label class="jlbl">Contact Name :</label>
+            <span>
+                @Model.vendormasterDetails.ContactPerson
+            </span>
+        </div>
+
+        <div class="date">
+            <label class="jlbl">
+                Date:
+            </label>
+            <span id="cd">@DateTime.Now.ToShortDateString()</span>
+        </div>
+
+        <div class="date">
+            <label class="jlbl">
+                Recieve Date:
+            </label>
+            <span><input id="rd" type="text" /></span>
+
+        </div>
+        <div class="date">
+            <label class="jlbl">Gate No:</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span><input id="gateno" type="text" /></span>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div id="District" class="form-group">
+            <lable class="lbl">Code</lable>
+            @Html.DropDownListFor(x => x.DistrictNames, new List<SelectListItem>(), "--Select--", new { @id = "ddlDistrict" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.MaterialName, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.MaterialName, new { id = "txtmaterialName", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.Type, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.Type, new { id = "txtype", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.Capacity_AMH, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.Capacity_AMH, new { id = "txtcapacity", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.Color, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.Color, new { id = "txtcolor", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.Model, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.Model, new { id = "txtmodel", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.UOM_1, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.UOM_1, new { id = "txtuom", @class = "form-control", disabled = "true" })
+
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            @Html.LabelFor(x => x.Purorder.Qty, new { @class = "lbl" })
+            @Html.TextBoxFor(x => x.Purorder.Qty, new { id = "txtqty", @class = "form-control", disabled = "true" })
+        </div>
+        &nbsp;&nbsp;
+
+        <div class="form-group">
+            <label class="lbl">Received</label>
+            <input type="text" id="txtreceived" class="form-control" />
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label class="lbl">Balance</label>
+            <input type="text" id="txtbalance" disabled="disabled" class="form-control" />
+        </div>
+        &nbsp;&nbsp;
+        <input style="height:36px; margin-top:27px;" type="button" id="btnadd" value="Add To List" class="btn btn-sm btn-primary" />
+    </div>
+
+    <div class="row">
+        <table class="table tablelist table-striped">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>MaterialName</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Color</th>
+                    <th>Model</th>
+                    <th>UOM</th>
+                    <th>Total Qty</th>
+                    <th>Quantity</th>
+                    <th>Balance</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <button class="btn btn-primary btn-lg save"><i class="glyphicon-import"></i>Save</button>
+
+    <div id="sum" class="row">
+        <div class="col-lg-9">
+
+        </div>
+        <div class="col-lg-3">
+            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif" class="font-weight-bold">Balance :</label>
+            <label style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:forestgreen" id="amt"></label>
+        </div>
+    </div>
+
+}
+
+
+@section scripts{
+    <script src="~/DatePicker/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var codess = [];
+              //Get Current Date
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+              var output = d.getFullYear() + '/' +
+                (month < 10 ? '0' : '') + month + '/' +
+                (day < 10 ? '0' : '') + day; 
+
+            $('#rd').val(output);
+            $('#rd').datepicker({
+                            format: "yyyy/mm/dd",
+                            todayHighlight: true, 
+                            autoclose: true
+                        });
+
+            $('#ddlDistrict').chosen();
+            $('#ddlState').chosen();
+            $('#ddlState').change(function () {
+                $.ajax({
+                    type: "post",
+                    url: "/GoodRecipt/GetDistrict",
+                    data: { stateId: $('#ddlState option:selected').text() },
+                    datatype: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var district = "<select id='ddlDistrict'>";
+                        district = district + '<option value="">--Select--</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            district = district + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        district = district + '</select>';
+                        $('#District').html(district);
+                        $('#ddlDistrict').chosen();
+                    }
+                });
+            });
+            $('#txtreceived').keyup(function () {
+                let reciveVal = parseInt($('#txtreceived').val());
+                let OQty = parseInt($('#txtqty').val());
+
+                if (reciveVal > OQty) {
+                    new PNotify({
+                        title: 'Opps!',
+                        text: 'Receive quantity must be less than avalable quantity',
+                        type: 'error'
+                    });
+                    $('#txtreceived').val('');
+                    $('#txtbalance').val('');
+                }
+
+            })
+
+            $('.table').hide();
+            $('.save').hide();
+            $('#sum').hide();
+            //Dropdown Change Event
+            $('#District').on('change', function () {
+                let val = $('#ddlDistrict').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/PurchaseOrderSummaries/' + val,
+                    success: function (result) {
+                        $('#txtreceived').val('');
+                        $('#txtmaterialName').val('');
+                        $('#txttype').val('');
+                        $('#txtcapacity').val('');
+                        $('#txtcolor').val('');
+                        $('#txtmodel').val('');
+                        $('#txtuom1').val('');
+                        $('#txtqty').val('');
+                        let materialName = result.MaterialName;
+                        let type = result.Type;
+                        let capacity = result.Capacity_AMH;
+                        let color = result.Color;
+                        let model = result.Model;
+                        let uom1 = result.UOM_1;
+                        let qty = result.Qty;
+                        $('#txtmaterialName').val(materialName);
+                        $('#txttype').val(type);
+                        $('#txtcapacity').val(capacity);
+                        $('#txtcolor').val(color);
+                        $('#txtmodel').val(model);
+                        $('#txtuom1').val(uom1);
+                        $('#txtqty').val(qty);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                    }
+                })
+            })
+
+
+            //addbtn
+            $('#btnadd').on('click', function () {
+                let rec = $('#txtreceived').val();
+                let bal = $('#txtbalance').val();
+                let gateNo = $('#gateno').val();
+                if (gateNo == "") {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Please Fill Gate No',
+                        type: 'error'
+                    });
+                    return;
+                }
+
+                let codes = $('#ddlDistrict :selected').text().trim();
+                if (rec == "") {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Receive Qunatity Should Not Be Blank',
+                        type: 'error'
+                    });
+                    return;
+                }
+                if (bal == "") {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Balance Should Not Be Blanck',
+                        type: 'error'
+                    });
+                    return;
+                }
+                if (codes == "--Select--") {
+                    new PNotify({
+                        title: 'Error!',
+                        text: 'Please select appropriate code',
+                        type: 'error'
+                    });
+                    return;
+                }
+
+                let code = $('#ddlDistrict :selected').text().trim();
+                let materialName = $('#txtmaterialName').val();
+                let type = $('#txtype').val();
+                let capacity = $('#txtcapacity').val();
+                let color = $('#txtcolor').val();
+                let model = $('#txtmodel').val();
+                let quantity = $('#txtreceived').val();
+                let amount = $('#txtbalance').val();
+                let OrignalQty = $('#txtqty').val();
+                let uom = $('#txtuom').val(); 
+
+                $.ajax({
+                    url: "/GoodRecipt/IsDuplicateData",
+                    timeout: 20000,
+                    data: { gateNo: gateNo, },
+                    type: "POST",
+                    ContentType: "application/json; charset=UTF-8",
+                    success: function (result) {
+                        if (result == 0) {
+                            alert("Opps! Gate No already In Use"); 
+                        }
+                        else {
+                            if (result == 1) { 
+                                  $(".tablelist").each(function () { 
+                                    var tds = '<tr>';
+                                    jQuery.each($('tr:last', this), function () { 
+                                        tds += '<td class="code">' + code + '</td>';
+                                        tds += '<td class="materialName">' + materialName + '</td>';
+                                        tds += '<td class="type">' + type + '</td>';
+                                        tds += '<td class="capacity">' + capacity + '</td>';
+                                        tds += '<td class="color">' + color + '</td>';
+                                        tds += '<td class="model">' + model + '</td>';
+                                        tds += '<td class="uom">' + uom + '</td>';
+                                        tds += '<td class="Oquantity">' + OrignalQty + '</td>';
+                                        tds += '<td class="quantity">' + quantity + '</td>';
+                                        tds += '<td class="amount">' + amount + '</td>';
+                                        tds += '<td>' + '<input type="button" value="Remove" onclick="Remove(this)" class="btn btn-danger"/>' + '</td>';
+                                    });
+                                    tds += '</tr>';
+                                      if ($('tbody', this).length > 0) {  
+                                        $('tbody', this).append(tds);
+                                        $('.table').show();
+                                        $('.save').show();
+                                        $('#txtreceived').val('');
+                                          $('#txtbalance').val('');
+
+                                          var customerId = $(this).find(".code").last().html();
+                                         
+                                          codess.forEach(function (item) {
+                                              if (item == codes) {
+                                                  alert("Already Have This Item");
+                                                   $('.tablelist tr:last').remove();
+                                                  return;
+                                              }
+                                          });
+                                           codess.push(customerId);
+                                    } else {
+                                        $(this).append(tds);
+                                    }
+                                });
+
+                                var sum = 0;
+                                // iterate through each td based on class and add the values
+                                $(".amount").each(function () {
+                                    var value = $(this).text();
+                                    // add only if the value is number
+                                    if (!isNaN(value) && value.length != 0) {
+                                        sum += parseFloat(value);
+                                    }
+                                    $('#amt').text(sum);
+                                    $('#sum').show();
+                                });
+                            }
+                        }
+                    },
+                    error: function () {
+                        new PNotify({
+                            title: 'Error!',
+                            text: 'Something Went Wrong',
+                            type: 'error'
+                        });
+                    }
+
+                });
+            })
+            //save
+            $('.save').on('click', function () {
+                $(".tablelist tbody tr").each(function (index) {
+                    var item = {};
+                    var putIdToUpdate = $('#ddlState :selected').val()
+                    item.Code = $(this).find('.code').text().trim();
+                    item.MaterialName = $(this).find('.materialName').text().trim();
+                    item.Type = $(this).find('.type').text().trim();
+                    item.Capacity = $(this).find('.capacity').text().trim();
+                    item.Color = $(this).find('.color').text().trim();
+                    item.Model = $(this).find('.model').text().trim();
+                    item.Qty = $(this).find('.Oquantity').text().trim();
+                    item.Receive = $(this).find('.quantity').text().trim();
+                    item.Amount = $(this).find('.amount').text().trim();
+                    item.Uom = $(this).find('.uom').text().trim();
+                    item.VendorId = $('#id').val();
+                    item.VendorName = $('#vN').text();
+                    item.EntryDate = $('#cd').html();
+                    item.EntryGateNo = $('#gateno').val();
+                    item.RecieveDate = $('#rd').val().trim();
+                    let qtyToUpdate = parseInt(item.Qty) + parseInt(item.Receive);
+                    
+                    $.ajax({
+                        url: "/GoodRecipt/GetLastGrnId",
+                        timeout: 20000,
+                        type: "GET",
+                        ContentType: "application/json; charset=UTF-8",
+                        success: function (result) {
+                            let PurchaseId = parseInt(result) + 1;
+                            $.ajax({
+                                url: '/GoodRecipt/save',
+                                type: 'POST',
+                                data: { entrydate: item.EntryDate, recieveDate: item.RecieveDate, gateNo: item.EntryGateNo, Code: item.Code, MaterialName: item.MaterialName, UOM_1: item.Uom, Type: item.Type, Capacity_AMH: item.Capacity, Model: item.Model, Color: item.Color, Rate: item.Rate, NetAmount: item.NetAmount, Amount: item.Amount, Recive: item.Receive, Qty: item.Qty, VN: item.VendorName, VI: item.VendorId, purId: PurchaseId, putIdToUpdate: putIdToUpdate },
+                                ContentType: "application/json; charset=UTF-8",
+                                success: function (result) {
+                                    $.ajax({
+                                        url: "/GoodRecipt/GetGrnId",
+                                        data: { VI: item.VendorId },
+                                        type: "GET",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function (result) {
+                                            if (result.length > 0) {
+                                                alert("Done! Your GRN Id Is: " + result);
+                                                location.reload();
+                                                
+                                            }
+                                        }
+                                    })
+
+                                    //Update Qty In Raw Mat
+                                    $.ajax({
+                                        url: "/GoodRecipt/UpdateStockInRawMat",
+                                        data: { code: item.Code, qty: qtyToUpdate },
+                                        type: "GET",
+                                        ContentType: "application/json; charset=UTF-8",
+                                        success: function (result) {
+
+                                        }
+                                    })
+
+
+                                },
+                                error: function (xhr) {
+                                    new PNotify({
+                                        title: 'Error!',
+                                        text: 'Something Went Wrong',
+                                        type: 'error'
+                                    });
+                                }
+                            });
+                        }
+                    })
+                });
+                $('#sum').hide();
+                $('#sums').hide();
+                $('#txtreceived').val('');
+                $('#txtbalance').val('');
+                $('.save').hide();
+                $(".table tbody tr").remove();
+            })
+
+            $('#txtreceived').keyup(function () {
+                let rev = $('#txtreceived').val();
+                let qtyVal = $('#txtqty').val();
+                let totalAmt = qtyVal - rev;
+                $('#txtbalance').val(totalAmt);
+            })
+
+            //OnEnter Pressed
+            jQuery('#txtreceived').on("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    $('#btnadd').click();
+
+                }
+            });
+        });
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $(".tablelist")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+            var amt = $("TD", row).eq(9).text();
+            var total = parseInt($('#amt').text());
+
+            // add only if the value is number
+            if (!isNaN(amt) && amt.length != 0) {
+                total -= parseFloat(amt);
+            }
+            $('#amt').text(total);
+        };
+    </script>
+}

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Capitaplus.Models.MatPlanning>
+
+@{
+    ViewBag.Title = "MatPlaningDash";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
+<h2>Dashbord For Purchase</h2>
+<hr />
+<table class="table mainTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MrsNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobNo)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MatName)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QtyReq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QtyInStock)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.QtyToPurchase)
+            </th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MrsNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalesNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobNo)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QtyReq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QtyInStock)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.QtyToPurchase)
+            </td>
+
+        </tr>
+        }
+
+    </tbody>
+
+</table>
+
+
+
+@section scripts{
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.mainTable').DataTable();
+        }) 
+    </script>
+}
